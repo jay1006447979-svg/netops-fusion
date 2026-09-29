@@ -782,9 +782,9 @@
                   <div class="topo-field" id="topo-f-clabel-row" style="display:none"><label>自定义类型标签</label><input type="text" id="topo-f-clabel" placeholder="如 FW、服务器（≤6 字）" maxlength="6" /></div>
                   <div class="topo-field"><label>主机名</label><input type="text" id="topo-f-hostname" placeholder="留空则用节点名" /></div>
                   <div class="topo-field"><label>端口数量</label>
-                    <div style="display:flex;gap:6px;align-items:center;">
-                      <input type="number" id="topo-f-portcount" min="1" max="96" style="flex:1;" />
-                      <button class="btn btn-sm" id="btn-topo-apply-ports">应用</button>
+                    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                      <input type="number" id="topo-f-portcount" min="1" max="96" style="flex:1;min-width:72px;" />
+                      <button class="btn btn-sm" id="btn-topo-apply-ports" style="flex:none;">应用</button>
                     </div>
                     <div class="topo-tip" style="margin-top:6px;">按当前厂家端口命名规则自动增删 access 端口至该数量；已被链路占用的端口不会被删除。</div>
                   </div>

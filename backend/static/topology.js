@@ -319,7 +319,8 @@
   const TYPE_LABEL_W = 40;   /* 类型标签区宽度(SW/R/AC...) */
   const NODE_ICON_W = 64;
   const PORT_STEP = 11;      /* 端口方块步距 */
-  const PORT_MAX_LAMPS = 32; /* 最多画 32 个端口(2 行 x 16) */
+  const PORT_ROW_CAP = 16;   /* 每行最多 16 个端口 */
+  const PORT_MAX_LAMPS = 96; /* 最多画 96 个端口(最多 6 行 x 16), 与端口数量输入上限一致 */
   const CARD_TYPES = { switch: 1, router: 1, ac: 1, wan: 1 }; /* 卡片式: 白底卡+类型标签+端口排 */
 
   function nodeLayout(node) {
@@ -330,12 +331,17 @@
     }
     const itfs = nodePorts(node);
     const count = Math.min(itfs.length, PORT_MAX_LAMPS);
-    const perRow = count > 12 ? Math.ceil(count / 2) : count;
-    const rows = count > 12 ? 2 : (count ? 1 : 0);
+    let rows = 0, perRow = 0;
+    if (count > 12) {
+      rows = Math.ceil(count / PORT_ROW_CAP);
+      perRow = Math.ceil(count / rows);  /* 各行均分, 避免末行只剩一两个 */
+    } else if (count) {
+      rows = 1; perRow = count;
+    }
     const portsW = count ? perRow * PORT_STEP - (PORT_STEP - 8) + 4 : 0;
     return {
       w: TYPE_LABEL_W + 4 + portsW + 6,
-      h: 52,
+      h: rows <= 2 ? 52 : rows * 22 + 8,  /* 1~2 行维持原高 52; 3 行起每行 22px(7 顶边距 + 22*(行数-1) + 16 盾牌高 + 7 底边距) */
       ports: itfs.slice(0, PORT_MAX_LAMPS),
       perRow: Math.max(perRow, 1),
       rows: rows,
@@ -343,8 +349,8 @@
   }
 
   /* 白底圆角卡片(带浅阴影) */
-  function cardRect(w) {
-    return '<rect class="tp-card" x="0" y="0" width="' + w + '" height="52" rx="7" fill="#ffffff" stroke="#dde3ea" stroke-width="1.2" filter="url(#tp-shadow)"/>';
+  function cardRect(w, h) {
+    return '<rect class="tp-card" x="0" y="0" width="' + w + '" height="' + h + '" rx="7" fill="#ffffff" stroke="#dde3ea" stroke-width="1.2" filter="url(#tp-shadow)"/>';
   }
 
   /* 端口小盾牌(仿参考图中的端口灯) */
@@ -365,30 +371,30 @@
       g.setAttribute("transform", "translate(" + d.x + "," + d.y + ")");
       let html = '<rect class="tp-halo" x="-4" y="-4" width="' + (d.w + 8) + '" height="' + (d.h + 8) + '" rx="9" fill="none" stroke="transparent" stroke-width="2"/>';
       if (isCard) {
-        html += cardRect(d.w);
+        html += cardRect(d.w, d.h);
         const lbl = typeLabelOf(node);
         html += '<text class="tp-typelabel" x="8" y="33" font-size="' + (lbl.length > 3 ? 11 : 15) + '" font-weight="700" fill="#1f2937">' + esc(lbl) + "</text>";
-        /* 右侧端口排(小盾牌) */
+        /* 右侧端口排(小盾牌, 超过一行自动换行) */
         const px0 = TYPE_LABEL_W + 4;
         d.ports.forEach((p, i) => {
-          const row = d.perRow > 0 && i >= d.perRow ? 1 : 0;
-          const col = row === 0 ? i : i - d.perRow;
+          const row = d.perRow > 0 ? Math.floor(i / d.perRow) : 0;
+          const col = i - row * d.perRow;
           const lx = px0 + col * PORT_STEP;
-          const ly = row === 0 ? 7 : 29;
+          const ly = 7 + row * 22;
           html += '<path class="tp-port" data-port="' + esc(p.toLowerCase()) + '" data-key="' + esc(node.node_key) +
             '" d="' + shieldPath(lx, ly) + '" fill="#49556a" stroke="#333f52" stroke-width="0.8" stroke-linejoin="round"/>';
           d.portPos[p.toLowerCase()] = { rx: lx + 4, ry: ly + 6 };
         });
         if ((nodePorts(node).length || 0) > PORT_MAX_LAMPS) {
-          html += '<text class="tp-portmore" x="' + (d.w - 2) + '" y="24" font-size="9" fill="#94a3b8">+</text>';
+          html += '<text class="tp-portmore" x="' + (d.w - 2) + '" y="' + Math.round(d.h / 2 + 3) + '" font-size="9" fill="#94a3b8">+</text>';
         }
       } else {
         const href = svgIcon(node.config && node.config.vendor, type);
         html += '<image href="' + href + '" x="4" y="2" width="' + NODE_ICON_W + '" height="48"/>';
       }
       html +=
-        '<text class="tp-name" x="' + (d.w / 2) + '" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937" stroke="#fbfcfe" stroke-width="3" paint-order="stroke">' + esc(node.name || node.node_key) + "</text>" +
-        '<text class="tp-ip" x="' + (d.w / 2) + '" y="82" text-anchor="middle" font-size="10" fill="#94a3b8" stroke="#fbfcfe" stroke-width="3" paint-order="stroke">' + esc(node.mgmt_ip || "") + "</text>";
+        '<text class="tp-name" x="' + (d.w / 2) + '" y="' + (d.h + 14) + '" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937" stroke="#fbfcfe" stroke-width="3" paint-order="stroke">' + esc(node.name || node.node_key) + "</text>" +
+        '<text class="tp-ip" x="' + (d.w / 2) + '" y="' + (d.h + 30) + '" text-anchor="middle" font-size="10" fill="#94a3b8" stroke="#fbfcfe" stroke-width="3" paint-order="stroke">' + esc(node.mgmt_ip || "") + "</text>";
       g.innerHTML = html;
     } else {
       /* 下级设备折叠组节点(样式与真实设备一致): 点击任意处展开(折叠按钮画在连线上) */
@@ -403,14 +409,14 @@
       g.setAttribute("transform", "translate(" + d.x + "," + d.y + ")");
       let html = '<rect class="tp-halo" x="-4" y="-4" width="' + (d.w + 8) + '" height="' + (d.h + 8) + '" rx="9" fill="none" stroke="transparent" stroke-width="2"/>';
       if (isCard) {
-        html += cardRect(d.w);
+        html += cardRect(d.w, d.h);
         html += '<text class="tp-typelabel" x="8" y="33" font-size="' + (lbl.length > 3 ? 11 : 15) + '" font-weight="700" fill="#1f2937">' + esc(lbl) + "</text>";
         /* 端口排(与真实设备一致, 灰色不可点亮) */
         const px0 = TYPE_LABEL_W + 4;
         d.ports.forEach((p, i) => {
-          const row = d.perRow > 0 && i >= d.perRow ? 1 : 0;
-          const col = row === 0 ? i : i - d.perRow;
-          html += '<path class="tp-port" d="' + shieldPath(px0 + col * PORT_STEP, row === 0 ? 7 : 29) +
+          const row = d.perRow > 0 ? Math.floor(i / d.perRow) : 0;
+          const col = i - row * d.perRow;
+          html += '<path class="tp-port" d="' + shieldPath(px0 + col * PORT_STEP, 7 + row * 22) +
             '" fill="#49556a" stroke="#333f52" stroke-width="0.8" stroke-linejoin="round"/>';
         });
       } else {
@@ -419,7 +425,7 @@
       }
       html += '<g class="tp-badge"><rect x="' + (d.w - 30) + '" y="-9" width="26" height="16" rx="8" fill="#10b981"/>' +
         '<text x="' + (d.w - 17) + '" y="3" text-anchor="middle" font-size="10" font-weight="700" fill="#ffffff">×' + d.members.length + "</text></g>" +
-        '<text class="tp-name" x="' + (d.w / 2) + '" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937" stroke="#fbfcfe" stroke-width="3" paint-order="stroke">' + esc((meta.name || "设备") + " ×" + d.members.length) + "</text>";
+        '<text class="tp-name" x="' + (d.w / 2) + '" y="' + (d.h + 14) + '" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937" stroke="#fbfcfe" stroke-width="3" paint-order="stroke">' + esc((meta.name || "设备") + " ×" + d.members.length) + "</text>";
       g.innerHTML = html;
     }
     gNodes.appendChild(g);
@@ -501,8 +507,8 @@
     } catch (e) { /* 忽略 */ }
   }
 
-  /* 设备中心 y(布局高度固定 52) */
-  const cyOf = (n) => n.y + 26;
+  /* 设备中心 y(高度随端口行数变化) */
+  const cyOf = (n) => n.y + nodeLayout(n).h / 2;
 
   /* 某设备的"下级"设备: 通过链路相连且位于其下方 */
   function childrenOf(parentKey) {
@@ -639,7 +645,7 @@
             });
             boxes.forEach((b) => placed.push(b));
             if (touched) delete groupOffs[g.key];
-            y0 = Math.max(...boxes.map((b) => b.y)) + 52 + BAND_GAP;
+            y0 = Math.max(...boxes.map((b) => b.y + b.h)) + BAND_GAP;
             break;
           }
           y0 = Math.round(y0 + 96 + PAD + 10);
@@ -728,7 +734,7 @@
       a.y < b.y + b.h + PAD && a.y + a.h + PAD > b.y;
 
     /* 先按原位置检查: 成员之间、成员与其他设备之间都没有重叠 → 保持原布局 */
-    const nat = members.map((m, i) => ({ x: m.x, y: m.y, w: lays[i].w, h: 52 }));
+    const nat = members.map((m, i) => ({ x: m.x, y: m.y, w: lays[i].w, h: lays[i].h }));
     const dirty = nat.some(boxClash) ||
       nat.some((a, i) => nat.some((b, j) => j > i && pairClash(a, b)));
     if (!dirty) return [];
