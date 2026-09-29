@@ -849,6 +849,22 @@
     return isFinite(minTop) ? (pbY + minTop) / 2 : pbY + 40;
   }
 
+  /* 上方总线 Y: 以上级设备 pd 为下端的所有上方链路共用一条水平总线(镜像 busYFor) */
+  function busYAboveFor(svKey, pd) {
+    const pTop = pd.y;
+    let maxBottom = -Infinity;
+    Object.values(linkMap).forEach((l) => {
+      let other = null;
+      const s = dispOf(l.src_node_key), d = dispOf(l.dst_node_key);
+      if (!s || !d) return;
+      if (s.key === svKey) other = d;
+      else if (d.key === svKey) other = s;
+      if (!other || other.key === svKey) return;
+      if (centerOfDisp(other).y < centerOfDisp(pd).y - 10) maxBottom = Math.max(maxBottom, other.y + other.h);
+    });
+    return isFinite(maxBottom) ? (pTop + maxBottom) / 2 : pTop - 40;
+  }
+
   function updateLinkGeom(linkId) {
     const link = linkMap[linkId];
     const wrap = linkEls[linkId];
@@ -875,8 +891,15 @@
       p1 = { x: pd.x + pd.w / 2, y: pd.y + pd.h };
       p2 = { x: gd.x + gd.w / 2, y: gd.y };
       if (p2.y > p1.y + 4) {
+        /* 组在上级下方: 底部引出 → 共用总线 → 落到组顶 */
         const busY = busYFor(pd.key, pd);
         pts = [p1, { x: p1.x, y: busY }, { x: p2.x, y: busY }, p2];
+      } else if (p2.y + gd.h < p1.y - 4) {
+        /* 组在上级上方: 顶部引出 → 上方共用总线 → 落到组底(镜像, 保持正交风格一致) */
+        const q1 = { x: pd.x + pd.w / 2, y: pd.y };
+        const q2 = { x: gd.x + gd.w / 2, y: gd.y + gd.h };
+        const busY = busYAboveFor(pd.key, pd);
+        pts = [q1, { x: q1.x, y: busY }, { x: q2.x, y: busY }, q2];
       } else {
         pts = [p1, p2];
       }
@@ -1167,6 +1190,11 @@
     if (!gd || gd.real || !gd.pfold) return null;
     const pd = dispMap[gd.pfold];
     if (!pd) return null;
+    if (centerOfDisp(gd).y < centerOfDisp(pd).y) {
+      /* 组在上级上方: 按钮放上方总线与组底之间 */
+      const busY = busYAboveFor(pd.key, pd);
+      return { x: gd.x + gd.w / 2 - 8, y: (busY + gd.y + gd.h) / 2 - 8 };
+    }
     const busY = busYFor(pd.key, pd);
     return { x: gd.x + gd.w / 2 - 8, y: (busY + gd.y) / 2 - 8 };
   }
@@ -1569,6 +1597,7 @@
     }
     if (e.key !== "Delete" && e.key !== "Backspace") return;
     if (typing) return;
+    if (multiSel.size > 1) { deleteMultiNodes(); return; }
     if (selectedLinkId) deleteLink(selectedLinkId);
     else if (selectedNodeKey) deleteNode(selectedNodeKey);
   });
@@ -2175,6 +2204,45 @@
     renderAll();
     renderPanel();
     toast(r.message || "设备已删除", "success");
+  }
+
+  /* 框选多选的批量删除(Delete 键): 逐台调 API, 一次入撤销栈 */
+  async function deleteMultiNodes() {
+    if (!topoId || !multiSel.size) return;
+    const keys = [...multiSel].filter((k) => nodeMap[k]);
+    if (!keys.length) { clearMulti(); return; }
+    const linkedCount = new Set();
+    keys.forEach((k) => {
+      Object.values(linkMap).forEach((l) => {
+        if (l.src_node_key === k || l.dst_node_key === k) linkedCount.add(l.id);
+      });
+    });
+    const label = "删除 " + keys.length + " 台设备" + (linkedCount.size ? "（含 " + linkedCount.size + " 条链路）" : "");
+    if (!confirm("删除框选的 " + keys.length + " 台设备？" + (linkedCount.size ? "将同时删除 " + linkedCount.size + " 条链路。" : ""))) return;
+    const h = beginHistory(label);
+    let fail = 0;
+    for (const k of keys) {
+      const n = nodeMap[k];
+      if (!n) continue;
+      const r = await apiDel(API_BASE + "/" + topoId + "/nodes/" + n.id);
+      if (!r.success) { fail++; continue; }
+      Object.values(linkMap).forEach((l) => {
+        if (l.src_node_key === k || l.dst_node_key === k) {
+          removeLinkEl(l.id);
+          delete linkMap[l.id];
+          delete labelOffs[l.id];
+        }
+      });
+      removeNodeEl(k);
+      delete nodeMap[k];
+    }
+    saveLabelOffs();
+    clearMulti();
+    selectNode(null);
+    renderAll();
+    renderPanel();
+    if (fail) toast(fail + " 台设备删除失败", "error");
+    else { toast(label, "success"); status(label); }
   }
 
   async function deleteLink(linkId) {
