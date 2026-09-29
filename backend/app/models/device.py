@@ -26,7 +26,7 @@ class DeviceType(str, Enum):
     router = "router"
     ap = "ap"
     ac = "ac"        # 无线控制器
-    wan = "wan"      # 外网/出口示意
+    wan = "wan"      # 互联网/出口示意
     pc = "pc"        # 终端 PC
     ipc = "ipc"      # 网络摄像头
     custom = "custom"  # 自定义设备(示意图标)

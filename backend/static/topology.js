@@ -39,14 +39,14 @@
     router: { label: "R",   name: "路由器",   defaultPorts: 8 },
     ap:     { label: "AP",  name: "无线AP",   defaultPorts: 2 },
     ac:     { label: "AC",  name: "无线AC",   defaultPorts: 8 },
-    wan:    { label: "WAN", name: "外网",     defaultPorts: 2 },
+    wan:    { label: "Internet", name: "互联网", defaultPorts: 2 },
     pc:     { label: "PC",  name: "PC终端",   defaultPorts: 1 },
     ipc:    { label: "IPC", name: "摄像头",   defaultPorts: 1 },
     custom: { label: "自定义", name: "自定义设备", defaultPorts: 4 },
   };
   const TYPE_NAME = {
     switch: "交换机", router: "路由器", ap: "无线AP", ac: "无线AC",
-    wan: "外网", pc: "PC终端", ipc: "摄像头", custom: "自定义设备",
+    wan: "互联网", pc: "PC终端", ipc: "摄像头", custom: "自定义设备",
   };
   function typeLabelOf(node) {
     const t = (node.config || {}).device_type || "switch";
