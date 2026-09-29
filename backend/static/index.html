@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="jwm0FPikXHvPGufRLziR4L">
+<head data-page-node-id="boKCgfdNJKqMrDCQafDzsb">
+  <meta charset="UTF-8" data-page-node-id="DiZFGC0oCakYZlDYfGHDxt" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="CfoaHWmJp9cLCdIcHlDNHV" />
+  <title>NetOps Fusion — 网络设备配置工具</title>
+  <link rel="stylesheet" href="/static/style.css" data-page-node-id="6KF2gCcxJ88nIXpQLVl6eC" />
+</head>
+<body data-page-node-id="7yz7WXYEr9vpRRhA9q0pzD">
+  <div class="layout" data-page-node-id="9YT2KLCrOWcBY8RtAmyPUt">
+    <!-- 侧边栏 -->
+    <aside class="sidebar" data-page-node-id="TGHVfBFRmKN7deUHXE2o0o">
+      <div class="logo" data-page-node-id="FMhCAYpWUTssx0POLDIxFA">
+        <span class="logo-icon" data-page-node-id="pw7r9nDsICoO6yOkdFJuls">⚡</span>
+        <div class="logo-text" data-page-node-id="pSa6LLb4iO1FdyUyj6Y2Ea">
+          <strong data-page-node-id="2HOzOfvUxGjd1Pqq4zD1mT">NetOps Fusion</strong>
+          <small data-page-node-id="x1EgyhPd0OuVQXH45jh8br">v1.0.0 融合版</small>
+        </div>
+      </div>
+      <nav class="nav" data-page-node-id="b1Ey4DqwiKuydQ6trNFond">
+        <a class="nav-item active" data-page="dashboard" data-page-node-id="ZLFGdOcTmTK02vxQlB7uyr">
+          <span class="nav-icon" data-page-node-id="Npg5ikgat9KHiXKDO4HjiF">📊</span> 仪表盘
+        </a>
+        <a class="nav-item" data-page="config" data-page-node-id="CQ6g2ZAwEoGaf5i7RckCZ6">
+          <span class="nav-icon" data-page-node-id="THwCIx7MpPyIOASDY0QKwk">⚙️</span> 配置生成器
+        </a>
+        <a class="nav-item" data-page="devices" data-page-node-id="Gbmqi9GCF3hXE5tCcK7DfM">
+          <span class="nav-icon" data-page-node-id="oqGPxVuMo82OdHuDJFiVl8">🖥️</span> 设备管理
+        </a>
+        <a class="nav-item" data-page="topology">
+          <span class="nav-icon">🗺️</span> 拓扑图
+        </a>
+        <a class="nav-item" data-page="tools" data-page-node-id="8DFbbzUYLKOsgGsEX5xB0Z">
+          <span class="nav-icon" data-page-node-id="NbKLyEzqbumzJeTGLJrTzm">🛠️</span> 网络工具箱
+        </a>
+        <a class="nav-item" data-page="manual" data-page-node-id="EZrqNP9Dhb0IBJDVgc68Xf">
+          <span class="nav-icon" data-page-node-id="tjlNVA4BoWkNRoBEje2RuW">📚</span> 命令手册
+        </a>
+        <a class="nav-item" data-page="templates" data-page-node-id="DJ3neCaUnL6MsGbwFjEdDE">
+          <span class="nav-icon" data-page-node-id="bGnHExgGL0PGO8yxNIbYUj">📋</span> 配置模板
+        </a>
+        <a class="nav-item" data-page="notes" data-page-node-id="U8fvRjhFsbGdEjyvRXVyYz">
+          <span class="nav-icon" data-page-node-id="CR1sfPLVYNirPzY2IGn3Og">📝</span> 笔记
+        </a>
+      </nav>
+      <div class="sidebar-footer" data-page-node-id="h3S3wni48c0Cmbi1sCLMXh">
+        <a class="nav-item external" href="/docs" target="_blank" data-page-node-id="4vriFaWnqGbkoKFnGkPlOf">
+          <span class="nav-icon" data-page-node-id="JnAVf3q9y6tH5u3TW8aIyl">📖</span> API 文档
+        </a>
+      </div>
+    </aside>
+
+    <!-- 主内容 -->
+    <main class="main" data-page-node-id="q2bUDPhhzsWjil5gQG3Bcf">
+      <header class="topbar" data-page-node-id="C0lJ0qDg2TlSRpuEUo4Jmw">
+        <h1 id="page-title" data-page-node-id="8qDw1KQJvYnDTFyaeBMcBY">仪表盘</h1>
+        <div class="topbar-right" data-page-node-id="9Asdjq70yEuJdCaQvCwuE8">
+          <span id="conn-status" class="badge badge-success" data-page-node-id="yeDMSgYekf5vPg3imYZZxn">● 服务在线</span>
+        </div>
+      </header>
+
+      <div class="content" data-page-node-id="R4wDNamBXK9ebtE679ErXy">
+        <!-- ============ 仪表盘 ============ -->
+        <section id="page-dashboard" class="page active" data-page-node-id="UAcB6UtcOVaFQexaLdYG1J">
+          <div class="grid grid-4" data-page-node-id="Z5rzteWB9xdZYa42F0qpHS">
+            <div class="card stat-card" data-page-node-id="wkMNVAFFHBaeT0pFxVtyFE">
+              <div class="stat-icon blue" data-page-node-id="APYtGTpoHFS8FXxaekBMz3">🏭</div>
+              <div class="stat-body" data-page-node-id="axfa4KObGPIFsUxu5lSYEM">
+                <div class="stat-num" id="stat-vendors" data-page-node-id="YZmRLZqqc7dLtULB8CJ6oN">-</div>
+                <div class="stat-label" data-page-node-id="ktyjRGuEnSMHvVowQw3eny">支持厂商</div>
+              </div>
+            </div>
+            <div class="card stat-card" data-page-node-id="IFBr0bp2yhB4GizrqV4PfO">
+              <div class="stat-icon green" data-page-node-id="g7aKm3umVAJ5eGa1sCqvp3">📦</div>
+              <div class="stat-body" data-page-node-id="KpsTf91sYYJNndVHEyAJtJ">
+                <div class="stat-num" id="stat-templates" data-page-node-id="GJJLIPccSP3G7QszVnUwdx">-</div>
+                <div class="stat-label" data-page-node-id="GpUH2w3W5wPJ6uRG1UaNXa">配置模板</div>
+              </div>
+            </div>
+            <div class="card stat-card" data-page-node-id="hfqtav7pbAr57vgoFBGL1P">
+              <div class="stat-icon purple" data-page-node-id="Q0S6B5MZCDdTrqOvIu7krK">📖</div>
+              <div class="stat-body" data-page-node-id="VPAfdPrSKSkmpO0RJN0BOk">
+                <div class="stat-num" id="stat-commands" data-page-node-id="4p2xqdcZcayB2MRGbSg3YO">-</div>
+                <div class="stat-label" data-page-node-id="7amJ1YIBADbWcGMvolqPSP">命令手册</div>
+              </div>
+            </div>
+            <div class="card stat-card" data-page-node-id="3f3E0vsq2JQmp2eTLfXiFv">
+              <div class="stat-icon orange" data-page-node-id="0cbDIoEUiW7MuVAXjO2TCP">🖥️</div>
+              <div class="stat-body" data-page-node-id="HlfyoXaqiCk40jsGIvrNWF">
+                <div class="stat-num" id="stat-devices" data-page-node-id="0tT6LQ9lLvggGa9ra86iuq">-</div>
+                <div class="stat-label" data-page-node-id="JcCqEdbtJgE33wkwGBCVfo">已管设备</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-2" data-page-node-id="ePwljASKQ0DXSHRmDpFc0C">
+            <div class="card" data-page-node-id="jWlQEw4EAjcn3b6BQb13wp">
+              <div class="card-header" data-page-node-id="dCOGJ2HmyhHl1RyxzCp7aM"><h3 data-page-node-id="IJ8TcWulJKtkobvYQiOXLX">已注册厂商</h3></div>
+              <div class="card-body" id="vendor-list" data-page-node-id="ijDpKr64R8rCSeJeIWKsTn">加载中...</div>
+            </div>
+            <div class="card" data-page-node-id="rb5tQigAqqsiSFCjXDr2hr">
+              <div class="card-header" data-page-node-id="CIqAFpnrEcowoE5uuNiAB6"><h3 data-page-node-id="u5CJy5Q3BlRu9D3vJobeIF">系统信息</h3></div>
+              <div class="card-body" data-page-node-id="YeMZnWDEUTICVJeerMjCHM">
+                <table class="kv-table" data-page-node-id="liZdrzuRzWfe9nCri8q5XZ">
+                  <tr data-page-node-id="CvN8aeCGRUTiDNTDA0CGUl"><td data-page-node-id="SkfuX5nDeeUyNmVGm5nUW1">应用名称</td><td id="info-app" data-page-node-id="NF9AmFX7SjIx6RDoKYcXHm">-</td></tr>
+                  <tr data-page-node-id="7mKKhv9wBcmS8RH7NCO7TP"><td data-page-node-id="excAAeVZCBimWbMzyeY34G">版本</td><td id="info-version" data-page-node-id="x7DHrMWskUfKUeBE2MKEsR">-</td></tr>
+                  <tr data-page-node-id="ZpedG4IsZOkRmBgDHDiPZR"><td data-page-node-id="Hz1q6M9At6SoH8J2zFWOgU">后端框架</td><td data-page-node-id="nes6PuLL5xblSuRhKrbF3L">FastAPI + Uvicorn</td></tr>
+                  <tr data-page-node-id="6LJWxqRcbTJPxlBFUdBiiV"><td data-page-node-id="hiKJQVEFH0DxGtjWfSkhP9">数据库</td><td data-page-node-id="3d286au42oB7Dr7DX31VUD">SQLite (async)</td></tr>
+                  <tr data-page-node-id="WWCVRCHiiBMnBFz5yX2AH4"><td data-page-node-id="MXqsgCfCo0uylr1bEFFIOl">API 文档</td><td data-page-node-id="hp5zwfiEmO9nM6wUAtk4VF"><a href="/docs" target="_blank" data-page-node-id="RDvshPGBgZF2yrvCYFkwdS">/docs (Swagger)</a></td></tr>
+                  <tr data-page-node-id="FwwEIxwvJYjfhL7NQEdjbF"><td data-page-node-id="277p1pXzVEgiNHPCbBFphu">回滚机制</td><td data-page-node-id="QRL8PUxuFQjLK3LXWTtIfp"><span class="badge badge-success" data-page-node-id="xmSf3sNBzGeE3PeCTqtDpd">命令级</span></td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" data-page-node-id="A1yB6TIcTbWWBbYG958Sjw">
+            <div class="card-header" data-page-node-id="rNuhcT3TevEy4pTPdJdI6J"><h3 data-page-node-id="t09o3kQ98mgDaID3ccl33E">快速入口</h3></div>
+            <div class="card-body" data-page-node-id="wB2cZtqvnrv6HgjuUYfU2T">
+              <div class="quick-links" data-page-node-id="NAOPRfDUMHI0zjvpQzPKJX">
+                <a class="quick-link" data-page="config" data-page-node-id="6DJ8XeIk9Ts4yUBK1RGdXV">⚙️ 生成设备配置</a>
+                <a class="quick-link" data-page="tools" data-page-node-id="hGB6RyFJBTqBadGmvMjRoL">🛠️ 子网计算 / Ping / 端口扫描</a>
+                <a class="quick-link" data-page="manual" data-page-node-id="tVgMHlGLWZlLZZbTfuLR56">📚 查阅命令手册</a>
+                <a class="quick-link" data-page="devices" data-page-node-id="nXVqSy6Er2hExNWZJ3Uj21">🖥️ 管理设备并推送配置</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 配置生成器 ============ -->
+        <section id="page-config" class="page" data-page-node-id="ONFEiv9VErTbhDRSR1ct2K">
+          <div class="grid grid-2-1" style="grid-template-columns: 1fr 420px;" data-page-node-id="eXjsrPcDARCUP3h8wWU1mO">
+            <div class="card" style="overflow:visible;" data-page-node-id="qxWS68WpwDtkhdOzj9IYr7">
+              <div class="card-header" style="flex-wrap:wrap;gap:10px;" data-page-node-id="5HfAPWp8N6egzGDU1RrYj0">
+                <div style="display:flex;align-items:center;gap:10px;flex:1;" data-page-node-id="kqGkNM9tZpN2dLP9GZGJ5P">
+                  <label for="cfg-vendor" style="white-space:nowrap;font-size:13px;color:#4b5563;" data-page-node-id="k18UZW8VW8dkt4oiJGmWA9">厂商</label>
+                  <select id="cfg-vendor" class="select-sm" style="min-width:100px;" data-page-node-id="LbLQMJFreU6qcC0ouLQJ4N">
+                    <option value="huawei" data-page-node-id="qVNxX2pjl14Q5M3toKEIRb">华为 Huawei</option>
+                    <option value="h3c" data-page-node-id="UcZaQAbvF6veVaIXQgsoqj">新华三 H3C</option>
+                    <option value="ruijie" data-page-node-id="3fPcAUFogA8DAeyPJmGsdZ">锐捷 Ruijie</option>
+                    <option value="maipu" data-page-node-id="0ToiEiBSDRAEGrtKnQYk6q">迈普 Maipu</option>
+                  </select>
+                  <label for="cfg-device-type" style="white-space:nowrap;font-size:13px;color:#4b5563;" data-page-node-id="OxOKAwiPFf5wCnModbNO8U">设备类型</label>
+                  <select id="cfg-device-type" class="select-sm" style="min-width:90px;" data-page-node-id="C0mbHjdYxQbBMKxOkgZ6t7">
+                    <option value="switch" data-page-node-id="QHR9UvhFOGi8fIih6B6MRG">交换机</option>
+                    <option value="router" data-page-node-id="x0ZMsZLdWwKwhO1gF4CFzm">路由器</option>
+                    <option value="ap" data-page-node-id="zMpEz6CkD3FykbEpB6kUzx">无线 AP</option>
+                  </select>
+                  <label for="cfg-hostname" style="white-space:nowrap;font-size:13px;color:#4b5563;" data-page-node-id="QR1AMSK5FHMLOhvBqZ6lq7">主机名</label>
+                  <input type="text" id="cfg-hostname" placeholder="请输入主机名" style="max-width:160px;" data-page-node-id="2qs02zIwyLo9gGa1i9fEOh" />
+                </div>
+              </div>
+              <div class="card-body" style="padding:12px 14px;" data-page-node-id="5Gj2pDjmYuFv0BqfUJ63Bj">
+                <!-- Tab 导航 -->
+                <div class="tabs" style="margin-bottom:14px;" data-page-node-id="8L1nLoPZnBCJ1GDki5ISEk">
+                  <button class="tab active" data-cfg-tab="basic" data-page-node-id="TuL4Tsnk6j4PYvwkqMsdvn">基础配置</button>
+                  <button class="tab" data-cfg-tab="vlan" data-page-node-id="HAvg6hOoBdCJNizazmtj10">VLAN</button>
+                  <button class="tab" data-cfg-tab="routing" data-page-node-id="LSDCTHpNUti67SEGrASISa">路由</button>
+                  <button class="tab" data-cfg-tab="security" data-page-node-id="9IlrBxK0osFWGKCiEfsTdx">安全</button>
+                  <button class="tab" data-cfg-tab="interface" data-page-node-id="WrVSKVoHH9jyNGXEC3xWbY">接口</button>
+                </div>
+
+                <!-- ===== 基础配置 ===== -->
+                <div id="cfg-tab-basic" class="cfg-pane active" data-page-node-id="W4CxF00mofiHftmiKk3izK">
+                  <div class="form-section" data-page-node-id="k0vwdFvzo56CRiGc6hczs7">
+                    <div class="form-section-title" data-page-node-id="CSMkSMKu1ZYUR3eV6SvEsB">SSH 配置</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);" data-page-node-id="QYVrhkUhwx6dZmyClqmB7I">
+                      <div class="form-field" data-page-node-id="EmobphvVrBZRScxfqOmEKx"><label data-page-node-id="VzQ3nfQS9FP6mqFrDsqRl7">启用</label><select id="cfg-ssh-enable" data-page-node-id="ECs1fDZoPHVW7liS4n3v9u"><option value="false" data-page-node-id="ER09JZGy1zKY3e8JrD7ZYM">否</option><option value="true" data-page-node-id="kmzr9buyx5XTuckCy4gXmJ">是</option></select></div>
+                      <div class="form-field" data-page-node-id="vQ8HoJiAG0LXwQ02gN5rgq"><label data-page-node-id="dcSh6fc84cIHYVb1NeQ3f8">版本</label><select id="cfg-ssh-version" data-page-node-id="MQeRt2fz2NsBKLUyjPG9kk"><option value="1" data-page-node-id="jQCaG5UzFzvFmX9XS9MzdC">v1</option><option value="2" data-page-node-id="OO04UOd2J7joP4uiWd7DLn">v2</option></select></div>
+                      <div class="form-field" data-page-node-id="ZsIwy3T7QTJiD0Osc0jd3A"><label data-page-node-id="6mfxcXsOrz5kGIm4fJGIcL">端口</label><input type="number" id="cfg-ssh-port" value="22" data-page-node-id="n831ypJP3NHH0FL0tbNwXv" /></div>
+                      <div class="form-field" data-page-node-id="3vMoBBARl8aIZxENB3hd9G"><label data-page-node-id="1Ztl59OcwfHAB5nCrxbZh4">超时(秒)</label><input type="number" id="cfg-ssh-timeout" value="60" data-page-node-id="o34WzDL9H7pTO6Hik2KMbV" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="bSS7kqKZ46XTarkfr6Gorh">
+                    <div class="form-section-title" data-page-node-id="8Cco4SDHJHVK9Ny7FSctYb">Telnet 配置</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr);" data-page-node-id="EIJANyVCbZ6gEJaE8xuL2y">
+                      <div class="form-field" data-page-node-id="UNWe6vwaoB4G7dO0iptCjk"><label data-page-node-id="4xW14GVGZ7GZyEf7JXVH67">启用</label><select id="cfg-telnet-enable" data-page-node-id="XMTxl88B1eHVM7bLidQqGi"><option value="false" data-page-node-id="PMTKRACP1A5vYCqA925tYC">否</option><option value="true" data-page-node-id="iqZHXvgLMcKx7DQWpTzJvN">是</option></select></div>
+                      <div class="form-field" data-page-node-id="ZJgzFKQheKGghA1HIXOlo1"><label data-page-node-id="VWjh4wHlPSSVZ2meEwSBG6">备注</label><input type="text" value="启用后可远程登录" disabled data-page-node-id="WtFBgFp2DOq4eFMkO6ynGH" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="vAi1R3Oj61okZkIgcIwKnV">
+                    <div class="form-section-title" data-page-node-id="SFcDiCNRd2QLhBOig2bT4M">Console 认证</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);" data-page-node-id="zYeN3W1s8c1QmITFLevrtD">
+                      <div class="form-field" data-page-node-id="2icehmJXatEFl2fBKHbG1S"><label data-page-node-id="xA8IGU5bmjYsIrZCu0iDYF">启用</label><select id="cfg-console-enable" data-page-node-id="z3IMGHnW8b9SQlkW1Fo6a5"><option value="false" data-page-node-id="RDOKFGDCRGtrsa6yxeqypw">否</option><option value="true" data-page-node-id="jxPEqTZEY4UNFdaRFsEWQm">是</option></select></div>
+                      <div class="form-field" data-page-node-id="qOK2Qiq1XKUm45XG4Wgu1w"><label data-page-node-id="97FyeI6Byjrt2JoYL5TdPn">Console 密码</label><input type="text" id="cfg-console-pwd" placeholder="可选" data-page-node-id="DDcBKlSwKDbuul0tBJdGuM" /></div>
+                      <div class="form-field" data-page-node-id="onohVKExFq8eGzjsXRLZxl"><label data-page-node-id="S82EV6TRTRH4NPsP2QkGTi">认证方式</label><select id="cfg-console-auth" data-page-node-id="hwmI3cHILFxjCfCrHSQYVz"><option value="password" data-page-node-id="GzCep7XF6KdUEWmy8h4RTf">password</option><option value="aaa" data-page-node-id="lDCliBUmCENNWYFnTJ63jG">aaa</option></select></div>
+                      <div class="form-field" data-page-node-id="uKctIC4Awr46TqvmXT7eHY"><label data-page-node-id="LeWvt0T2sBvrMSIrFz3uqB">空闲超时(分)</label><input type="number" id="cfg-console-idle" value="10" data-page-node-id="q7SqGRU8HLtBNpXaM8xaWF" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="Xu7tsIgaURfbEeOa5tfHFV">
+                    <div class="form-section-title" data-page-node-id="hgP9AR6GK42ANpbu75haQE">用户管理</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);" data-page-node-id="xiYP5YOz2YDv3AHF9iX23q">
+                      <div class="form-field" data-page-node-id="zOb2Qc8AZnf6c9Aus5uvDS"><label data-page-node-id="wFUDBKpwDBxsK2KFi5oIfe">启用</label><select id="cfg-user-enable" data-page-node-id="OUtD37Y3FbCviy0SNS4PBP"><option value="false" data-page-node-id="4NBkEVJ73lHCQxKnnJXfQv">否</option><option value="true" data-page-node-id="WBkKioCgcNATmZDrXUdvoe">是</option></select></div>
+                      <div class="form-field" data-page-node-id="KmDlG8X89gt0hxpkgJ3M5b"><label data-page-node-id="YY2Wp3Ac0RbGeQwIAH4qCM">用户名</label><input type="text" id="cfg-user-name" value="admin" data-page-node-id="WtWgi63avvMqbmqy67t4kf" /></div>
+                      <div class="form-field" data-page-node-id="e9zFFdqRqgLH2xApcAvEfo"><label data-page-node-id="Y5RcipTjIaS24XOON8zLaZ">密码</label><input type="text" id="cfg-user-pwd" value="admin@123" data-page-node-id="yQ9PSWxaIOea23gzvYzqSs" /></div>
+                      <div class="form-field" data-page-node-id="659BVL4jHXj7vx9b1ktK9S"><label data-page-node-id="tlIl7AowgDJrEzTZIiswQQ">权限级别</label><input type="number" id="cfg-user-level" value="15" min="0" max="15" data-page-node-id="qybtoFjUUQ7q7RRG5I9NKO" /></div>
+                    </div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); margin-top:8px;" data-page-node-id="qU3htok8pmAszRepOYTuSE">
+                      <div class="form-field" data-page-node-id="4T6UnJbMP8E1xL9dSThuBM"><label data-page-node-id="6PSZB5qEQJBweUF3hDazFz">服务类型</label><input type="text" id="cfg-user-svc" value="terminal,ssh,telnet" placeholder="逗号分隔" data-page-node-id="dhjbwRaJ329J7S8LZUNV9G" /></div>
+                      <div class="form-field" data-page-node-id="Mu1daCvBcwHlXMwKRns3Cl"><label data-page-node-id="pzb6SW4PXeNO8yJeVAFI8M">加密存储</label><select id="cfg-user-enc" data-page-node-id="aYN7JWawrmCqRCxgGHtqjX"><option value="false" data-page-node-id="7No16RGha3nsf73yCm9yOV">否</option><option value="true" data-page-node-id="McQu3U5ZBtOpMVMBRmMCac">是</option></select></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="3DMbCGUjnZsG0XmKowaJfc">
+                    <div class="form-section-title" data-page-node-id="UhzXYHeOfv20XQZatRrAQt">NTP 配置</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);" data-page-node-id="MTW28Bukh1pG3DdpmoTxPy">
+                      <div class="form-field" data-page-node-id="QhbKkhTrOUtWD75BEwpazG"><label data-page-node-id="rce2cDq0V1UESk3RgATwWb">启用</label><select id="cfg-ntp-enable" data-page-node-id="FpsKJA2UzjsFbpholTy25W"><option value="false" data-page-node-id="YVJJ9W3OiBxsDSQdE6yYPL">否</option><option value="true" data-page-node-id="NHKqjPgsC0RCW7ptzWvxYy">是</option></select></div>
+                      <div class="form-field" data-page-node-id="LoOlDZl54iWn4FtnMYiQTL"><label data-page-node-id="OQIcoln4IwbCBjbqGiDMK6">服务器 IP</label><input type="text" id="cfg-ntp-ip" placeholder="如 192.168.1.1" data-page-node-id="sB3WpCNSBQWTk3RH9QgFy2" /></div>
+                      <div class="form-field" data-page-node-id="TeQ1zUaX3FrudCFrMC8lhE"><label data-page-node-id="NtNMfZpor7UEfVpNKxhtXM">时区</label><input type="text" id="cfg-ntp-tz" value="UTC+8" data-page-node-id="ndgEvPOJGJshzrJ1INGDYN" /></div>
+                      <div class="form-field" data-page-node-id="5MWYbywEepIlpKhiakqaYN"><label data-page-node-id="4fuEHtXA8J8UgVPwwXeGxi">广播启用</label><select id="cfg-ntp-bcast" data-page-node-id="t9aE8eTQDm0IvyuFtTgKUC"><option value="false" data-page-node-id="4tW1NuLQ6dQsQAHqVW6WAt">否</option><option value="true" data-page-node-id="3BwFJAcv23FI8uHBgfohaG">是</option></select></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="oDFN6U1RxalXAilC3Jk43D">
+                    <div class="form-section-title" data-page-node-id="g7bGJ4R3A2t8b9O2WJ3ua6">SNMP 配置</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);" data-page-node-id="vNZ3dvteF6COyk5s3bGz7a">
+                      <div class="form-field" data-page-node-id="KiipbyceTTx558RF2H5Ts6"><label data-page-node-id="j1CSxo9BW2r4fXmRQ6ZzAD">启用</label><select id="cfg-snmp-enable" data-page-node-id="24tCnt4LVPA9Yz5j1rWo5z"><option value="false" data-page-node-id="qg7WQDjwcDybRozV0ns8lR">否</option><option value="true" data-page-node-id="vN5kozENo6l2vCyFpS0fgF">是</option></select></div>
+                      <div class="form-field" data-page-node-id="kZEagqmVkJYcJATa7lbTyF"><label data-page-node-id="lBX8c2IuXrAmwLBsFR0BD8">版本</label><select id="cfg-snmp-ver" data-page-node-id="Jn04U6uNTKvwxxo3rmlXPC"><option value="v2c" data-page-node-id="Hc8h8LUK84cfNHgYPT7j4E">v2c</option><option value="v3" data-page-node-id="vroX62yu3h3TnxkZQ5Ycbs">v3</option></select></div>
+                      <div class="form-field" data-page-node-id="D0WRurUVNSq0rm6YN96bgJ"><label data-page-node-id="lsz8LY9YJj1muZrDA5ev4n">读团体</label><input type="text" id="cfg-snmp-read" placeholder="public" data-page-node-id="FcCRiCcoVB2lpJjgL4zg24" /></div>
+                      <div class="form-field" data-page-node-id="aIs1dZcSAzSCFsKHvdbBNK"><label data-page-node-id="ddmb5VxKNcHKLKOUvDFcmj">写团体</label><input type="text" id="cfg-snmp-write" placeholder="private" data-page-node-id="mBSrHiNJnNMYnCc5I2OI7a" /></div>
+                    </div>
+                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr); margin-top:8px;" data-page-node-id="ThplHs2o1J2ux0rX9na9wt">
+                      <div class="form-field" data-page-node-id="yANVd68v83GUQRwczjqbKo"><label data-page-node-id="nXuSHtakjMjecjORk2Qtwp">Trap</label><select id="cfg-snmp-trap" data-page-node-id="QAkqAIrk9kAbFoeQKB8Q7C"><option value="false" data-page-node-id="DBUkW2COjqoMQ28hw4SQuE">否</option><option value="true" data-page-node-id="mJmXt3wB3bRvBjS78g9Nca">是</option></select></div>
+                      <div class="form-field" data-page-node-id="xDOAh2yMElIDDbg26h0e8L"><label data-page-node-id="cmLkMjvQsldzeGFNeJUZUD">Trap 主机</label><input type="text" id="cfg-snmp-trap-host" placeholder="192.168.1.100" data-page-node-id="CGoqY83kbdZFzx7Fvd2Jc0" /></div>
+                      <div class="form-field" data-page-node-id="duesYFOXA2bahDcYQyTL6M"><label data-page-node-id="Fc3RmQF6XQhhEVrsHyLJ6T">系统名</label><input type="text" id="cfg-snmp-sysname" data-page-node-id="KMHKvD7LkGtauqa2QBotqG" /></div>
+                      <div class="form-field" data-page-node-id="HWtPQwAAdd6gCK0ToAA1bi"><label data-page-node-id="XDF3wsaW6n0AEfcExxSVxu">位置</label><input type="text" id="cfg-snmp-location" data-page-node-id="8jpc66cYHqLse0Z0hrEfIz" /></div>
+                    </div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); margin-top:8px;" data-page-node-id="PaLkoK2HSEXbYBFsQL9Pfp">
+                      <div class="form-field" data-page-node-id="6LBetsLzOXHxAZzPtKKuud"><label data-page-node-id="EBV4QhqGNtzoFtLQqHxXKf">联系人</label><input type="text" id="cfg-snmp-contact" data-page-node-id="Tcf1O31Fw6QnyE8XLBuxYq" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="ebK2tirD1NH1vcr9WKKT8v">
+                    <div class="form-section-title" data-page-node-id="83j27tDJwuHjTy5mCiynbw">DNS 配置</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);" data-page-node-id="fVOH9O4zeV3laws25gC6s3">
+                      <div class="form-field" data-page-node-id="7BUoNAgsAN6DHq4WK1dP45"><label data-page-node-id="rWJmp3xHtCE4t6l6Ay1XCU">启用</label><select id="cfg-dns-enable" data-page-node-id="BVG63I9kwGVdDI0X5yE3zH"><option value="false" data-page-node-id="sK4O8fcQa7EzzVDtf8MqcT">否</option><option value="true" data-page-node-id="m4AoahkDIHLywtYikfWImv">是</option></select></div>
+                      <div class="form-field" data-page-node-id="49DwhRzTwDvqI7YND7VyBQ"><label data-page-node-id="sEJw2jHsCNGsr4HWFfnXmu">DNS 服务器</label><input type="text" id="cfg-dns-servers" placeholder="8.8.8.8,114.114.114.114" data-page-node-id="jDvfwAEtmqvizM2FvLlT62" /></div>
+                      <div class="form-field" data-page-node-id="G5VPdy6Yx3SKIf6QDWpsXV"><label data-page-node-id="FHOyId7UHFrLOEVbx3yy50">域名</label><input type="text" id="cfg-dns-domain" data-page-node-id="rCSVBnwXkW7OHSN4B5KDNi" /></div>
+                    </div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); margin-top:8px;" data-page-node-id="1De3JcFwbWUXnLBBflxXAH">
+                      <div class="form-field" data-page-node-id="piuERZCwuT3CC2DDv68PmL"><label data-page-node-id="m1ZmFLASSAVA4wKSz1zbNI">启用解析</label><select id="cfg-dns-resolve" data-page-node-id="b0EBFzHdPKczVN9JEW02Db"><option value="false" data-page-node-id="lxxXmPRGkKSXWx49Ip6UQl">否</option><option value="true" data-page-node-id="Xc5hoUCcB0TkaKOM8f5MyE">是</option></select></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="55WXPmUC70s0WbmhhccKRx">
+                    <div class="form-section-title" data-page-node-id="JdmlutyuVXLCB832kyFInb">管理接口</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);" data-page-node-id="prvB5nvwN3kBvW18cMidKn">
+                      <div class="form-field" data-page-node-id="H1XncsQQkqu8OrJha1z9wW"><label data-page-node-id="ac5E1aXPAnM7DtexhfHbZx">启用</label><select id="cfg-mgmt-enable" data-page-node-id="ZgLLQsWwISKLYpow0yJOkk"><option value="false" data-page-node-id="9uJFRlb5vW4DEjcUhsCWzB">否</option><option value="true" data-page-node-id="y3iUIOAICCNI1G4dmTgpXB">是</option></select></div>
+                      <div class="form-field" data-page-node-id="wxGZxrtsKxJ5OAh432BCTc"><label data-page-node-id="17UA7hGOpqgVk7jySrufeU">接口</label><input type="text" id="cfg-mgmt-if" value="Vlanif1" data-page-node-id="fJFI30EDxz08bWFgOdLqm3" /></div>
+                      <div class="form-field" data-page-node-id="FxH4smDSRqB0yvIMepjUqx"><label data-page-node-id="oyBRMnAGUBcMBF41v6tJSD">IP 地址</label><input type="text" id="cfg-mgmt-ip" placeholder="如 192.168.1.100" data-page-node-id="mZUB1mSFxRqqeH34DGWTqk" /></div>
+                      <div class="form-field" data-page-node-id="fEwRSXE0FAxPc5J7oCMBTo"><label data-page-node-id="4XAycorI8tbs8R21xnLSzS">子网掩码</label><input type="text" id="cfg-mgmt-mask" value="255.255.255.0" data-page-node-id="fwtJFf7jUPr6eQgaj5Ox8q" /></div>
+                    </div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr); margin-top:8px;" data-page-node-id="VNv5vokS7gtJSnB1epxv7Q">
+                      <div class="form-field" data-page-node-id="QHXVNWZ8uv4y9enLjYy3Ji"><label data-page-node-id="RqrXWDAexL1tmvG0cuKnL6">网关</label><input type="text" id="cfg-mgmt-gw" data-page-node-id="tDv1H263YU05YrS3zrEN6o" /></div>
+                      <div class="form-field" data-page-node-id="qVaozV7beGX6Uvn9KfBkJW"><label data-page-node-id="8HjFKgWiG3J0IknnsvFzRK">描述</label><input type="text" id="cfg-mgmt-desc" value="Management Interface" data-page-node-id="VIU99zG3esb8SLICBRCLhH" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="yItsvy0JrGm1etuCiPUDOq">
+                    <div class="form-section-title" data-page-node-id="C4Q62HjMF26g4Lm5PGGIzD">Banner</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr);" data-page-node-id="Yygbbbxzr4DYHzCx7Sgsud">
+                      <div class="form-field" data-page-node-id="xb65MTIKlVvKsbBlElXIKh"><label data-page-node-id="9qS6F37i8gBlULEtDKQwZT">MOTD</label><textarea id="cfg-banner-motd" rows="2" placeholder="登录提示信息"></textarea></div>
+                      <div class="form-field" data-page-node-id="NIqf502FypmCIhn9JGNwiW"><label data-page-node-id="GoGcwtJH5lZ1v5z2hmjfjy">Login 提示</label><textarea id="cfg-banner-login" rows="2" placeholder="登录前提示"></textarea></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ===== VLAN ===== -->
+                <div id="cfg-tab-vlan" class="cfg-pane" data-page-node-id="WEOjzHbwAoLMAdD88XB9o8">
+                  <div class="form-section" data-page-node-id="AXO6rpBeacDHzaoweOOqYw">
+                    <div class="form-section-title" data-page-node-id="AJnGjlF4BomwaMPsA2FNRx">VLAN 列表 <button class="btn btn-sm btn-ghost" onclick="App.addVlanRow()" data-page-node-id="cXuzUpLVCyINHJu9jYTOyl">+ 添加</button></div>
+                    <div id="cfg-vlan-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="drbDJNw8LgirFys4KkoYcu">
+                      <div class="array-row" data-page-node-id="LAiVXkzz4o2wDshyklOcJI">
+                        <input type="number" placeholder="VLAN ID" class="cfg-vlan-id" min="1" max="4094" data-page-node-id="BAaP3oveGFKmQd2XYGCHts" />
+                        <input type="text" placeholder="名称" class="cfg-vlan-name" data-page-node-id="53UBeNYGwbysGn0JCzLBNz" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="0Ql28VCOaT7dKsqXc6H1c5">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="nB5emT95ZGNTpoIKaANGQM">
+                    <div class="form-section-title" data-page-node-id="bxBuLCsOPH6DLaaztKz3lK">接口 VLAN 配置 <button class="btn btn-sm btn-ghost" onclick="App.addIfVlanRow()" data-page-node-id="MC8j9f54XAEMQwdEvgqeVc">+ 添加</button></div>
+                    <div id="cfg-ifvlan-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="B8MYI93DMMCzafEjASlqLl">
+                      <div class="array-row" data-page-node-id="Ny6c6TPeRBpdxbsLRkp63B">
+                        <input type="text" placeholder="接口名" class="cfg-ifvlan-if" data-page-node-id="bqC0yUy75Zqe7JDlovPHl6" />
+                        <select class="cfg-ifvlan-type" data-page-node-id="CgzYM5X0gy2r3iqZ0UIcyc"><option value="access" data-page-node-id="udR9vpEjqTmosdeBN4EdAz">access</option><option value="trunk" data-page-node-id="P1bvQro0djpDvtZtg8bIqe">trunk</option><option value="hybrid" data-page-node-id="xoufmAXgMhBhhREyXFGRC4">hybrid</option></select>
+                        <input type="number" placeholder="VLAN ID" class="cfg-ifvlan-vid" data-page-node-id="Pe98GLqu0w9VmTJU6LqKSO" />
+                        <input type="text" placeholder="Trunk VLANs" class="cfg-ifvlan-trunk" data-page-node-id="4pv1NXlHYODKmoWauM1Srh" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="R7rLNBJ1DvYDB5xCYLQSf3">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="dtAri35TzT0EktjZcbELmU">
+                    <div class="form-section-title" data-page-node-id="tUKUXjcSxYjsCdUHCfSyXX">VLANIF 接口 <button class="btn btn-sm btn-ghost" onclick="App.addVlanifRow()" data-page-node-id="p0Oodd8y6QLh9rhFPDqJjk">+ 添加</button></div>
+                    <div id="cfg-vlanif-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="xr6niCfCC4N0Zbv99b4Lxl">
+                      <div class="array-row" data-page-node-id="IhSA7oAqlpAuNXrTvfDWH1">
+                        <input type="number" placeholder="VLAN ID" class="cfg-vlanif-vid" data-page-node-id="D28uK1SOXlBjYWmv0LndjL" />
+                        <input type="text" placeholder="IP 地址" class="cfg-vlanif-ip" data-page-node-id="iXJ9oX3wPNjjYMoObMRnry" />
+                        <input type="text" placeholder="掩码" class="cfg-vlanif-mask" data-page-node-id="TcdQxrHEJSEf9kl9p37u9s" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="37blyW7KmqLd8CF6vHECei">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="skNlI1nCCoSFkUFG64xqoY">
+                    <div class="form-section-title" data-page-node-id="Z9T0plZnoGongEHEryazI2">STP 配置</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);" data-page-node-id="ZafKLFSDQfo8eTF1qkaw0R">
+                      <div class="form-field" data-page-node-id="ndo0hADtgKqmrjhCAZHTpn"><label data-page-node-id="GR15ScTxDf26yFGEZNEaxj">启用</label><select id="cfg-stp-enable" data-page-node-id="VfX0wYIYPm3tz9eAqwO5wY"><option value="false" data-page-node-id="AYp8MHM2U7wivNN1ilBjuD">否</option><option value="true" data-page-node-id="ziuFZVvjE6X9OroCreweo5">是</option></select></div>
+                      <div class="form-field" data-page-node-id="1bOIcxdBez7JJg1ix7n9Oz"><label data-page-node-id="DTssDFT5OvWcmERAcHlB2Q">模式</label><select id="cfg-stp-mode" data-page-node-id="cWkAthWcgoPMevlLg0zEyq"><option value="stp" data-page-node-id="Ss8ifNL5xaFHZsb7GwwWsY">STP</option><option value="rstp" data-page-node-id="f8gbOqm9BJQlMMR79zFn4i">RSTP</option><option value="mstp" data-page-node-id="FVjY1bgkaV8QNQ6Ar9lrHK">MSTP</option></select></div>
+                      <div class="form-field" data-page-node-id="QJxPWgUdYfXJwOxFIm66CN"><label data-page-node-id="GGmOgk1uXd7Ua4e44vxwFG">优先级</label><input type="number" id="cfg-stp-priority" value="32768" data-page-node-id="AkhPrwlctIo8EPBpHR4sQK" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="Y5dm0dNhlashG7ufSUEcAm">
+                    <div class="form-section-title" data-page-node-id="yGAQU4gJdBbd6HnfvJDBXR">Voice VLAN <button class="btn btn-sm btn-ghost" onclick="App.addVoiceVlanRow()" data-page-node-id="1GGT1wXrnr9fnd8RN4Ce95">+ 添加</button></div>
+                    <div id="cfg-voicevlan-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="lRNhjty8DIWLaKZpxLOqOH">
+                      <div class="array-row" data-page-node-id="G7y2kMQD9NHbpSQKhD3him">
+                        <input type="text" placeholder="接口" class="cfg-voice-if" data-page-node-id="mZBry6eGjyQfo4nL7Q1KF7" />
+                        <input type="number" placeholder="VLAN ID" class="cfg-voice-vid" data-page-node-id="y2BFTncBBFyTuBUfNUwvKG" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="DPSDdPlspRjZG9i8xQzLbH">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ===== 路由 ===== -->
+                <div id="cfg-tab-routing" class="cfg-pane" data-page-node-id="UAWNRpsDy4b7WxR9i1ZjjT">
+                  <div class="form-section" data-page-node-id="AoZFlz7FfbP3a3NsUn4TFu">
+                    <div class="form-section-title" data-page-node-id="aCSYUkZi0PwE0EG6Y0XNvk">静态路由 <button class="btn btn-sm btn-ghost" onclick="App.addStaticRouteRow()" data-page-node-id="CM0tX9QuVB654Qh9saJQA4">+ 添加</button></div>
+                    <div id="cfg-static-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="BIPjlaTomMJVT6ALhGEfF4">
+                      <div class="array-row" data-page-node-id="c9hYbFTdDylmaxdablIc1h">
+                        <input type="text" placeholder="目标网段" class="cfg-route-dest" data-page-node-id="NM8JvAjmipE0kDHt21Fwoz" />
+                        <input type="text" placeholder="掩码" class="cfg-route-mask" data-page-node-id="1KZNiKg67hKD5mRTl7iKHf" />
+                        <input type="text" placeholder="下一跳" class="cfg-route-nh" data-page-node-id="HXThhEChjR5ASEugTw4m3G" />
+                        <input type="number" placeholder="优先级" class="cfg-route-pref" data-page-node-id="o7o9KoABvGYcBm8VoBAsg7" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="trLMSV6cBKSuvBY09Wkc7n">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="iDW6ZubOpxHlAx7DJfGOcA">
+                    <div class="form-section-title" data-page-node-id="P48UdZPEPjDilthyF9KxEG">默认路由</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr);" data-page-node-id="SNjloaKM7eDkeuhjnk8XfN">
+                      <div class="form-field" data-page-node-id="nxu6BhA4hAQGXQMZUaSYVR"><label data-page-node-id="cu5FEoqf6heZBj4llYYdPo">下一跳</label><input type="text" id="cfg-defroute-nh" data-page-node-id="U461x9rtBAXFkRTxqsNSfw" /></div>
+                      <div class="form-field" data-page-node-id="BE9DOyWiKC7AY4slGyNNpr"><label data-page-node-id="izsqHLdw5hNObOwzUg0jCa">出接口</label><input type="text" id="cfg-defroute-if" data-page-node-id="Mq7aMssPyQNKCIPlgeBaJR" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="1pbV9tbULhKsX1GK9KuxcR">
+                    <div class="form-section-title" data-page-node-id="5yczKdSEFVIICcWYFbOIA0">OSPF 配置</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);" data-page-node-id="AUvKqf1XRmoY9SI5a95H69">
+                      <div class="form-field" data-page-node-id="kwQUpiJmnHbIaAZu5K06oA"><label data-page-node-id="yRXGZCyryDRyCiu6olunRC">进程 ID</label><input type="number" id="cfg-ospf-pid" value="1" data-page-node-id="mmyAjpvTjP2yodYTFTKh2I" /></div>
+                      <div class="form-field" data-page-node-id="pAnljqfADyYBpeFIDA7UrW"><label data-page-node-id="FMVof5twH4MY9xxCY1b1F1">Router ID</label><input type="text" id="cfg-ospf-rid" data-page-node-id="XcPmmJnBbpHCvAt34mmA5D" /></div>
+                      <div class="form-field" data-page-node-id="yzFX1JeajsyHq9xzCEqWyJ"><label data-page-node-id="I6msQkJphdzSStaXmc0858">Area</label><input type="text" id="cfg-ospf-area" value="0" data-page-node-id="57gEP6sQLenHHvi4HsmJnr" /></div>
+                    </div>
+                    <div class="form-section-subtitle" data-page-node-id="0aSMYBHvAFUYEOV9PSd2Rq">OSPF 网络</div>
+                    <div id="cfg-ospf-net-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="fZcFWEGxnUOChzxA8nLy7l">
+                      <div class="array-row" data-page-node-id="LDu3HrUqrjPXFDEBh7Gn2X">
+                        <input type="text" placeholder="网段" class="cfg-ospf-net-addr" data-page-node-id="SBAXhr4Py1QayvOGQLj2Qr" />
+                        <input type="text" placeholder="反掩码" class="cfg-ospf-net-mask" value="0.0.0.255" data-page-node-id="emtvImzSOFEjM9aN0GAP78" />
+                        <input type="text" placeholder="Area" class="cfg-ospf-net-area" value="0" data-page-node-id="aAfx8lnzEGwhP7GXT8k8vi" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="Gd2UlMAsTDxUqQP9BkijNW">✕</button>
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-ghost" onclick="App.addOspfNetRow()" data-page-node-id="g9FlLYnnFmPuwTyNdccPWk">+ 添加网络</button>
+                  </div>
+                  <div class="form-section" data-page-node-id="bGKKUnCstVHQzRZO7H1DYd">
+                    <div class="form-section-title" data-page-node-id="WKuWGis9ZiyPUk0Ul1IMCG">BGP 配置</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr);" data-page-node-id="oaE6iKIKuYdnvjL4Y6TYhg">
+                      <div class="form-field" data-page-node-id="VSCfbzKH5ydwSeYXbFbBOH"><label data-page-node-id="0O5tKOdSjWG9931hxhUfXg">AS 号</label><input type="number" id="cfg-bgp-as" data-page-node-id="dPkl46hvwMcYDYXXTYCShE" /></div>
+                      <div class="form-field" data-page-node-id="ivgX3me2SfdTA1QqafwfGt"><label data-page-node-id="2CMWJpqqexSXjiYjIM2m9b">Router ID</label><input type="text" id="cfg-bgp-rid" data-page-node-id="KahzOGDGcqFEYw2lsEwXNO" /></div>
+                    </div>
+                    <div class="form-section-subtitle" data-page-node-id="DFusASChhLsZOPume2dtGR">BGP 邻居</div>
+                    <div id="cfg-bgp-peer-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="Mq6vNF2ATLaPb97q3A2yHP">
+                      <div class="array-row" data-page-node-id="l6drzqWFRS6RzYAEpgNHmU">
+                        <input type="text" placeholder="IP" class="cfg-bgp-peer-ip" data-page-node-id="2tYfzWUIkCSNLIgf427rAX" />
+                        <input type="number" placeholder="AS 号" class="cfg-bgp-peer-as" data-page-node-id="yMRplia1SaWsefm2X0FHUx" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="SysaECQFMsAjEmKqGTpxDq">✕</button>
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-ghost" onclick="App.addBgpPeerRow()" data-page-node-id="QAncNWsRQqOOchbgp9X7PF">+ 添加邻居</button>
+                  </div>
+                  <div class="form-section" data-page-node-id="rKRcUC01ooIZLa7znExrfH">
+                    <div class="form-section-title" data-page-node-id="ftARuWUyfCKmNLmYRIRdPR">RIP 配置</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr);" data-page-node-id="9bsmqHM8atQmpVQLsNKsUk">
+                      <div class="form-field" data-page-node-id="sq9pimVpVkISgm0rYTHW8G"><label data-page-node-id="KqdI3Q9DHPKuOoB4jdNbe8">版本</label><select id="cfg-rip-ver" data-page-node-id="3llLesCNzlVxNgUyxlvelk"><option value="1" data-page-node-id="GICKAXaWdlPGssSD53FhuK">v1</option><option value="2" data-page-node-id="dHF8Uk1yRatYkYBmFlgxE2">v2</option></select></div>
+                      <div class="form-field" data-page-node-id="KuX6FZilxKkkaEGLtvGiHl"><label data-page-node-id="nk1TF0CyujI5cAjYcRhLCS">网络</label><input type="text" id="cfg-rip-nets" placeholder="192.168.1.0,10.0.0.0" data-page-node-id="CuIYmh3rq8CnsGOr37Bn0K" /></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ===== 安全 ===== -->
+                <div id="cfg-tab-security" class="cfg-pane" data-page-node-id="41LZUEO9YqJ7kwEuGh4j4G">
+                  <div class="form-section" data-page-node-id="yzBOj7FBvCEQl7JJTKsRJP">
+                    <div class="form-section-title" data-page-node-id="NmqBazgH1s40uqDWXuPTJX">ACL 配置 <button class="btn btn-sm btn-ghost" onclick="App.addAclRow()" data-page-node-id="s6fGjkfP8OhV2WBU3gIAsH">+ 添加</button></div>
+                    <div id="cfg-acl-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="NBZyPCoMnltDqHKjRqhVr6">
+                      <div class="array-row" style="flex-direction:column;align-items:stretch;gap:6px;padding:10px;border:1px solid var(--border);border-radius:6px;" data-page-node-id="iKQD0caZjUL9xsVbwmsdxT">
+                        <div class="form-grid" style="grid-template-columns: repeat(3,1fr);" data-page-node-id="I4Fu6TGSEWe0yFrXULfGk1">
+                          <div class="form-field" data-page-node-id="ZL5lSk3EAY3n8Nbjwv1Ox4"><label data-page-node-id="M7iotGrU2E17k42UQiVKWf">ACL 编号</label><input type="number" class="cfg-acl-num" placeholder="2000-5999" data-page-node-id="fR9XJHwrCs9wKpBJjVjOdG" /></div>
+                          <div class="form-field" data-page-node-id="yvEvaWVIdARSqbVFhF2E0h"><label data-page-node-id="9v8RTlL0SGlyTqNRKDnpEB">描述</label><input type="text" class="cfg-acl-desc" data-page-node-id="BAdArMF3F48eybgghEGnOa" /></div>
+                          <div class="form-field" data-page-node-id="1CfUuQVqhrAABy33Gz7OkH"><label data-page-node-id="eFHBlia06Xhk6RMyIlUEzd"></label><button class="btn btn-sm btn-ghost" style="color:#dc2626;align-self:flex-end;" onclick="this.closest('.array-row').remove()" data-page-node-id="AAp27r4XzX2FqZhT2Dng8n">删除 ACL</button></div>
+                        </div>
+                        <div class="form-section-subtitle" data-page-node-id="GKUmf76m0fJ9Af3YvyHMzL">规则</div>
+                        <div class="cfg-acl-rules" style="display:flex;flex-direction:column;gap:6px;" data-page-node-id="bDjtphCSY1urew90v6rIkR">
+                          <div class="array-row" data-page-node-id="rDisHFg3WbwPWiRZKUQEFq">
+                            <input type="number" placeholder="规则ID" class="cfg-acl-rule-id" style="width:80px;" data-page-node-id="F4Z56cDFxEBok0yljGZWVI" />
+                            <select class="cfg-acl-rule-act" data-page-node-id="ULBR2PVw65RC9x4s7hvPEN"><option value="permit" data-page-node-id="ze2MpstB1BIo8MBXBDhNmH">permit</option><option value="deny" data-page-node-id="9bUiiTOCZOh5WdVDn3QmAH">deny</option></select>
+                            <select class="cfg-acl-rule-proto" data-page-node-id="4jRHJVZTLNItyPJdeiMNIb"><option value="ip" data-page-node-id="rMNG5tSWemjBvG1ED9pR8t">ip</option><option value="tcp" data-page-node-id="O5yugxWmtQ7TNCF0uYaIeq">tcp</option><option value="udp" data-page-node-id="mKO4ZGBboijjQM6mH1IuqF">udp</option><option value="icmp" data-page-node-id="FXDlpmEErvEnDZMT1gzuaP">icmp</option></select>
+                            <input type="text" placeholder="源" class="cfg-acl-rule-src" value="any" data-page-node-id="UPaNyqouTw0eJ9KaZYfdOC" />
+                            <input type="text" placeholder="目的" class="cfg-acl-rule-dst" value="any" data-page-node-id="JuNFHVzPgtfMFemv4dlxVD" />
+                            <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="4CXb06Eb0jPamQVpXVPW1F">✕</button>
+                          </div>
+                        </div>
+                        <button class="btn btn-sm btn-ghost" onclick="App.addAclRule(this)" data-page-node-id="olAiNjEOOsqCWGXOqguQjo">+ 添加规则</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="gtvj3eBGYL0J9Bibpyhhfo">
+                    <div class="form-section-title" data-page-node-id="DelBQvLcgSt2IHZWvfOayQ">端口安全 <button class="btn btn-sm btn-ghost" onclick="App.addPortSecRow()" data-page-node-id="CPyqrXo2l5QFROF9AhXcRW">+ 添加</button></div>
+                    <div id="cfg-portsec-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="njWyhurx4DZyIDGBWxgyiw">
+                      <div class="array-row" data-page-node-id="IXUwITY5tcElxiKKdQP4Mq">
+                        <input type="text" placeholder="接口" class="cfg-ps-if" data-page-node-id="mTm0mNlydLM8txzwRFg73h" />
+                        <input type="number" placeholder="最大 MAC" class="cfg-ps-max" value="1" data-page-node-id="SjAS4TkeE04Dac3nfgpyxA" />
+                        <select class="cfg-ps-act" data-page-node-id="cjQCDSGbiN3XzpNmWgSw7q"><option value="protect" data-page-node-id="IhrKcoPPaumVphIo3Kyu0h">protect</option><option value="restrict" data-page-node-id="xfsagTV0XRPqd5CjGitiHA">restrict</option><option value="shutdown" data-page-node-id="SIIxuC5ff5tWIxLZyyuYxd">shutdown</option></select>
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="Oqx890rq4LGQmMQQqskV7b">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="RA8JXG25yL4HL70F7RbNGk">
+                    <div class="form-section-title" data-page-node-id="t9pOnHMABnfUYWwS5HnaNY">DHCP Snooping</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr);" data-page-node-id="BBznOdoVhFQjD246CktLqv">
+                      <div class="form-field" data-page-node-id="Uu8PZgeQMKriQWmLEdWsd5"><label data-page-node-id="KepjmBRQtfscDl5TVJ21pU">启用</label><select id="cfg-dhcp-snoop" data-page-node-id="CEzjhgmzSKda1yxm5ZLLJd"><option value="false" data-page-node-id="zq3Gv2m9gXXmcYbya95qol">否</option><option value="true" data-page-node-id="0nVgNNmC900MJwPFcpluqq">是</option></select></div>
+                      <div class="form-field" data-page-node-id="o7fKIfvY0YEiT5DDb8EHXv"><label data-page-node-id="FzBsq0HA1uDdrt5sia4aKE">VLAN</label><input type="text" id="cfg-dhcp-snoop-vlans" placeholder="1,10,20" data-page-node-id="4uAt44KiB5Ec90dqroBhYd" /></div>
+                      <div class="form-field" style="grid-column:1/-1;" data-page-node-id="pmJVVIitOmEgZPftGF4Nf4"><label data-page-node-id="WgDAGUw80C9Dt3qLtBBShN">信任端口</label><input type="text" id="cfg-dhcp-snoop-trust" placeholder="GigabitEthernet0/0/1,GigabitEthernet0/0/2" data-page-node-id="xM5NhlfzH3Ab14zSYbnipd" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="bzkQ5KFfeNNjYQyANAz6Lv">
+                    <div class="form-section-title" data-page-node-id="kFt6qtYve24Vlny6dnC3Ra">ARP 防护</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr);" data-page-node-id="5JEb8UpZYGuLIWUMhHTaoc">
+                      <div class="form-field" data-page-node-id="Z4RlrIFVTGEaVg56MEFSmr"><label data-page-node-id="Og8gmF9dLrNBCzVGPgEYZ4">防护 VLAN</label><input type="text" id="cfg-arp-vlans" placeholder="1,10,20" data-page-node-id="3V72LnUtbPHMD0XHpe5tnp" /></div>
+                      <div class="form-field" data-page-node-id="8ix4m51saV34Lyil7yrOiB"><label data-page-node-id="dM17KQ5UhdH9OVZ5NJ1YCE">信任端口</label><input type="text" id="cfg-arp-trust" placeholder="接口名,逗号分隔" data-page-node-id="KiaGAUhGrLlDVv5IwyHPXi" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="npJ432pv0BzrixSWbNSFzX">
+                    <div class="form-section-title" data-page-node-id="fZkwLGJbTXWjvpwuKu5FBm">风暴控制 <button class="btn btn-sm btn-ghost" onclick="App.addStormRow()" data-page-node-id="nZHRhaAkZJRbOWlbOAubjO">+ 添加</button></div>
+                    <div id="cfg-storm-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="EIltNJGP1PSzZNnLc09btt">
+                      <div class="array-row" data-page-node-id="ZhnUZOSjPwpeN6ZMKJiwJd">
+                        <input type="text" placeholder="接口" class="cfg-storm-if" data-page-node-id="TVl8PpHTntpHWEIqEhfa4K" />
+                        <input type="number" placeholder="广播" class="cfg-storm-bcast" data-page-node-id="tYnxB5M0a08VqSMYYBOlCF" />
+                        <input type="number" placeholder="组播" class="cfg-storm-mcast" data-page-node-id="57XP2ZAvPbTftAD1hwVojy" />
+                        <input type="number" placeholder="单播" class="cfg-storm-ucast" data-page-node-id="ZYQnTjnGkC5A4SIY3p7sJR" />
+                        <select class="cfg-storm-act" data-page-node-id="DsvxFbkHfPLyJF9by28RoS"><option value="block" data-page-node-id="GbhorW1OAmmlx5LzvJIAN3">block</option><option value="shutdown" data-page-node-id="cfXXSfUlkioUao3PBNNsME">shutdown</option></select>
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="4akGnkM6aFVLlmu805fMG0">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="BEQvDb0XP3jTg4YmkcP3EP">
+                    <div class="form-section-title" data-page-node-id="BpXHi0huKEPwCjNRzqua41">Radius 服务器 <button class="btn btn-sm btn-ghost" onclick="App.addRadiusRow()" data-page-node-id="CbxAHBn3HFRyaLLm6cV8el">+ 添加</button></div>
+                    <div id="cfg-radius-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="58NEVeDb4Q6muP58rn21Nd">
+                      <div class="array-row" data-page-node-id="2EmLMa7FkQGucYdKs8rVY4">
+                        <input type="text" placeholder="名称" class="cfg-rad-name" data-page-node-id="u55SrpEDnDnlIUuFD4dMET" />
+                        <input type="text" placeholder="IP" class="cfg-rad-ip" data-page-node-id="uhUChLoFzZ7LmN3Axpi0KY" />
+                        <input type="text" placeholder="共享密钥" class="cfg-rad-key" data-page-node-id="5pQc4JWdndjCHmEx9OzDFe" />
+                        <input type="number" placeholder="认证端口" class="cfg-rad-auth" value="1812" data-page-node-id="UybFF5n7EFDB06xVfBn8Mt" />
+                        <input type="number" placeholder="计费端口" class="cfg-rad-acct" value="1813" data-page-node-id="k2UXYi98V9DjhPjA6gWKZK" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="QegiRuenzk3ppBYPwqoAAn">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="XuykI3Gn7rKZSYHDqGkpWb">
+                    <div class="form-section-title" data-page-node-id="TrWzjofuGIQC9ZQbMtsmlO">802.1X 全局</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);" data-page-node-id="5EsVv9xKxi7kV0SFsPDyUx">
+                      <div class="form-field" data-page-node-id="e48iXJwULBj9dM7ElhNAWE"><label data-page-node-id="ARiFzoH6tNB4wq7QkbKY3x">启用</label><select id="cfg-dot1x-enable" data-page-node-id="xPfBGxbY3sZF3h1sbDRFY9"><option value="false" data-page-node-id="MFF3Oqpq1ShyunmfKLBrGM">否</option><option value="true" data-page-node-id="mkuUYdVUd7B45syBrpZlXT">是</option></select></div>
+                      <div class="form-field" data-page-node-id="PWaF8wP9zmcIhcQs3ePutR"><label data-page-node-id="uHCAV17gxZkNIhcDWQ6q7z">认证方式</label><select id="cfg-dot1x-method" data-page-node-id="LMLc2kVm3lG0kHXn5cdWET"><option value="chap" data-page-node-id="s16vUm7ByzA8BS4vW8FmTt">chap</option><option value="pap" data-page-node-id="WFBFxpAe8nNoo8KqDpa8kO">pap</option><option value="eap" data-page-node-id="FEJeUpW32CqfZLGieHSLaJ">eap</option></select></div>
+                      <div class="form-field" data-page-node-id="Txdbsy43z3irGkuSKDBeMS"><label data-page-node-id="Tlj2LCnGWqINWN4CMSTDFL">重认证周期</label><input type="number" id="cfg-dot1x-reauth" value="3600" data-page-node-id="HiyHZDENA1fHrbEDHLflPP" /></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- ===== 接口 ===== -->
+                <div id="cfg-tab-interface" class="cfg-pane" data-page-node-id="7uiBHzkbURBI4H1UcRUL6K">
+                  <div class="form-section" data-page-node-id="UKeSKqFR9Lov79F6JsvOyD">
+                    <div class="form-section-title" data-page-node-id="f3DC7ySKg4t2F0HsEGuARO">Eth-Trunk <button class="btn btn-sm btn-ghost" onclick="App.addEthTrunkRow()" data-page-node-id="L9BZq3FzCTQbtFYaOGozT1">+ 添加</button></div>
+                    <div id="cfg-trunk-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="HoZ8olnCzCAyD1LDI8d59d">
+                      <div class="array-row" style="flex-wrap:wrap;gap:6px;" data-page-node-id="lz5tOezmMyn6qwIDJ7F5Zw">
+                        <input type="number" placeholder="Trunk ID" class="cfg-trunk-id" style="width:90px;" data-page-node-id="b2RorXLzBNiuRMn6QW4Izf" />
+                        <select class="cfg-trunk-mode" data-page-node-id="Cph1eFCagRvyaUwS3GayqP"><option value="lacp-static" data-page-node-id="adKITIWx5P3eIImxMkM4Ga">lacp-static</option><option value="lacp-dynamic" data-page-node-id="2ipOzpanGlCICD1H9dol9G">lacp-dynamic</option><option value="manual" data-page-node-id="oVKeWOge8yfQQclbeyyvBY">manual</option></select>
+                        <input type="text" placeholder="成员端口(逗号分隔)" class="cfg-trunk-members" style="min-width:200px;" data-page-node-id="kCYVEe6z65sdeEqcrHjxQg" />
+                        <input type="text" placeholder="描述" class="cfg-trunk-desc" style="min-width:150px;" data-page-node-id="L9LwnfcgRCzYHItE3tITtR" />
+                        <select class="cfg-trunk-linktype" data-page-node-id="tWqDBfPUBFaMVbvJwdqqej"><option value="trunk" data-page-node-id="2oANaL9HbxN16FVhm8OmZv">trunk</option><option value="access" data-page-node-id="Xd3wzrx7eOH0H7U7nVCQ8e">access</option></select>
+                        <input type="text" placeholder="Trunk VLANs (如 10,20,30)" class="cfg-trunk-vlans" style="min-width:180px;" data-page-node-id="4pKAmRI4OpxYQhxq7FPx8D" />
+                        <input type="number" placeholder="Native VLAN" class="cfg-trunk-native" style="width:120px;" data-page-node-id="IrxHqypyXXBx6GM9GbwR2F" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="17wvsaA1yKkYdy2AMGAORT">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="Thhs00dEHlLMokhD8S79cD">
+                    <div class="form-section-title" data-page-node-id="NDrML6jCr8unB8iNNlmRUr">LACP</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);" data-page-node-id="lwG12ivLbXpAeCNbH2wakU">
+                      <div class="form-field" data-page-node-id="EFD0oyUZkwIeCXwYMbmVmW"><label data-page-node-id="FxYcH99BqpZfJ05wHv5tVG">启用</label><select id="cfg-lacp-enable" data-page-node-id="BrhEYxkBlV0zBSX03XpKVv"><option value="false" data-page-node-id="R37YX7SdZtiLCByITZd7rV">否</option><option value="true" data-page-node-id="rgWntCcEGpEuHrVX1GQHdf">是</option></select></div>
+                      <div class="form-field" data-page-node-id="SOc3fdG2VGtoFAPSAmSm5q"><label data-page-node-id="GiyU01VqADgTgRYfQTxGnR">优先级</label><input type="number" id="cfg-lacp-pri" value="32768" data-page-node-id="Q5OmZhDAQ36tOmLsYkIo9b" /></div>
+                      <div class="form-field" data-page-node-id="LVWjnCU5mf5iWMr4LFcmRP"><label data-page-node-id="yCjoCb5lhRRMgl6vKhCo4Z">快速切换</label><select id="cfg-lacp-fast" data-page-node-id="NP6EOmHW2bd2t4vCMg9XfR"><option value="false" data-page-node-id="ldBZS1EEsjBFpFKILGcqPL">否</option><option value="true" data-page-node-id="WFDCg6dpsQL3h4WEvTC06P">是</option></select></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="UwXBmmFov2MoG1XybFYTtt">
+                    <div class="form-section-title" data-page-node-id="7snLYEOwGwh8VHNvhHSh6l">LLDP</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);" data-page-node-id="GxTZHjYveQLArw7sPfebSp">
+                      <div class="form-field" data-page-node-id="4bUGE2CQkCGrHBU1LvkJGs"><label data-page-node-id="roTAMo5chZm4GMeY0oeoGE">启用</label><select id="cfg-lldp-enable" data-page-node-id="UeUkupjeIDxTA5pJhilzYD"><option value="false" data-page-node-id="3g4E5oX87B12PciOQcFlZe">否</option><option value="true" data-page-node-id="XwOUAC17t2oWxxjiwcqn5i">是</option></select></div>
+                      <div class="form-field" data-page-node-id="wE8rDqlzAWhAfkfFXiOaF3"><label data-page-node-id="5hc0A2TcpQjxrMvg1DXKU1">模式</label><select id="cfg-lldp-mode" data-page-node-id="YKlxcPbGDPUvZt8IOkEFkG"><option value="both" data-page-node-id="Tq1E5k0KPEGBv4cFQA27pR">both</option><option value="tx" data-page-node-id="gLpJEiNJ9RC8TImAevQssI">tx</option><option value="rx" data-page-node-id="MjlDs7DjJLFaf2W18e8uQG">rx</option></select></div>
+                      <div class="form-field" data-page-node-id="OTFroyPKndxILBb9xMMlCf"><label data-page-node-id="qM8uQI734cHXi992A44Nxc">发送间隔(秒)</label><input type="number" id="cfg-lldp-int" value="30" data-page-node-id="NX3bHumnWVmkGgjvYhdDMA" /></div>
+                      <div class="form-field" data-page-node-id="izIElXFcYSCqzjtUiPNs6e"><label data-page-node-id="ciouP1WS77MTCUNoteTiTa">存活时间(秒)</label><input type="number" id="cfg-lldp-hold" value="120" data-page-node-id="fvk3Zm8r6XglUCEpiZvCtZ" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="B2k20zqOPA2URG7xu8qCHK">
+                    <div class="form-section-title" data-page-node-id="pbEuv6GwV3M9u5isSBzj3Z">PoE</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(2, 1fr);" data-page-node-id="D8T96JjIHOIoG6Kb8me1EH">
+                      <div class="form-field" data-page-node-id="FzRiYQ21Y9IGuRJjH5x2Ja"><label data-page-node-id="2hpD1y5TSapZwrSrBdznZS">启用</label><select id="cfg-poe-enable" data-page-node-id="KrDFztFMwY81zMzntxBFhI"><option value="false" data-page-node-id="6a2J1tWecuM3VnOOlDsXfq">否</option><option value="true" data-page-node-id="tWdVGA9FPcTvsOMoDk9Rhk">是</option></select></div>
+                      <div class="form-field" data-page-node-id="ZqeXD01jaGKDKKlXG48HFh"><label data-page-node-id="CyC8l4OlhaH3DA8PLUPHTc">最大功率</label><input type="number" id="cfg-poe-max" value="74000" data-page-node-id="X3bLkz71WJR63Gvf48xaKO" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="WA61msNgi4XQcTC5FQDh4y">
+                    <div class="form-section-title" data-page-node-id="RehtH9GVapxT8OrMi4HZc4">端口隔离</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(3, 1fr);" data-page-node-id="WLYcwHW4F3Tdb4bcoJstjm">
+                      <div class="form-field" data-page-node-id="dYHxq5vQzK0BFjGQMnwBBt"><label data-page-node-id="LSVSilaWE3FkVRdHjGjIH5">启用</label><select id="cfg-isolate-enable" data-page-node-id="gvjnG8pcna6pvNz9Q48yPS"><option value="false" data-page-node-id="n5SEk57UzUApdHft8PPVPL">否</option><option value="true" data-page-node-id="2kd7DdxVPvQ2edvjmaafxK">是</option></select></div>
+                      <div class="form-field" data-page-node-id="fZ8O4CRQp8tDpm7Ycsu8JF"><label data-page-node-id="4XeiswYoBkfnMhQdeSAVdF">组 ID</label><input type="number" id="cfg-isolate-gid" value="1" data-page-node-id="Z7imxAXSM4RP7ezrqVyJSM" /></div>
+                      <div class="form-field" data-page-node-id="ljwdmSH9B92tygrTfGo4r1"><label data-page-node-id="uHP19GvncxGWG7owvGGvLf">接口列表</label><input type="text" id="cfg-isolate-ifs" placeholder="GigabitEthernet0/0/1,GE0/0/2" data-page-node-id="QqEjxjAxtCn8dfri7DjndS" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="JzEKrkYmKsFhnIHABwQvjo">
+                    <div class="form-section-title" data-page-node-id="Plz82cSF66GRZnbCFwZADl">环路检测</div>
+                    <div class="form-grid" style="grid-template-columns: repeat(4, 1fr);" data-page-node-id="0ejlKE2fuVOdgbyGh68ZsN">
+                      <div class="form-field" data-page-node-id="fzilx1qcwDzwSaPAWUw4PH"><label data-page-node-id="aH03p5eEpOf2oCxqyypF2K">启用</label><select id="cfg-loop-enable" data-page-node-id="qYVVOthdzT0pcUWK990wZ5"><option value="false" data-page-node-id="VHzugMZvCLRgRg55x0e6fa">否</option><option value="true" data-page-node-id="H1BC7Gy4J8FhmUCaVVV6Bp">是</option></select></div>
+                      <div class="form-field" data-page-node-id="0IwosabU5GcUH5yPbBkXUA"><label data-page-node-id="8FoBm8izHUrgk2IgteCeRd">间隔(秒)</label><input type="number" id="cfg-loop-int" value="5" data-page-node-id="x8Bupbz1ATGGKfZ0qoPNEv" /></div>
+                      <div class="form-field" data-page-node-id="hSAjZLCDgxR0yda96A7eHC"><label data-page-node-id="FH6snY6tTo0mY2mEZDAOkh">动作</label><select id="cfg-loop-act" data-page-node-id="m1DVFOFoIPvqyJSOAIcC7w"><option value="block" data-page-node-id="hcocHnfpd8J0gSuAAYSBpQ">block</option><option value="none" data-page-node-id="ERjLmqtCGW6Rf8wmlXe65a">none</option><option value="shutdown" data-page-node-id="LIQEMbvTI2RWpBv5OsZzgO">shutdown</option></select></div>
+                      <div class="form-field" data-page-node-id="ViOFcITsgP4HiSZHULHZvR"><label data-page-node-id="FCtDktppmKJlzlyzIfVsBC">检测 VLAN</label><input type="text" id="cfg-loop-vlans" placeholder="如 1,10,20" data-page-node-id="rroKkyrFlRvugQkEMt26IN" /></div>
+                    </div>
+                  </div>
+                  <div class="form-section" data-page-node-id="kib24c3vk3Rjujf6YCv3ND">
+                    <div class="form-section-title" data-page-node-id="oimY4CChCVvpbTiB6JALjm">速率限制 <button class="btn btn-sm btn-ghost" onclick="App.addRateLimitRow()" data-page-node-id="2RnmX4HmGcRrMb9ihaDXTn">+ 添加</button></div>
+                    <div id="cfg-rate-list" style="display:flex;flex-direction:column;gap:8px;" data-page-node-id="2azmgGoJG3mudKdkCIDALO">
+                      <div class="array-row" data-page-node-id="whJQT1cxyPFbwlUadTUSbH">
+                        <input type="text" placeholder="接口" class="cfg-rate-if" data-page-node-id="IqchZx1lMTHiSBBfE3zjAT" />
+                        <input type="number" placeholder="CIR 入(Kbps)" class="cfg-rate-in" data-page-node-id="F7db8JHDlnHJHE3dSDnSdb" />
+                        <input type="number" placeholder="CIR 出(Kbps)" class="cfg-rate-out" data-page-node-id="164R6Gn8qAlu07umrkXDRm" />
+                        <button class="btn btn-sm btn-ghost" style="color:#dc2626;" onclick="this.parentElement.remove()" data-page-node-id="IRBxAaMiNdpyFpdRbEkH7P">✕</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-footer" style="margin:16px -14px -12px;padding:12px 14px;border-top:1px solid var(--border);background:#f8fafc;" data-page-node-id="NBa3p5kaPsOQnzJAoa93NP">
+                  <button class="btn btn-primary" id="btn-generate" data-page-node-id="QWCuRK6fO6bNe60Iub9ilE">⚡ 生成配置</button>
+                  <button class="btn" id="btn-validate" data-page-node-id="tLFgXAb748ZxJc1oK7LKIA">✓ 校验</button>
+                  <button class="btn" id="btn-export" data-page-node-id="4nOdSFGKqLdtQAQNBEBZc6">⬇ 导出</button>
+                  <button class="btn btn-ghost" id="btn-load-template" data-page-node-id="l7rA0VfH9nJBl0nA2BOUVb">载入示例</button>
+                  <select id="config-vendor-quick" class="select-sm" data-page-node-id="RnnhLh64aC0QO0Lp5Q1vo4">
+                    <option value="huawei" data-page-node-id="otzIEkKi909DJnWPF0x0Ia">华为示例</option>
+                    <option value="h3c" data-page-node-id="V98n1UgSBKlrf8iIlAYQ3m">H3C 示例</option>
+                  </select>
+                  <span class="hint" id="config-hint" data-page-node-id="BbMVgzTxVsrCN8x2y7gXwz"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="position:sticky;top:14px;align-self:start;" data-page-node-id="7f33uZbH9rJYRz9cIS2q0W">
+              <div class="card-header" data-page-node-id="VMRAEf9DE2z6SMRIBJeMKy">
+                <h3 data-page-node-id="FqgqBRjyk4QTpADAsUR34n">配置预览</h3>
+                <div class="card-actions" data-page-node-id="etESAaxFhycJfvBo0imUCP">
+                  <button class="btn btn-sm btn-ghost" id="btn-copy-config" data-page-node-id="UeKqyvjmDoSbRwqOd8drNB">复制</button>
+                </div>
+              </div>
+              <div class="card-body" style="padding:12px;" data-page-node-id="p5Z8bB87cPNhyHWl0AG0ut">
+                <pre class="output-area" id="config-output" style="min-height:400px;max-height:70vh;" data-page-node-id="amkWLuxWaP9v4hZPujwg4y">点击「生成配置」查看结果...</pre>
+              </div>
+              <div class="card-footer" id="config-meta" style="display:none;" data-page-node-id="Ne8nmcMhqmpRSMWhaOqgqN">
+                <span class="badge badge-info" id="meta-vendor" data-page-node-id="FF66Pjms8gLmUvjSh3DOCl"></span>
+                <span class="badge badge-info" id="meta-hostname" data-page-node-id="UmTLtbLfYXVEiEIGoG7ZyP"></span>
+                <span class="badge badge-success" id="meta-lines" data-page-node-id="zmCGZUCdCOrGDmzGfamPsS"></span>
+              </div>
+              <!-- 推送配置 -->
+              <div id="push-section" style="border-top:1px solid var(--border);padding:12px 14px;display:none;" data-page-node-id="UBbSTpC0mYyK8b6fX2XZDV">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;" data-page-node-id="U7OFMCN0iee78dlZsLMpGY">
+                  <strong data-page-node-id="NMQnhRVzuz7CqdE2ykJYUp">🚀 推送到设备</strong>
+                  <span class="hint" id="push-vendor-hint" style="margin-left:auto;" data-page-node-id="0TE9HTVSCqjtrjoq3vYflq"></span>
+                </div>
+                <div class="form-row" style="gap:8px;align-items:center;" data-page-node-id="XlyTJYKTGOtRTVLAMg3GYN">
+                  <select id="push-target-device" class="select-sm" style="flex:1;min-width:0;" data-page-node-id="prAnDbui0wBPuk8vHf2QjB">
+                    <option value="" data-page-node-id="etzCU4VNZCgp4C7nkRZH8W">选择目标设备…</option>
+                  </select>
+                  <button class="btn btn-primary btn-sm" id="btn-push-from-preview" data-page-node-id="FYkZl2tSnFDaj9UthfqzYo">推送</button>
+                  <button class="btn btn-sm btn-ghost" id="btn-refresh-push-devices" title="刷新设备列表" data-page-node-id="y44Suu4qjJzJvhCPW6RJNE">↻</button>
+                </div>
+                <div id="push-preview-result" style="margin-top:10px;" data-page-node-id="moaxDHviWCcvdEyAZ5EE4t"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 设备管理 ============ -->
+        <section id="page-devices" class="page" data-page-node-id="SaR24GazW09MMrNcSqgREW">
+          <div class="card" data-page-node-id="LavzMYfezrDbA0g3YacAZv">
+            <div class="card-header" data-page-node-id="Yv81yC1Ji2G70zCGxc0Xlq">
+              <h3 data-page-node-id="jQuSfZblLsjW8Nk1PfUY8K">设备列表</h3>
+              <div class="card-actions" data-page-node-id="auSwInZW2HHHa9udHU5NMZ">
+                <button class="btn btn-primary btn-sm" id="btn-add-device" data-page-node-id="OCRudlvoqTzlIvXOpcnrT5">+ 添加设备</button>
+                <button class="btn btn-sm" id="btn-test-all">⚡ 批量测试</button>
+                <button class="btn btn-sm" id="btn-backup-all" data-page-node-id="bKAlL0001">📦 批量备份</button>
+                <button class="btn btn-sm" id="btn-refresh-devices" data-page-node-id="j3Uca2nBHiobQuINFoHEhf">刷新</button>
+              </div>
+            </div>
+            <div class="card-body" data-page-node-id="18BhNUUBBfSK8TqYznD6gM">
+              <table class="data-table" id="device-table" data-page-node-id="4EJ4N6y9E4YNNBBLEPw3RC">
+                <thead data-page-node-id="0aNBbAc4qKgGeHmLP9f26U">
+                  <tr data-page-node-id="GUEkoSqEss9HG9QGEnyLrJ">
+                    <th data-page-node-id="HIYLr4Bsgcno6egOKBHAzs">名称</th><th data-page-node-id="JZfuFYbySgGP0BHKfsjYBo">厂商</th><th data-page-node-id="EiMUamscZJrdDcZ1dosSVl">类型</th><th data-page-node-id="wYFaK06ateFtNmR8j55rjA">连接</th><th data-page-node-id="v50CtJiAy3ac1CTKU3GYBQ">地址</th>
+                    <th data-page-node-id="H35tOsIMMHQy2NIzbcEDFw">端口</th><th data-page-node-id="E0eNwBV0HCMoMx54MN9IqH">位置</th><th data-page-node-id="ZYIo43O2NjFn9dyJrPZpb5">创建时间</th><th data-page-node-id="AocLedbcJOTFLL9MVFVism">状态</th><th data-page-node-id="AocLedbcJOTFLL9MVFVisn">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="device-tbody" data-page-node-id="7Mykmz2D6LvDbJA9LX3ZXt"></tbody>
+              </table>
+              <div id="device-empty" class="empty-state" data-page-node-id="9FpYsy4CT33RHlfxuli3K0">暂无设备，点击「添加设备」开始</div>
+            </div>
+          </div>
+
+          <!-- 推送日志面板 -->
+          <div class="card" id="push-panel" style="display:none;" data-page-node-id="4iNPPh6ICOWsROs469yZoc">
+            <div class="card-header" data-page-node-id="gDLwJ8GDOpDFo9jlEOEfIT">
+              <h3 data-page-node-id="tGEWAZK1FxH3cAtmI2LEZ4">配置推送 — 命令级回滚</h3>
+              <div class="card-actions" data-page-node-id="EL0HBSwXVnr3GGEMWDvYrI">
+                <button class="btn btn-sm" id="btn-close-push" data-page-node-id="bTfWy7QzJOMyV2ATHSFV1K">关闭</button>
+              </div>
+            </div>
+            <div class="card-body" data-page-node-id="55gJqayLuL0j4IrOubgYcZ">
+              <div class="push-info" id="push-info" data-page-node-id="L3WComoYWXCmvENPolEU15"></div>
+              <pre class="log-area" id="push-log" data-page-node-id="E4pqT7rCo2KaFPbNVgz3O0">等待推送...</pre>
+            </div>
+          </div>
+
+          <!-- 配置备份面板 -->
+          <div class="card" id="backup-panel" style="display:none;" data-page-node-id="mHlC49xpZmyV751W0hV7xh">
+            <div class="card-header" data-page-node-id="wxA05GWEcPN4y5QagPswtX">
+              <h3 data-page-node-id="gScoLNcwLbusA7xFMYCoCE">配置备份历史 — <span id="backup-device-name" data-page-node-id="244H69pkkRsV7QYJPJiFNG"></span></h3>
+              <div class="card-actions" data-page-node-id="btDfxdXYTWX3JAEuJEbbFm">
+                <button class="btn btn-sm" id="btn-backup-now" data-page-node-id="CyWYcRQ29HH0CDqdJpiFRE">📦 立即备份</button>
+                <button class="btn btn-sm" id="btn-refresh-backups" data-page-node-id="CpZ70Quv7tdF6jnVCncCs9">刷新</button>
+                <button class="btn btn-sm" id="btn-close-backup" data-page-node-id="S2II3ahxv6iY8SzFPlyEp4">关闭</button>
+              </div>
+            </div>
+            <div class="card-body" data-page-node-id="nqDdUHiA6fpb96CcMMZK1E">
+              <div class="push-info" id="backup-info" style="display:none;" data-page-node-id="l76eKC9zjqnkVEfLzul3g4"></div>
+              <div class="table-wrap" style="margin-top:10px;" data-page-node-id="WRLrnBrGn66a5PZ3G7n4j9">
+                <table class="data-table" id="backup-table" data-page-node-id="gb5ZOzCWl5hX7d7mUpCFxs">
+                  <thead data-page-node-id="0dkvxLfa27BS3ACaIcBqGD">
+                    <tr data-page-node-id="4F3KC93DmfvrV9JD40Stc0">
+                      <th data-page-node-id="Fk1pZGwh1Aw3KeWBERmhh0">版本</th><th data-page-node-id="JA9PMIXl9hXKevf8UTH9nO">时间</th><th data-page-node-id="p9HBsma8tEPitRczGNRk5D">大小</th><th data-page-node-id="DVfNEXCkmBsPNkhpfCYVeY">行数</th><th>文件</th><th data-page-node-id="7kt9jUQ6G6xkj8LUaUoRDa">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody id="backup-tbody" data-page-node-id="pJ5bmHBRTPy9EMAFOE1VA2"></tbody>
+                </table>
+                <div id="backup-empty" class="empty-state" style="display:none;" data-page-node-id="xz6mWLotzUl96BAKisopKB">暂无备份记录，点击「立即备份」获取设备当前配置</div>
+              </div>
+            </div>
+          </div>
+          <!-- 批量备份结果 -->
+          <div class="card" id="batch-backup-panel" style="display:none;">
+            <div class="card-header">
+              <h3>批量备份结果</h3>
+              <div class="card-actions">
+                <button class="btn btn-sm" id="btn-close-batch-backup">关闭</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="batch-backup-summary"></div>
+              <div id="batch-backup-list" class="batch-backup-list"></div>
+            </div>
+          </div>
+
+          <!-- 备份文件服务 (TFTP/FTP) -->
+          <div class="card" style="margin-top:16px;">
+            <div class="card-header">
+              <h3>📁 备份文件服务 — TFTP / FTP</h3>
+              <div class="card-actions">
+                <span id="fileserver-status" class="badge badge-info">未启动</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+                <span class="hint">备份根目录: <code id="fileserver-root">-</code></span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                <strong style="min-width:64px;">TFTP</strong>
+                <span id="tftp-state" class="badge" style="background:#94a3b8;color:#fff;">停止</span>
+                <input type="number" id="tftp-port" value="69" style="width:80px;" title="端口" />
+                <button class="btn btn-sm btn-primary" id="btn-tftp-start">启动</button>
+                <button class="btn btn-sm" id="btn-tftp-stop">停止</button>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;">
+                <strong style="min-width:64px;">FTP</strong>
+                <span id="ftp-state" class="badge" style="background:#94a3b8;color:#fff;">停止</span>
+                <input type="number" id="ftp-port" value="21" style="width:80px;" title="端口" />
+                <button class="btn btn-sm btn-primary" id="btn-ftp-start">启动</button>
+                <button class="btn btn-sm" id="btn-ftp-stop">停止</button>
+              </div>
+              <div class="hint" style="margin-top:12px;line-height:1.8;">
+                启动后在设备上直接传输备份文件（把下方 IP 换成本机地址）：<br />
+                <b>TFTP 拉取配置</b>（华为/H3C）— 直接用文件名即可，服务端会自动在设备子目录中查找：
+                <code>tftp &lt;本机IP&gt; get SW1_20260914_213000.cfg flash:/SW1.cfg</code><br />
+                也可带设备目录：<code>tftp &lt;本机IP&gt; get SW1/SW1_20260914_213000.cfg flash:/SW1.cfg</code><br />
+                <b>TFTP 上传配置</b>（自动保存到 uploads/ 目录）：
+                <code>tftp &lt;本机IP&gt; put flash:/vrpcfg.zip SW1_vrpcfg.zip</code><br />
+                <b>FTP 拉取配置</b>：
+                <code>ftp &lt;本机IP&gt;</code> → 匿名登录（anonymous）或 <code>netops / netops</code>（可读写）→ <code>cd SW1</code> → <code>get SW1_20260914_213000.cfg</code><br />
+                <b>注意</b>：只能下载服务端已存在的备份文件（不能 get 设备上的文件名）；本机若运行了 Tftpd64 等其他 TFTP 程序会抢占端口导致启动失败
+              </div>
+              <div id="tftp-log" class="tftp-log" style="margin-top:10px; display:none;"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 拓扑图 ============ -->
+        <section id="page-topology" class="page">
+          <div class="topo-toolbar">
+            <select id="topo-select" title="选择拓扑图"></select>
+            <button class="btn btn-sm" id="btn-topo-new">＋ 新建</button>
+            <button class="btn btn-sm" id="btn-topo-rename">改 名</button>
+            <button class="btn btn-sm" id="btn-topo-delete">删 除</button>
+            <button class="btn btn-sm btn-primary" id="btn-topo-adddev">＋ 新建设备</button>
+            <button class="btn btn-sm" id="btn-topo-addlink">🔗 添加链路</button>
+            <span class="topo-sep"></span>
+            <button class="btn btn-sm" id="btn-topo-undo" disabled title="撤销上一步（Ctrl+Z）">↶ 撤销</button>
+            <button class="btn btn-sm" id="btn-topo-redo" disabled title="重做（Ctrl+Y / Ctrl+Shift+Z）">↷ 重做</button>
+            <button class="btn btn-sm" id="btn-topo-layout">⬇ 自动布局</button>
+            <button class="btn btn-sm" id="btn-topo-align-left" disabled title="框选设备后左对齐">⇤ 左对齐</button>
+            <button class="btn btn-sm" id="btn-topo-align-right" disabled title="框选设备后右对齐">右对齐 ⇥</button>
+            <button class="btn btn-sm" id="btn-topo-align-top" disabled title="框选设备后顶对齐">⇈ 上对齐</button>
+            <button class="btn btn-sm" id="btn-topo-align-bottom" disabled title="框选设备后底对齐">⇊ 下对齐</button>
+            <button class="btn btn-sm" id="btn-topo-autofill">🔗 按链路生成端口</button>
+            <button class="btn btn-sm" id="btn-topo-check">🩺 拓扑体检</button>
+            <span class="topo-sep"></span>
+            <button class="btn btn-sm btn-primary" id="btn-topo-generate">⚙️ 整图生成</button>
+            <button class="btn btn-sm" id="btn-topo-export">📦 导出 ZIP</button>
+            <button class="btn btn-sm" id="btn-topo-png">📷 导出 PNG</button>
+            <button class="btn btn-sm" id="btn-topo-push">🚀 整图下发</button>
+            <span class="topo-hint" id="topo-status"></span>
+          </div>
+
+          <div class="topo-body">
+            <aside class="topo-palette">
+              <div class="topo-panel-title">设备（点击编辑属性）</div>
+              <div id="topo-dev-list" style="margin-bottom:14px;"></div>
+              <div class="topo-panel-title">链路</div>
+              <div id="topo-link-list"></div>
+              <div class="topo-tip" style="margin-top:12px;">画布操作：拖动设备调整位置<br />滚轮缩放 · 空白处拖动平移<br />Delete 键删除选中项</div>
+            </aside>
+
+            <div class="topo-divider" id="topo-div-left" title="拖动调节宽度"></div>
+
+            <div class="topo-canvas-wrap">
+              <div id="topo-canvas"></div>
+              <div class="topo-empty" id="topo-empty">请先选择或新建一张拓扑图</div>
+            </div>
+
+            <div class="topo-divider" id="topo-div-right" title="拖动调节宽度"></div>
+
+            <aside class="topo-props">
+              <div class="topo-panel-title" id="topo-props-title">设备属性</div>
+              <div class="topo-tip" id="topo-props-empty">在画布中选中一个设备节点，在此编辑属性</div>
+
+              <div id="topo-props-form" style="display:none">
+                <div class="topo-group">
+                  <div class="topo-group-title">基础信息</div>
+                  <div class="topo-field"><label>节点名称</label><input type="text" id="topo-f-name" placeholder="SW-Acc-01" /></div>
+                  <div class="topo-field"><label>设备厂家</label>
+                    <select id="topo-f-vendor">
+                      <option value="huawei">华为 Huawei</option>
+                      <option value="h3c">H3C</option>
+                      <option value="ruijie">锐捷 Ruijie</option>
+                      <option value="maipu">迈普 Maipu</option>
+                    </select>
+                  </div>
+                  <div class="topo-field"><label>设备类型</label>
+                    <select id="topo-f-type">
+                      <option value="switch">交换机</option>
+                      <option value="router">路由器</option>
+                      <option value="ap">无线 AP</option>
+                      <option value="ac">无线 AC</option>
+                      <option value="wan">外网 WAN</option>
+                      <option value="pc">PC 终端</option>
+                      <option value="ipc">摄像头 IPC</option>
+                      <option value="custom">自定义</option>
+                    </select>
+                  </div>
+                  <div class="topo-field" id="topo-f-clabel-row" style="display:none"><label>自定义类型标签</label><input type="text" id="topo-f-clabel" placeholder="如 FW、服务器（≤6 字）" maxlength="6" /></div>
+                  <div class="topo-field"><label>主机名</label><input type="text" id="topo-f-hostname" placeholder="留空则用节点名" /></div>
+                </div>
+
+                <div class="topo-group">
+                  <div class="topo-group-title">管理连接</div>
+                  <div class="topo-field"><label>管理 IP</label><input type="text" id="topo-f-mgmt-ip" placeholder="192.168.1.10" /></div>
+                  <div class="topo-field"><label>掩码</label><input type="text" id="topo-f-mgmt-mask" placeholder="255.255.255.0" /></div>
+                  <div class="topo-field"><label>网关</label><input type="text" id="topo-f-mgmt-gw" placeholder="192.168.1.1" /></div>
+                  <div class="topo-field"><label>管理接口</label><input type="text" id="topo-f-mgmt-itf" placeholder="Vlanif1" /></div>
+                  <div class="topo-field"><label>连接方式</label>
+                    <select id="topo-f-conn">
+                      <option value="telnet">Telnet</option>
+                      <option value="ssh">SSH</option>
+                    </select>
+                  </div>
+                  <div class="topo-field"><label>端口</label><input type="number" id="topo-f-conn-port" value="23" min="1" max="65535" /></div>
+                  <div class="topo-field"><label>用户名</label><input type="text" id="topo-f-user" placeholder="admin" /></div>
+                  <div class="topo-field"><label>密码</label><input type="password" id="topo-f-pass" placeholder="留空表示免登录" /></div>
+                </div>
+
+                <div class="topo-group">
+                  <div class="topo-group-title">端口与 VLAN</div>
+                  <div class="topo-field"><label>端口数量</label><input type="number" id="topo-f-portcount" value="24" min="1" max="96" /></div>
+                  <div class="topo-field"><label>起始编号</label><input type="number" id="topo-f-portstart" value="1" min="1" max="96" /></div>
+                  <div class="topo-field"><label>默认 VLAN</label><input type="number" id="topo-f-portvlan" value="1" min="1" max="4094" /></div>
+                  <button class="btn btn-sm" id="btn-topo-gen-ports" style="width:100%">生成端口列表（access 加入默认 VLAN）</button>
+                  <div class="topo-field topo-field-col"><label>VLAN 列表（每行 <code>id,名称</code>）</label>
+                    <textarea id="topo-f-vlans" class="code-area small" spellcheck="false" placeholder="1,Default&#10;10,Mgmt&#10;20,Data"></textarea>
+                  </div>
+                  <div class="topo-field topo-field-col"><label>接口配置（每行 <code>端口,access:VLAN</code> 或 <code>端口,trunk:VLAN列表</code>）</label>
+                    <textarea id="topo-f-itfs" class="code-area small" spellcheck="false" placeholder="GigabitEthernet0/0/1,access:10&#10;GigabitEthernet0/0/24,trunk:1,10,20"></textarea>
+                  </div>
+                </div>
+
+                <div class="topo-group">
+                  <div class="topo-group-title">DHCP / DNS / 其他</div>
+                  <div class="topo-field"><label>DHCP</label>
+                    <select id="topo-f-dhcp"><option value="false">否</option><option value="true">是</option></select>
+                  </div>
+                  <div class="topo-field"><label>DNS</label><input type="text" id="topo-f-dns" placeholder="114.114.114.114,8.8.8.8" /></div>
+                  <div class="topo-field"><label>NTP</label>
+                    <select id="topo-f-ntp"><option value="false">否</option><option value="true">是</option></select>
+                  </div>
+                  <div class="topo-field"><label>NTP 服务器</label><input type="text" id="topo-f-ntp-server" placeholder="192.168.1.1" /></div>
+                  <div class="topo-field"><label>SNMP</label>
+                    <select id="topo-f-snmp"><option value="false">否</option><option value="true">是</option></select>
+                  </div>
+                  <div class="topo-field"><label>只读团体名</label><input type="text" id="topo-f-snmp-ro" placeholder="public" /></div>
+                </div>
+
+                <div class="topo-group">
+                  <div class="topo-group-title">受管设备绑定</div>
+                  <div class="topo-field topo-field-col">
+                    <label>绑定设备（备份 / 下发用）</label>
+                    <select id="topo-f-device"><option value="">不绑定</option></select>
+                  </div>
+                </div>
+
+                <div class="topo-actions">
+                  <button class="btn btn-sm btn-primary" id="btn-topo-save-node">💾 保存属性</button>
+                  <button class="btn btn-sm" id="btn-topo-gen-node">⚙️ 生成配置</button>
+                  <button class="btn btn-sm" id="btn-topo-download-node">📥 下载 .cfg</button>
+                  <button class="btn btn-sm" id="btn-topo-push-node">🚀 下发</button>
+                  <button class="btn btn-sm" id="btn-topo-del-node" style="color:#dc2626">🗑 删除节点</button>
+                </div>
+              </div>
+
+              <div id="topo-link-form" style="display:none">
+                <div class="topo-group">
+                  <div class="topo-group-title">链路属性</div>
+                  <div class="topo-field topo-field-col">
+                    <label>连接</label>
+                    <div id="topo-l-path" class="topo-hint"></div>
+                  </div>
+                  <div class="topo-field"><label>源端口</label><input type="text" id="topo-l-srcport" placeholder="自动分配" /></div>
+                  <div class="topo-field"><label>目的端口</label><input type="text" id="topo-l-dstport" placeholder="自动分配" /></div>
+                  <div class="topo-field"><label>链路类型</label>
+                    <select id="topo-l-type"><option value="trunk">trunk</option><option value="access">access</option></select>
+                  </div>
+                  <div class="topo-field topo-field-col"><label>描述</label><input type="text" id="topo-l-desc" placeholder="核心 ←→ 接入" /></div>
+                </div>
+                <div class="topo-actions">
+                  <button class="btn btn-sm btn-primary" id="btn-topo-save-link">💾 保存链路</button>
+                  <button class="btn btn-sm" id="btn-topo-del-link" style="color:#dc2626">🗑 删除链路</button>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <!-- ============ 网络工具箱 ============ -->
+        <section id="page-tools" class="page" data-page-node-id="5wYuqfQG1v0uGxmYws7C7G">
+          <div class="tabs" id="tool-tabs" data-page-node-id="AMA4SQwdkSi4Mk87c5Bbfy">
+            <button class="tab active" data-tool="subnet" data-page-node-id="QgcHzj7k8iqFnewCilVLja">子网计算</button>
+            <button class="tab" data-tool="ping" data-page-node-id="ZmeWQPQSSfDvBDcy7uZmGk">Ping</button>
+            <button class="tab" data-tool="port" data-page-node-id="6wk2bimHj7ogqFnSIG4av9">端口扫描</button>
+            <button class="tab" data-tool="trace" data-page-node-id="kEO3OCDJsLVc6LF2hqE7QZ">路由跟踪</button>
+            <button class="tab" data-tool="dns" data-page-node-id="WBcyID70yMOmkAryo7OR7C">DNS / Whois</button>
+            <button class="tab" data-tool="netinfo" data-page-node-id="bgx03cEoWGzNUl1jj041Cb">网络信息</button>
+            <button class="tab" data-tool="compare" data-page-node-id="9L1oFIeRWGe9B7hbGoGdn9">配置对比</button>
+            <button class="tab" data-tool="convert" data-page-node-id="Lng06hWStmK1lXeFOevpTy">命令转换</button>
+          </div>
+
+          <!-- 子网计算 -->
+          <div class="tool-pane active" data-tool="subnet" data-page-node-id="hBXWB0k0WqFDIuoB1RD2Ss">
+            <div class="card" data-page-node-id="aZWFNS4t9pOxc79KBljWyX">
+              <div class="card-header" data-page-node-id="Q22fwKgki7SEVgduoyG0HT"><h3 data-page-node-id="5q9uyYZTpO72DCBu0eh3Rm">子网计算器</h3></div>
+              <div class="card-body" data-page-node-id="6LPkhQlMEgowVG6C3QXoRA">
+                <div class="form-row" data-page-node-id="stpTlljFZ2utGSjMMEizX0">
+                  <label data-page-node-id="HmBppspelFn8324yoHw0sY">IP 地址</label>
+                  <input type="text" id="subnet-ip" value="192.168.1.100" data-page-node-id="VYDkJeRAp6YANSC0EHF1xF" />
+                  <label data-page-node-id="N7Rkak9xHDvs3QvA2Oc7ki">掩码</label>
+                  <input type="text" id="subnet-mask" value="24" placeholder="24 或 255.255.255.0" data-page-node-id="jswpg3eeLgOVswTA6UCNT8" />
+                  <button class="btn btn-primary" id="btn-subnet-calc" data-page-node-id="ch5mcBuSwIXeTxdBSHjzdY">计算</button>
+                </div>
+                <pre class="output-area" id="subnet-output" data-page-node-id="c5DSv2GMAXXrC58r6bZmdA"></pre>
+              </div>
+            </div>
+            <div class="card" data-page-node-id="qZsRWoiNXoFLJHOBjAxG9I">
+              <div class="card-header" data-page-node-id="bOyjEfVfRzmTXhA1SiChR4"><h3 data-page-node-id="2HFRF81XeS1MJqCF0EYu3j">子网划分</h3></div>
+              <div class="card-body" data-page-node-id="zI1c47FmYSaVXEf5lNvgnz">
+                <div class="form-row" data-page-node-id="tAwCXeZYWbVyuaoSSVzCcp">
+                  <label data-page-node-id="aS8eUFGI5yrHQbp6oa0DA1">网段</label>
+                  <input type="text" id="divide-ip" value="192.168.1.0" data-page-node-id="9rg4ke2TSnRkyroi2hwXKs" />
+                  <label data-page-node-id="a2LlqTNGLBKAwhGjD9MxKa">当前前缀</label>
+                  <input type="number" id="divide-prefix" value="24" data-page-node-id="xqQjOFZAD57IADlUBvpfHW" />
+                  <label data-page-node-id="lT4UMu7Jv6bwgB50KePHbp">目标前缀</label>
+                  <input type="number" id="divide-new" value="26" data-page-node-id="tIDGjiFNTKgXlFwwSNkyZC" />
+                  <button class="btn btn-primary" id="btn-subnet-divide" data-page-node-id="IZqzBfAlzOmj9scB6jK0ID">划分</button>
+                </div>
+                <pre class="output-area" id="divide-output" data-page-node-id="rJOzhM840YFIPUzlTDkfDm"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ping -->
+          <div class="tool-pane" data-tool="ping" data-page-node-id="koaRsmk8lmxBoZwc9dhu1j">
+            <div class="card" data-page-node-id="JfXqLBKB0dMxIGB0CycCRc">
+              <div class="card-header" data-page-node-id="5ZGvAyJNTWZIujYboooIXS"><h3 data-page-node-id="MxXAzHHFISCHUFQUCkRrKJ">单主机 Ping</h3></div>
+              <div class="card-body" data-page-node-id="siZVf6OIELtDDDV1XXJloy">
+                <div class="form-row" data-page-node-id="WW0VbXE6UgtYH0sV8bJN5U">
+                  <label data-page-node-id="d5SX5imZAVst8KqNlsWzQj">目标</label>
+                  <input type="text" id="ping-host" value="8.8.8.8" data-page-node-id="uFGFgMxQH35qiBT7VVGy9v" />
+                  <label data-page-node-id="eTpJEGg67czG0S3Jx6j8LS">次数</label>
+                  <input type="number" id="ping-count" value="4" data-page-node-id="hbwUACFBReR4hvFVZkqNCK" />
+                  <label data-page-node-id="gNBzkYPDCh8l7oJhvtIuH7">超时(秒)</label>
+                  <input type="number" id="ping-timeout" value="2" data-page-node-id="Pipbr7MSUFg8Db5HhESdmG" />
+                  <button class="btn btn-primary" id="btn-ping" data-page-node-id="iC1c9LsG1CdpClbZhLsB5F">Ping</button>
+                </div>
+                <pre class="output-area" id="ping-output" data-page-node-id="1EIGTroNZ3JNO9UOavrXWI"></pre>
+              </div>
+            </div>
+            <div class="card" data-page-node-id="7sN5lMY8Cd0urQiZTQXn5y">
+              <div class="card-header" data-page-node-id="R2cUN95ihV5PfSC6HqstgB"><h3 data-page-node-id="ZCVzVR1g30d520W8wD27rO">Ping 扫描网段</h3></div>
+              <div class="card-body" data-page-node-id="1xXM7ghQguEHygoZ9sCnqF">
+                <div class="form-row" data-page-node-id="kcG5czbuVOTlU1SkkaMebt">
+                  <label data-page-node-id="8AAU5saDpCHwgtvsFQUXLn">网段</label>
+                  <input type="text" id="scan-net" value="192.168.1.0/24" data-page-node-id="F2bXtPqP5HD1LUpPiG2ijp" />
+                  <label data-page-node-id="62lmTzWOeY0PnnNknKhMG3">超时(秒)</label>
+                  <input type="number" id="scan-timeout" value="1" data-page-node-id="vefddIE5JZmHFGmqhXpeuU" />
+                  <button class="btn btn-primary" id="btn-ping-scan" data-page-node-id="b31KFBGtZJ5yGNTwe1EW5a">扫描</button>
+                </div>
+                <pre class="output-area" id="scan-output" data-page-node-id="GMMc24xap3OTESJDhdWKzQ"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- 端口扫描 -->
+          <div class="tool-pane" data-tool="port" data-page-node-id="5ROZ0Pk5wgRaAxJldcD7ik">
+            <div class="card" data-page-node-id="LSA3jLVL40CZY3itcLXSrA">
+              <div class="card-header" data-page-node-id="sEIn4iI92JH3f7ZK3o39bA"><h3 data-page-node-id="5JG98Inm7AdgzAksQ71ffu">端口扫描（范围）</h3></div>
+              <div class="card-body" data-page-node-id="aqB9X9mAJgulJxu7QMGDSW">
+                <div class="form-row" data-page-node-id="v7MhE629W8WwOyNYNxXzmN">
+                  <label data-page-node-id="RCKBTwz8pJyrOZlxEAMydJ">目标</label>
+                  <input type="text" id="port-host" value="127.0.0.1" data-page-node-id="8eym8c0Men4myJwqEooQiB" />
+                  <label data-page-node-id="4D2uFGuZdBfrOnoQx5YaER">起始端口</label>
+                  <input type="number" id="port-start" value="1" data-page-node-id="lci0Uoh8DGm7BHgkYEfs4n" />
+                  <label data-page-node-id="eHoBlCCBfYjxzaDZXft6Ze">结束端口</label>
+                  <input type="number" id="port-end" value="1024" data-page-node-id="yNEr1O3LvKGv2G8nvovcwK" />
+                  <button class="btn btn-primary" id="btn-port-scan" data-page-node-id="dEmHhCC0AYtDxCCQlvhuCU">扫描</button>
+                </div>
+                <pre class="output-area" id="port-output" data-page-node-id="OuG8Mpq0hU5FLdTMPuFpm2"></pre>
+              </div>
+            </div>
+            <div class="card" data-page-node-id="RVUweOUpbgE02Nsjc0Zd1P">
+              <div class="card-header" data-page-node-id="YUzXwca95DbH1yJhJfNUDp"><h3 data-page-node-id="C7uK07yFmqQX0OzA93QMj2">快速端口测试</h3></div>
+              <div class="card-body" data-page-node-id="XN6lqaIyzcz04SPIUM30jR">
+                <div class="form-row" data-page-node-id="wAVJ0QhJLoVGCJ8UU3b7BY">
+                  <label data-page-node-id="fPx8oTisHlM6vqFk1Lgv1z">目标</label>
+                  <input type="text" id="ptest-host" value="127.0.0.1" data-page-node-id="qS5lYvYhBB4lesUo2TTKab" />
+                  <label data-page-node-id="FCkzflbdXgykSoRRomnJJe">端口</label>
+                  <input type="number" id="ptest-port" value="22" data-page-node-id="NgEpc4NCOGNCxiBR2ZZFC4" />
+                  <button class="btn btn-primary" id="btn-port-test" data-page-node-id="99ejRVoDTKsKwiHG4rNIrP">测试</button>
+                </div>
+                <pre class="output-area" id="ptest-output" data-page-node-id="UdQGGV98GpW9q3uDHa1UO7"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- 路由跟踪 -->
+          <div class="tool-pane" data-tool="trace" data-page-node-id="i9D2yyaaufbDc6wJsmYPPH">
+            <div class="card" data-page-node-id="n14bPLSyOqchNywHwFYCrK">
+              <div class="card-header" data-page-node-id="Ve3MvLqivQEVcfCdDEY30E"><h3 data-page-node-id="vK1l9vD6RGJ18UGhZGeKdj">路由跟踪 Traceroute</h3></div>
+              <div class="card-body" data-page-node-id="TNcMYfxRHVHlDDBnmECBSN">
+                <div class="form-row" data-page-node-id="ezBds7eAIgpBFC5ClS4ivW">
+                  <label data-page-node-id="p289666KE0DnGGvF5p7RQC">目标</label>
+                  <input type="text" id="trace-host" value="8.8.8.8" data-page-node-id="BEvvohPM5Utb1ABUWpLtkp" />
+                  <label data-page-node-id="WUYDcATo4A0sgWPBmkeOSC">最大跳数</label>
+                  <input type="number" id="trace-hops" value="15" data-page-node-id="1DzOs6xy0kBTOrZeD5GXnS" />
+                  <button class="btn btn-primary" id="btn-trace" data-page-node-id="jPOomTmQkhnwzMLXekniYm">跟踪</button>
+                </div>
+                <pre class="output-area" id="trace-output" data-page-node-id="nPZBd7KL2zJmjEGo5KUzC2"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- DNS -->
+          <div class="tool-pane" data-tool="dns" data-page-node-id="lavvk8XpXviDM9TruTaix6">
+            <div class="card" data-page-node-id="CTqm5c2BYbZA3rVH35UriB">
+              <div class="card-header" data-page-node-id="p6VIdW6LTjI2INKwCUUyxI"><h3 data-page-node-id="HQBrFZmZytSNPUiL5v3PNg">DNS 查询</h3></div>
+              <div class="card-body" data-page-node-id="jQMMIbZGcbaihnUkEC7Dz9">
+                <div class="form-row" data-page-node-id="WCKHNUmAgKvi8j9HBs3r2K">
+                  <label data-page-node-id="LionLIUeLip4eRVykVo3As">域名</label>
+                  <input type="text" id="dns-domain" value="www.baidu.com" data-page-node-id="nfk3U1H9PqkglMG0hxE2QD" />
+                  <label data-page-node-id="1FAggJASSFES4aRsOx15ln">记录类型</label>
+                  <input type="text" id="dns-type" value="A" data-page-node-id="pLMkgG2acG8pCQoRuL8u0b" />
+                  <button class="btn btn-primary" id="btn-dns" data-page-node-id="Zr7wwWFLZugXSHeRtrbZBp">查询</button>
+                </div>
+                <pre class="output-area" id="dns-output" data-page-node-id="7b1qKpo3nlNikGcO1AnMjj"></pre>
+              </div>
+            </div>
+            <div class="card" data-page-node-id="f6Ty1VO8pMfMJc1qavJtQ3">
+              <div class="card-header" data-page-node-id="eD19ri9vtOmK0JKMM28yQR"><h3 data-page-node-id="YfqKZYDQgMZANkyHAvNk63">反向 DNS</h3></div>
+              <div class="card-body" data-page-node-id="tQZ3PMvwYNXbgGFoAetVAx">
+                <div class="form-row" data-page-node-id="rAQNc9Vpy0JcaoJmMhDDmt">
+                  <label data-page-node-id="UO8ztl81I0cCrZc8mkak5x">IP</label>
+                  <input type="text" id="rdns-ip" value="8.8.8.8" data-page-node-id="ecO2xt8eg2XVieH8mxLTNm" />
+                  <button class="btn btn-primary" id="btn-rdns" data-page-node-id="TRI03RbYjA0uueZxdKAfcR">查询</button>
+                </div>
+                <pre class="output-area" id="rdns-output" data-page-node-id="YIByc3NkGzPuhQuy0OXvzY"></pre>
+              </div>
+            </div>
+            <div class="card" data-page-node-id="PEex0fZjECuaJY3SRN8RZA">
+              <div class="card-header" data-page-node-id="KOjKsnywBlAyvE35HnDu78"><h3 data-page-node-id="tPtJESVAD5RYSfDhIpVTd4">Whois 查询</h3></div>
+              <div class="card-body" data-page-node-id="k5VACAe9YSXAxNxiLdQknp">
+                <div class="form-row" data-page-node-id="PXLFwE3UIzFpMnqivLVTDB">
+                  <label data-page-node-id="ictddjVl3TfekQI7fGdze9">域名</label>
+                  <input type="text" id="whois-domain" value="baidu.com" data-page-node-id="Grfu0co5kA2rzibpMCchWZ" />
+                  <button class="btn btn-primary" id="btn-whois" data-page-node-id="uzMEEhh8XMh2ZIzVnnOzcf">查询</button>
+                </div>
+                <pre class="output-area" id="whois-output" data-page-node-id="68tOtS6tZLrBF7oAZYHSox"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- 网络信息 -->
+          <div class="tool-pane" data-tool="netinfo" data-page-node-id="SPrWqUFcbIL2IWBgHJKR5Y">
+            <div class="grid grid-2" data-page-node-id="bZ6xRTWzFZ9SmLCZ7PPfwP">
+              <div class="card" data-page-node-id="xrypFr0vANs5vlN19BXqEg">
+                <div class="card-header" data-page-node-id="LfqNL2z7IFhxdWRSXNnVcb"><h3 data-page-node-id="ZxQzkMO8R2IsCtg5bgEYlm">本机 IP 信息</h3></div>
+                <div class="card-body" data-page-node-id="VnVQTxCAqJfkG8yoHpOrG8">
+                  <button class="btn btn-primary" id="btn-local-ip" data-page-node-id="e7vv6pOs2W7rOHTYVYvtgD">获取本机 IP</button>
+                  <pre class="output-area" id="localip-output" data-page-node-id="YebXpQ8rkz2rx70DRVuNs5"></pre>
+                </div>
+              </div>
+              <div class="card" data-page-node-id="t6HBkHX5zA2l2n87fPCS5J">
+                <div class="card-header" data-page-node-id="U4HMVzyzkbtV6WBXDscbG4"><h3 data-page-node-id="BUcwvPOr0Ptfc9oaVlkknr">公网 IP 查询</h3></div>
+                <div class="card-body" data-page-node-id="nnETHNP88xVmOLxjVFcOVf">
+                  <button class="btn btn-primary" id="btn-public-ip" data-page-node-id="XBlp4qB9vmza9d0b8vuEx5">获取公网 IP</button>
+                  <pre class="output-area" id="publicip-output" data-page-node-id="N8aZa7k5i0ZDIbWr09sKGS"></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 配置对比 -->
+          <div class="tool-pane" data-tool="compare" data-page-node-id="H7Fo1BIBgoggvYJITMziTL">
+            <div class="card" data-page-node-id="HMOoejGRe1BXnwFmruonT8">
+              <div class="card-header" data-page-node-id="hS3HrGQM5bxyUG6AB9FxUs"><h3 data-page-node-id="A8dIkIK7KkzP0MvbF8wkvB">配置差异对比</h3></div>
+              <div class="card-body" data-page-node-id="iZLMTPec6O5y5jUoMUK14c">
+                <div class="grid grid-2" data-page-node-id="Ly0FwmCtb5GzoWe9dqr0A4">
+                  <div data-page-node-id="YCixdZwvc3cGFGttA2PIYM">
+                    <label data-page-node-id="dSvVgaGTwvwbwVC6BjlGwH">配置 A</label>
+                    <textarea id="cmp-1" class="code-area small" spellcheck="false" placeholder="配置文本 A...">interface Vlanif10
+ ip address 192.168.10.1 255.255.255.0
+quit</textarea>
+                  </div>
+                  <div data-page-node-id="3Lc5SehRC7LdyvVyx3j3kn">
+                    <label data-page-node-id="bAjZbdqnKAnmJRpd0fJkbA">配置 B</label>
+                    <textarea id="cmp-2" class="code-area small" spellcheck="false" placeholder="配置文本 B...">interface Vlanif10
+ ip address 192.168.10.254 255.255.255.0
+ description Gateway
+quit</textarea>
+                  </div>
+                </div>
+                <div class="form-row" style="margin-top:12px;" data-page-node-id="YFWEjkrUHPwxUA0aZuPDyw">
+                  <label data-page-node-id="iRN2XENVbZbnpivSDgmojR">上下文行数</label>
+                  <input type="number" id="cmp-ctx" value="3" data-page-node-id="m88217lERiZXjlUB2WsfPM" />
+                  <button class="btn btn-primary" id="btn-compare" data-page-node-id="9xJBcxG9JNpGXd3U5PmZAw">对比</button>
+                </div>
+                <pre class="output-area" id="compare-output" data-page-node-id="F6LaDFcr4SytJtVG0OtAUv"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- 命令转换 -->
+          <div class="tool-pane" data-tool="convert" data-page-node-id="nTS2XQsUjnrCWwDB9ExY32">
+            <div class="card" data-page-node-id="bXp9Gzjfewn9vJPgLn89D0">
+              <div class="card-header" data-page-node-id="atSj3Ck2loGbzgl0MYr7A5"><h3 data-page-node-id="UTXu2KmD5s3SUlk1J0EDij">华为 ↔ H3C 命令转换</h3></div>
+              <div class="card-body" data-page-node-id="K87h0MfgYM2cmYQgxiBdHB">
+                <div class="form-row" data-page-node-id="B1yAZsV8Fp0HU6GtkbfFey">
+                  <label data-page-node-id="sbQTpTj6hpXeE37wIKDTAh">源厂商</label>
+                  <select id="conv-from" data-page-node-id="82NWLjlovQ1MgRo6P3UeHe">
+                    <option value="huawei" data-page-node-id="8n6pNWPOeARUaqVmebtq8I">华为</option>
+                    <option value="h3c" data-page-node-id="xguK3dzHJPlqvhoyhFo8cP">H3C</option>
+                  </select>
+                  <label data-page-node-id="8YwbVAJGpbkSKsv0nWRTwq">目标厂商</label>
+                  <select id="conv-to" data-page-node-id="QyGekhFf3oTXJayDH7WBoB">
+                    <option value="h3c" data-page-node-id="Dq6YcRafz91fBj8IDfh7SS">H3C</option>
+                    <option value="huawei" data-page-node-id="d22sAiqqKfK08vF9UkwAy4">华为</option>
+                  </select>
+                </div>
+                <textarea id="conv-input" class="code-area" spellcheck="false" placeholder="粘贴配置命令...">sysname SW-01
+interface Vlanif10
+ ip address 192.168.10.1 255.255.255.0
+quit
+stelnet server enable</textarea>
+                <div class="form-row" style="margin-top:12px;" data-page-node-id="dcF0hmBCN3Z8OYKkbQLpe2">
+                  <button class="btn btn-primary" id="btn-convert" data-page-node-id="DUexImg4AxHi9cyukt9XtS">转换</button>
+                </div>
+                <pre class="output-area" id="convert-output" data-page-node-id="B9BFXYsy3DkCl3LyWXXMHw"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 命令手册 ============ -->
+        <section id="page-manual" class="page" data-page-node-id="ed5HpBIGunH42LQc3rtt1n">
+          <div class="card" data-page-node-id="zUmZTyEDxbPZcWUVH8n5ka">
+            <div class="card-header" data-page-node-id="H7Mb773WwXhZ0WGupILgCR">
+              <h3 data-page-node-id="fp309tCmgi7KftXV5ZTBX0">命令手册检索</h3>
+              <div class="card-actions" data-page-node-id="U9nQy5rT0zqzQcFOASBjNJ">
+                <select id="manual-vendor" data-page-node-id="rg9b9CVZwAoLkPbxH3Olt0">
+                  <option value="" data-page-node-id="LzVlAyKVGCF9FUc4Yiyapj">全部厂商</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-body" data-page-node-id="QHaKo0YL4O26yMaX8Y66Vo">
+              <div class="form-row" data-page-node-id="FpaNtdvXI68v5yd8n7Y08W">
+                <input type="text" id="manual-search" placeholder="搜索命令关键词，如 vlan / ospf / stp..." data-page-node-id="bIjHbdqFucJALuYFKkR6xq" />
+                <button class="btn btn-primary" id="btn-manual-search" data-page-node-id="4gYvX9rHrPMwWfDJeEe9WX">搜索</button>
+              </div>
+              <div id="manual-stats" class="manual-stats" data-page-node-id="7d5FhCDaJv9xpR5mFuOagA"></div>
+              <div id="manual-results" class="manual-list" data-page-node-id="YxtfBUFxHqASIkEr9oScAM"></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:16px;" data-page-node-id="mwFZTIFJ7pG4a8vpWM0vVJ">
+            <div class="card-header" data-page-node-id="uOPYPzNYZOH5tqaLwmbv6Y">
+              <h3 data-page-node-id="6SOVN8rrR5AcqtAiXyB3d4">配置案例</h3>
+              <div class="card-actions" data-page-node-id="cHDwmyMUsknzkN71O6t9Da"><span id="manual-case-count" class="manual-stats" data-page-node-id="WAy782GCHqGR4dxpB0AYiM"></span></div>
+            </div>
+            <div class="card-body" data-page-node-id="QAdASGd9Y9rG6ebtpHMh3z">
+              <div id="manual-cases" class="manual-list" data-page-node-id="of2zdbUIj7XfZ2HK2IkPx5"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 配置模板 ============ -->
+        <section id="page-templates" class="page" data-page-node-id="bTz164XAEWJkJzD1UxXYO6">
+          <div class="grid grid-2-1" data-page-node-id="A9BxN46ZBkNsd8LyvAM2Dp">
+            <div class="card" data-page-node-id="a34DneojlpdLT5Hg7CHhWJ">
+              <div class="card-header" data-page-node-id="F0OkbDrrgiZJbsQhSuIOg4"><h3 data-page-node-id="rILU6KFz8b9PhjV4Xmz1eF">模板列表</h3></div>
+              <div class="card-body" data-page-node-id="ENk5UjCwAWXSRTaLejzz30">
+                <div id="template-list" class="template-list" data-page-node-id="jwBHCFKr2FM7uew05NTrnA"></div>
+              </div>
+            </div>
+            <div class="card" data-page-node-id="d7bAGKQ2BkOBmqX3zlz7AJ">
+              <div class="card-header" data-page-node-id="n2uoZAEttGSj2ipg7lGkAM">
+                <h3 data-page-node-id="pVFKWRzMLVXuarixgHFVMG">模板详情</h3>
+                <div class="card-actions" data-page-node-id="5gTgH09iHqG8TOCRWDxnKy">
+                  <button class="btn btn-sm btn-ghost" id="btn-template-to-config" data-page-node-id="5erVr5odKv6hiExUx1H0yF">载入到配置生成器</button>
+                </div>
+              </div>
+              <div class="card-body" data-page-node-id="MXoy6UAtkRyXGUtOxwpsvB">
+                <pre class="output-area" id="template-detail" data-page-node-id="DgGjdJWpg4tdbhZ76iqBvw">选择左侧模板查看详情...</pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ 笔记 ============ -->
+        <section id="page-notes" class="page" data-page-node-id="0prJCERxrH7wK9X3BTOt6M">
+          <div class="card" data-page-node-id="0iQuTKIiGPlHBKddzz11kf">
+            <div class="card-header" data-page-node-id="0HATshjKpFav1wAolaNeAV">
+              <h3 data-page-node-id="kMwSzuDcFK0xF2DBp0LSdx">我的笔记</h3>
+              <div class="card-actions" data-page-node-id="vsWoudnqgl7dRD9w9lK5wh">
+                <span id="note-count" class="note-count" data-page-node-id="vEtPIAVE8BnaavSokBnrrF"></span>
+                <button class="btn btn-sm btn-primary" id="btn-note-new" data-page-node-id="9XOV99a4Iv6UHR5BWqTx5s">＋ 新建笔记</button>
+              </div>
+            </div>
+            <div class="card-body" data-page-node-id="ui2SCgOvZXBKEnD3JnpfNl">
+              <div class="form-row" style="margin-bottom:14px;" data-page-node-id="eYNiAmsZfNdhe1UElLxv9J">
+                <input type="text" id="note-search" placeholder="搜索笔记标题或内容..." data-page-node-id="KeGCpIZIOq2HMOQnGCPTPG" />
+                <button class="btn btn-primary" id="btn-note-search" data-page-node-id="zSDP6vBjR2EXEMha85CV2w">搜索</button>
+                <button class="btn" id="btn-note-clear" style="display:none;" data-page-node-id="vlrbECC6II6L2C6PJ0wgqR">清除</button>
+              </div>
+              <div id="note-list" class="note-list" data-page-node-id="Vm9PyThutpK8iOR08Hkyf8"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- 设备编辑弹窗 -->
+  <div class="modal" id="device-modal" data-page-node-id="un1llil2djxTKrQCyXRgiw">
+    <div class="modal-box" data-page-node-id="3hjAYCdXwK4Un2GTLpunYY">
+      <div class="modal-header" data-page-node-id="x966M6OxxJEzCom0zqDNh9">
+        <h3 id="device-modal-title" data-page-node-id="ZBze24CzqZYIrhchHdaLY9">添加设备</h3>
+        <button class="modal-close" id="btn-close-modal" data-page-node-id="1T1zUEGKPwSxY4bKhDY0mo">×</button>
+      </div>
+      <div class="modal-body" data-page-node-id="7K57ZGgFHsjDf1bFkCqPmU">
+        <div class="form-grid" data-page-node-id="mqQeR4cWnYbnbvVQSSMGwF">
+          <div class="form-field" data-page-node-id="8CqZGRsC68KLGoQQYonuxI">
+            <label data-page-node-id="7ZFLkRBl95sHdYmtoVLyCA">设备名称 *</label>
+            <input type="text" id="dev-name" data-page-node-id="NZoCMvCeZAQGetbLuCrtDb" />
+          </div>
+          <div class="form-field" data-page-node-id="wyJ5KD9oTSo3GRNFyvDVjV">
+            <label data-page-node-id="ZbYDZMmMjRHfOec3z6zSgb">厂商 *</label>
+            <select id="dev-vendor" data-page-node-id="Ya4eMhSSYDH7BSBcFgnQu6">
+              <option value="huawei" data-page-node-id="PAOAuMZGqKN17f4lEi9oWF">华为 Huawei</option>
+              <option value="h3c" data-page-node-id="2ZXXz4kyLimjSftVGvZy1m">H3C</option>
+              <option value="ruijie" data-page-node-id="wK4ngfCAHjZ05a3MVTIf70">锐捷 Ruijie</option>
+              <option value="maipu" data-page-node-id="mHeFpu7il5DbcGMynDxmYx">迈普 Maipu</option>
+            </select>
+          </div>
+          <div class="form-field" data-page-node-id="j49hHrvL7BKqeOy3Ry4t6M">
+            <label data-page-node-id="s0fGvXIxUhEjBfDE3sgrn4">设备类型</label>
+            <select id="dev-type" data-page-node-id="oFiGLBKW1fET9ni3J0MwLF">
+              <option value="switch" data-page-node-id="1sxxkzJtpTdB0ZPckp6aq6">交换机</option>
+              <option value="router" data-page-node-id="NJDpLlOPVHpaFuDegxRcdW">路由器</option>
+              <option value="ap" data-page-node-id="Jc4F754cqImDfQRnRix3pf">AP</option>
+            </select>
+          </div>
+          <div class="form-field" data-page-node-id="bLH2Dz5oFJVGkCorY1JXtT">
+            <label data-page-node-id="Mr9q3thF9G14CvkC80rgW9">管理地址</label>
+            <input type="text" id="dev-host" placeholder="192.168.1.1" data-page-node-id="XHp2gQ0TGGta5Iwt6xJpsP" />
+          </div>
+          <div class="form-field" data-page-node-id="6mMEYrLQYl4GeW9Fz8zWWs">
+            <label data-page-node-id="mVl5QEXZSoueUZ6GypLqUs">连接方式</label>
+            <select id="dev-conn-type" data-page-node-id="4GnVKHC0vlKprsesXxN3MR">
+              <option value="ssh" data-page-node-id="0aU1nbBissdfUFFxhxVaiw">SSH</option>
+              <option value="telnet" data-page-node-id="4IxC56LePyfST4ZdEwuXvV">Telnet</option>
+            </select>
+          </div>
+          <div class="form-field" data-page-node-id="5pSSwlswRvcqaXvPzOqkJL">
+            <label id="dev-port-label" data-page-node-id="YsygOFBICXRYHLL3eIemdh">端口</label>
+            <input type="number" id="dev-port" value="22" data-page-node-id="Js3OZsznwlTI8XZW8LLxC6" />
+          </div>
+          <div class="form-field" data-page-node-id="4oFqZpp3UdKXhtAUkTkeHC">
+            <label data-page-node-id="5pvvZAj9qgy84XHuoCxslO">用户名</label>
+            <input type="text" id="dev-username" placeholder="admin" data-page-node-id="5Itwu3xYbxVofypUfIrqc9" />
+          </div>
+          <div class="form-field" data-page-node-id="ARk5IYBRqmCVTZ6CGYncZZ">
+            <label data-page-node-id="pRlnOIyQrIVYRqDNb14iyC">密码</label>
+            <input type="password" id="dev-password" data-page-node-id="oy3OjcrCX30GGnpirc9c6n" />
+          </div>
+          <div class="form-field" data-page-node-id="2kovZLOpnhiuPfVlV7zygT">
+            <label data-page-node-id="elItCviqfmxpbZN3oZvXiH">Enable 密码</label>
+            <input type="password" id="dev-enable" data-page-node-id="0zfTCp35ZVOztkWNgjFw9o" />
+          </div>
+          <div class="form-field" data-page-node-id="018o3oXaMwMNcdGYWzBnuL">
+            <label data-page-node-id="UpARLORVUL11DKE4ofTa4E">位置</label>
+            <input type="text" id="dev-location" placeholder="机房A-机柜01" data-page-node-id="Dpt6g35N30qG4lP43Yydhw" />
+          </div>
+          <div class="form-field" data-page-node-id="MhUAsP06tvcFWxXPsVVPWR">
+            <label data-page-node-id="1pCgINGA24GLo81Pyf5zAV">备注</label>
+            <input type="text" id="dev-remark" data-page-node-id="3Rnzz39XuPZLnnNahKsUhy" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" data-page-node-id="Krd9ftlFA1vaU5wEIYjw1m">
+        <button class="btn" id="btn-cancel-device" data-page-node-id="Q7mibZKCrPtmmifF9bS6qT">取消</button>
+        <button class="btn btn-primary" id="btn-save-device" data-page-node-id="mHfAXYz0OMHgPm1Rb90R5L">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 推送配置弹窗 -->
+  <div class="modal" id="push-modal" data-page-node-id="wzJy7EJC1qHfYDAN4oGdoA">
+    <div class="modal-box modal-lg" data-page-node-id="iYuy21oQasr9pSaCRuYPZl">
+      <div class="modal-header" data-page-node-id="ylHNBRfRtvyGAAYj9Abi5Q">
+        <h3 data-page-node-id="Yv0FsbtVPwTGyhAzAQhAk2">推送配置到设备 — <span id="push-device-name" data-page-node-id="azwvDwzfq6dJxmHWYHfcb7"></span></h3>
+        <button class="modal-close" id="btn-close-push-modal" data-page-node-id="dLvpes6gACdPFHPSHBDRw4">×</button>
+      </div>
+      <div class="modal-body" data-page-node-id="RBYKAwB9X8ZjRLIUFRx1ix">
+        <label data-page-node-id="O30q0Dqf5do6NGJMhEH7y1">配置文本（将逐条下发，失败时逆序回滚已成功命令）</label>
+        <textarea id="push-config-text" class="code-area" spellcheck="false" style="min-height:260px;"></textarea>
+        <div class="form-row" style="margin-top:12px;" data-page-node-id="17Pk7jd9Epa9B9BRgeDHwo">
+          <label data-page-node-id="6Ljl3moNL7lYJV3JFBFNp0">厂商</label>
+          <select id="push-vendor" data-page-node-id="p68hyt8fB9LVyliG8ePauJ">
+            <option value="huawei" data-page-node-id="jyAImBrzZ33fuwB8WaFYc5">华为</option>
+            <option value="h3c" data-page-node-id="IdiROAHsUH0Op9sh3NgkM3">H3C</option>
+            <option value="ruijie" data-page-node-id="Aulgs54r7CkydEjIOKWjG3">锐捷</option>
+            <option value="maipu" data-page-node-id="ecADloJiv5uxjgCS5YhrcE">迈普</option>
+          </select>
+          <button class="btn btn-primary" id="btn-push-exec" data-page-node-id="S64zOyFIMJmwFNSjJjmKbE">🚀 推送</button>
+        </div>
+        <div id="push-result" data-page-node-id="8bjaobvUJyhMhBfStZezFw"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 备份内容查看弹窗 -->
+  <div class="modal" id="backup-view-modal" data-page-node-id="WJCuoI4WPH6t66aQhAxlHB">
+    <div class="modal-box modal-lg" data-page-node-id="cRPArG15k2CEnpbR5ZxA8V">
+      <div class="modal-header" data-page-node-id="JENpOrDJcZ1J46167iELEp">
+        <h3 data-page-node-id="TYUHT9fimWfl2WD5bXrKBa">备份详情 — <span id="backup-view-label" data-page-node-id="px2Nia8LTtWb8uZ4jIyXja"></span></h3>
+        <button class="modal-close" id="btn-close-backup-view" data-page-node-id="qdJDjJ9ZXhE1YZApf5HSL0">×</button>
+      </div>
+      <div class="modal-body" data-page-node-id="Sx5tCXXVaT3i9uDP28dNLd">
+        <div class="form-row" style="margin-bottom:8px;" data-page-node-id="AIKMcW2NYuBWBDdog8oHQv">
+          <span class="badge badge-info" id="backup-view-time" data-page-node-id="sJupFCoYNO9ABLMLJ0qUoH"></span>
+          <span class="badge badge-success" id="backup-view-size" data-page-node-id="kqg7Bze6v3liV8ljFfiMqd"></span>
+          <button class="btn btn-sm btn-primary" id="btn-backup-copy" style="margin-left:auto;" data-page-node-id="uGRTNUEyn1V4y4CxZD0H6w">复制</button>
+          <button class="btn btn-sm" id="btn-backup-download" data-page-node-id="kzETTWyDWVDhuEq7ukjTHP">下载</button>
+        </div>
+        <pre class="log-area" id="backup-view-content" style="min-height:400px;" data-page-node-id="PtOHVqzMzltTAjdnOQY9Us">加载中...</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- 笔记查看弹窗 -->
+  <div class="modal" id="note-view-modal" data-page-node-id="NUwy9gwh9sbEbr4OPFA7mR">
+    <div class="modal-box modal-lg" data-page-node-id="ET9CUMdKB2Ipj9HkQtS6MV">
+      <div class="modal-header" data-page-node-id="zUH1Z6fgjnJPwfVZSAiS4b">
+        <h3 id="note-view-title" data-page-node-id="xSWCXv1QCpg28r3Pj3Q6jY"></h3>
+        <button class="modal-close" id="btn-close-note-view" data-page-node-id="2j2uDIvKRQZ1DlE6PMvYGI">×</button>
+      </div>
+      <div class="modal-body" data-page-node-id="NdJiJBvsGSKgYI2REsGJ1n">
+        <div class="form-row" style="margin-bottom:8px;" data-page-node-id="TVgw7aX4oZveQLzSRQwfjl">
+          <span class="badge badge-info" id="note-view-created" data-page-node-id="5KJjc5X4H23rC4qnPDiqXe"></span>
+          <span class="badge badge-success" id="note-view-updated" data-page-node-id="91JzD83r5DEwxJwE2ggWBG"></span>
+          <button class="btn btn-sm btn-primary" id="btn-note-view-edit" style="margin-left:auto;" data-page-node-id="djIDKN7CEg8n52QXbHTZ4H">编辑</button>
+        </div>
+        <pre class="note-content" id="note-view-content" data-page-node-id="u7YzihfylnZd51FEyHICkC"></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- 笔记编辑弹窗 -->
+  <div class="modal" id="note-edit-modal" data-page-node-id="8BMSzd8PAVRdzE4kd2PAuG">
+    <div class="modal-box" data-page-node-id="Sv28sPfDBMJFOVAycgbuzY">
+      <div class="modal-header" data-page-node-id="SYg9oIa5VHr9s7KTSI7Z8T">
+        <h3 id="note-edit-title" data-page-node-id="3ePAypKCQGWPSSe83vRHfg">新建笔记</h3>
+        <button class="modal-close" id="btn-close-note-edit" data-page-node-id="cEzDmJ4M0ueBKdyvvzHfDV">×</button>
+      </div>
+      <div class="modal-body" data-page-node-id="0xBa2jAYGffMS3ftdwtG9X">
+        <div class="form-field" style="margin-bottom:12px;" data-page-node-id="DWR8jrhu0sEpND5pYYQP9l">
+          <label data-page-node-id="eHpZqIcebTUXGx2KDnjyXG">标题 *</label>
+          <input type="text" id="note-edit-input" placeholder="输入笔记标题" maxlength="256" data-page-node-id="5BKYJ3BSvv0cnbA7Zm8TOy" />
+        </div>
+        <div class="form-field" data-page-node-id="0Rj0r5eGULnYjUyPQfJrhm">
+          <label data-page-node-id="NUTVVGJyv1QfW3hnDbkvCB">内容</label>
+          <textarea id="note-edit-content" class="note-edit-area" placeholder="输入笔记内容..." spellcheck="false"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer" data-page-node-id="QXPEJHZB3SMKtQR1I9XqN1">
+        <button class="btn" id="btn-cancel-note" data-page-node-id="Rlxv1GeqILEUzl9y4iR1me">取消</button>
+        <button class="btn btn-primary" id="btn-save-note" data-page-node-id="CcAMRH0V2WlHb4CyBqbzQz">保存</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <!-- 拓扑: 生成结果弹窗 -->
+  <div class="modal" id="topo-gen-modal">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3>整图配置生成 — <span id="topo-gen-scope"></span></h3>
+        <button class="modal-close" id="btn-close-topo-gen">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row" style="margin-bottom:8px;">
+          <span class="badge badge-info" id="topo-gen-summary"></span>
+          <button class="btn btn-sm btn-primary" id="btn-topo-gen-copy" style="margin-left:auto;">复制当前</button>
+          <button class="btn btn-sm" id="btn-topo-gen-download">下载当前 .cfg</button>
+          <button class="btn btn-sm" id="btn-topo-gen-zip">导出整图 ZIP</button>
+        </div>
+        <div class="form-row" style="margin-bottom:8px;">
+          <label>设备</label>
+          <select id="topo-gen-node-select"></select>
+          <span class="topo-hint" id="topo-gen-msg"></span>
+        </div>
+        <pre class="log-area" id="topo-gen-content" style="min-height:340px;"></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- 拓扑: 体检结果弹窗 -->
+  <div class="modal" id="topo-check-modal">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3>拓扑体检结果</h3>
+        <button class="modal-close" id="btn-close-topo-check">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row" style="margin-bottom:12px;">
+          <span class="badge" id="topo-check-error" style="background:#dc2626;color:#fff;">错误 0</span>
+          <span class="badge" id="topo-check-warn" style="background:#d97706;color:#fff;">警告 0</span>
+          <span class="badge badge-info" id="topo-check-info">提示 0</span>
+        </div>
+        <div id="topo-check-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 拓扑: 整图下发弹窗 -->
+  <div class="modal" id="topo-push-modal">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <h3>整图配置下发</h3>
+        <button class="modal-close" id="btn-close-topo-push">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row" style="margin-bottom:10px;">
+          <label><input type="checkbox" id="topo-push-backup" checked /> 下发前先备份现状</label>
+          <button class="btn btn-sm btn-primary" id="btn-topo-push-exec" style="margin-left:auto;">开始下发</button>
+        </div>
+        <div class="topo-tip" style="margin-bottom:8px;">按拓扑层级串行执行：核心/汇聚 → 接入 → AP。失败即停，避免半成品状态。</div>
+        <div id="topo-push-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 拓扑: 新建设备弹窗 -->
+  <div class="modal" id="topo-adddev-modal">
+    <div class="modal-box" style="width:460px;">
+      <div class="modal-header">
+        <h3>新建设备</h3>
+        <button class="modal-close" id="btn-close-ta">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="topo-field"><label>设备名称</label><input type="text" id="ta-name" placeholder="留空自动命名" /></div>
+        <div class="topo-field"><label>设备厂家</label>
+          <select id="ta-vendor">
+            <option value="huawei">华为</option>
+            <option value="h3c">H3C</option>
+            <option value="ruijie">锐捷</option>
+            <option value="maipu">迈普</option>
+          </select>
+        </div>
+        <div class="topo-field"><label>设备类型</label>
+          <select id="ta-type">
+            <option value="switch">交换机</option>
+            <option value="router">路由器</option>
+            <option value="ap">无线AP</option>
+            <option value="ac">无线AC</option>
+            <option value="wan">外网 WAN</option>
+            <option value="pc">PC 终端</option>
+            <option value="ipc">摄像头 IPC</option>
+            <option value="custom">自定义</option>
+          </select>
+        </div>
+        <div class="topo-field" id="ta-clabel-row" style="display:none"><label>自定义类型标签</label><input type="text" id="ta-clabel" placeholder="如 FW、服务器（≤6 字）" maxlength="6" /></div>
+        <div class="topo-field"><label>端口数量</label><input type="number" id="ta-portcount" value="24" min="1" max="96" /></div>
+        <div class="topo-field"><label>批量数量</label>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <input type="number" id="ta-batch" value="1" min="1" max="24" style="width:90px;" />
+            <span style="font-size:12px;color:var(--text-tertiary,#94a3b8);">1～24 台，一次创建多台同类型设备</span>
+          </div>
+        </div>
+        <div class="topo-field"><label>管理 IP</label><input type="text" id="ta-ip" placeholder="192.168.1.10（可留空）" /></div>
+        <div class="topo-field"><label>掩码</label><input type="text" id="ta-mask" value="255.255.255.0" /></div>
+        <div class="topo-field"><label>网关</label><input type="text" id="ta-gw" placeholder="可留空" /></div>
+        <div class="topo-tip">厂家/类型/端口数/掩码/网关会自动记住，下次打开直接新建同类型设备；批量创建时管理 IP 末段自动递增，名称留空则按规则自动命名。</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" id="btn-ta-cancel">取消</button>
+        <button class="btn btn-sm btn-primary" id="btn-ta-submit">确定添加</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 拓扑: 添加链路弹窗(端口选择式) -->
+  <div class="modal" id="topo-addlink-modal">
+    <div class="modal-box" style="width:460px;">
+      <div class="modal-header">
+        <h3>添加链路</h3>
+        <button class="modal-close" id="btn-close-tal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="topo-field"><label>本端设备</label><select id="tal-src"></select></div>
+        <div class="topo-field"><label>本端端口</label><select id="tal-srcport"></select></div>
+        <div class="topo-field"><label>对端设备</label><select id="tal-dst"></select></div>
+        <div class="topo-field"><label>对端端口</label><select id="tal-dstport"></select></div>
+        <div class="topo-field"><label>链路类型</label>
+          <select id="tal-type"><option value="trunk">trunk</option><option value="access">access</option></select>
+        </div>
+        <div class="topo-field"><label>描述</label><input type="text" id="tal-desc" placeholder="可留空" /></div>
+        <div class="topo-tip">已占用端口自动置灰；选择"自动分配"则按厂商命名规则续号，并自动写入两端接口配置。</div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" id="btn-tal-cancel">取消</button>
+        <button class="btn btn-sm btn-primary" id="btn-tal-submit">确定连线</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" data-page-node-id="lTiMa95M3LUG8cK5MGaNfT"></div>
+
+  <script src="/static/topology.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  netops:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      - DEBUG=true
+      - HOST=0.0.0.0
+      - PORT=5000
+    volumes:
+      - ./backend/app/data:/app/app/data
+    restart: unless-stopped

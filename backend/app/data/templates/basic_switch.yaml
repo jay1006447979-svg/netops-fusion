@@ -1,0 +1,36 @@
+# 基础交换机模板
+name: 基础交换机
+description: 包含VLAN和接口的基础交换机配置
+vendor: huawei
+device_type: switch
+config:
+  hostname: HUAWEI-Switch
+  basic:
+    ssh:
+      enable: true
+    user:
+      username: admin
+      password: Admin@123
+      encrypted: true
+  vlan:
+    vlans:
+      - id: 10
+        name: Office
+        description: 办公网段
+      - id: 20
+        name: Guest
+        description: 访客网段
+      - id: 99
+        name: Management
+        description: 管理网段
+    interfaces:
+      - interface: GigabitEthernet0/0/1
+        type: access
+        vlan_id: 10
+      - interface: GigabitEthernet0/0/24
+        type: trunk
+        trunk_vlans: [10, 20, 99]
+    vlanifs:
+      - vlan_id: 99
+        ip_address: 192.168.99.1
+        mask: 255.255.255.0

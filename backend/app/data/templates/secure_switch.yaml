@@ -1,0 +1,46 @@
+# 安全加固交换机模板
+name: 安全加固交换机
+description: 包含ACL/端口安全/DHCP Snooping的安全配置
+vendor: huawei
+device_type: switch
+config:
+  hostname: HUAWEI-Secure
+  basic:
+    ssh:
+      enable: true
+    user:
+      username: admin
+      password: Admin@123
+      encrypted: true
+  vlan:
+    vlans:
+      - id: 10
+        name: Office
+      - id: 20
+        name: Guest
+  security:
+    acls:
+      - number: 3000
+        description: 限制访客网段访问办公网
+        rules:
+          - rule_id: 10
+            action: deny
+            protocol: ip
+            source: 192.168.20.0
+            source_wildcard: 0.0.0.255
+            destination: 192.168.10.0
+            dest_wildcard: 0.0.0.255
+          - rule_id: 20
+            action: permit
+            protocol: ip
+            source: any
+    port_security:
+      - interface: GigabitEthernet0/0/1
+        max_mac: 1
+        protect_action: shutdown
+        sticky: true
+    dhcp_snooping:
+      enable: true
+      vlans: [10, 20]
+      trust_ports:
+        - GigabitEthernet0/0/24

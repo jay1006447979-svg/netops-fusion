@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="AtwFKExB45s8xT9ZU3ObTt">
+<head data-page-node-id="ZOJVVqbj6ZNgUpRG4vFpym">
+<meta charset="UTF-8" data-page-node-id="QrU2rBU9pt7lNjHOWytBY0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="FrmVZYPx73d7HB8vqBCMdT">
+<title>NetOps Fusion 架构文档</title>
+<style>
+  :root { --border: #e5e7eb; --muted: #6b7280; --code-bg: #f3f4f6; }
+  * { box-sizing: border-box; }
+  body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; max-width: 900px; margin: 0 auto; padding: 32px 20px; color: #1f2937; line-height: 1.7; }
+  h1 { font-size: 26px; border-bottom: 2px solid var(--border); padding-bottom: 10px; }
+  h2 { font-size: 20px; margin-top: 40px; border-left: 4px solid #185FA5; padding-left: 10px; }
+  h3 { font-size: 16px; margin-top: 24px; }
+  code { background: var(--code-bg); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+  pre { background: var(--code-bg); padding: 12px 16px; border-radius: 8px; overflow-x: auto; font-size: 13px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 12px 0; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; }
+  th { background: #f9fafb; }
+  .figure { border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin: 16px 0; }
+  .figure svg { width: 100%; height: auto; display: block; }
+  .tip { background: #eff6ff; border-left: 4px solid #378ADD; padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 14px; }
+</style>
+</head>
+<body data-page-node-id="3ep9969MD6cO8HVkHvE8YJ">
+
+<h1 data-page-node-id="CjvVJv4XfxS8zg7gdP0bQs">NetOps Fusion 架构文档</h1>
+<p data-page-node-id="Xap1m6JBWV55lxGuoo1Zuj">网络配置管理工具：支持华为 / H3C / 锐捷 / 迈普 4 厂商的交换机、路由器、AP 配置生成、推送、备份与文件传输服务。</p>
+
+<h2 data-page-node-id="ZzLdxX57FfZRLrFCwlDNZV">1. 技术栈与启动</h2>
+<ul data-page-node-id="RL81d9U6XgEnEtz0Q2yllM">
+  <li data-page-node-id="Wkb8TTHUwFzZ56ce8vl0OR"><b data-page-node-id="iaka5UfTOTn24wkjltFIg6">后端</b>：FastAPI + SQLAlchemy(async) + SQLite(aiosqlite)，Python 虚拟环境 <code data-page-node-id="RYZVrGxuDwTsyMAct6rd9W">C:/Users/User/.workbuddy/binaries/python/envs/netops</code>（已装 pyftpdlib）</li>
+  <li data-page-node-id="swJvfWzSSVN2FBthQe5Pjr"><b data-page-node-id="ZDfC7JSBL6Pdr0otBBeP09">前端</b>：原生 HTML/JS/CSS 单页应用，无框架无构建，由 FastAPI 静态托管</li>
+  <li data-page-node-id="A1F9MHAOrK59gXtLCmFCik"><b data-page-node-id="aeNSJ6Li0jE7iWP5U2CHqU">启动</b>（开发端口 8000，Windows 下不要用 <code data-page-node-id="hYUuXKQ1tfdteAuMMOodVc">--reload</code>，改代码必须手动重启）：
+<pre data-page-node-id="iQCaxfyNO90A0HRVYjCaOC">"C:/Users/User/.workbuddy/binaries/python/envs/netops/Scripts/python.exe" -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --app-dir "D:/WorkBuddy/NetWorkFig/netops-fusion/backend"</pre></li>
+  <li data-page-node-id="0lYOPsebJmEZ01IscvJphw"><b data-page-node-id="pMmH2xfXwMtGhnNnERvCxn">重启规范</b>：<code data-page-node-id="xDC4usL3mPXtRjejMtY0EV">Get-CimInstance Win32_Process</code> 匹配 python+uvicorn → 温和 <code data-page-node-id="bLXcwlVBb0En5ZxSZbHFoc">Stop-Process</code>（不要 -Force，防孤儿 socket 占端口）→ 等 3 秒 → 后台重启</li>
+</ul>
+
+<h2 data-page-node-id="MbavoZtp8JnFL3VesTE4l7">2. 总体分层架构</h2>
+<div class="figure" data-page-node-id="QRBa3RQb9GK7a5eyTPQOeB">
+<svg viewBox="0 0 680 630" width="100%" xmlns="http://www.w3.org/2000/svg" data-page-node-id="Z3EBJZ3yEIGNVyNoLYae5O">
+  <defs data-page-node-id="IwoNeB4OOtsje4GARIMPy4"><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse" data-page-node-id="dsZDbg4vIMmyH9TN8xRATD"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="eNjaFsPG40iO66rsbBPKE1"/></marker></defs>
+  <rect x="40" y="40" width="600" height="120" rx="20" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5" data-page-node-id="Af5cyGXhXb8y4q9rKRNcUR"/>
+  <text x="56" y="66" font-size="14" font-weight="500" fill="#0C447C" data-page-node-id="8BOs4vHk78h8hnK6oAfedp">前端 · static/（浏览器单页应用）</text>
+  <rect x="60" y="82" width="186" height="56" rx="8" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5" data-page-node-id="y91EHUMT1LOoambki6fRjM"/>
+  <text x="153" y="104" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C" data-page-node-id="9npclitoGB3L0yFHFiX94N">index.html</text>
+  <text x="153" y="122" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5" data-page-node-id="goSqh24DFpFPCvveUcwpxH">页面骨架 · 7 个页面</text>
+  <rect x="257" y="82" width="186" height="56" rx="8" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5" data-page-node-id="XS8fIn9IGzF48nwcwIkdEs"/>
+  <text x="350" y="104" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C" data-page-node-id="5akLBU1K8WekRmEUlXFsN1">app.js</text>
+  <text x="350" y="122" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5" data-page-node-id="euMInL4Cf6DUW26f796lCH">全部逻辑与渲染</text>
+  <rect x="454" y="82" width="166" height="56" rx="8" fill="#B5D4F4" stroke="#185FA5" stroke-width="0.5" data-page-node-id="V0VWCRFrzx7EclnKiF7WAz"/>
+  <text x="537" y="104" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C" data-page-node-id="wCMx9UcATdPBSP5jAYTHtW">style.css</text>
+  <text x="537" y="122" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5" data-page-node-id="7YB212XQagZPuUWlvKCptL">样式 · 主题变量</text>
+  <line x1="340" y1="160" x2="340" y2="186" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a1)" fill="none" data-page-node-id="4U4hhylChvLz3pYfsYtNgQ"/>
+  <text x="352" y="178" font-size="12" fill="#5F5E5A" data-page-node-id="NtjCMEzdavE4zQKJYlhGUk">HTTP API (JSON)</text>
+  <rect x="40" y="190" width="600" height="120" rx="20" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" data-page-node-id="znE7G7qlSLQZghe6Wwwirf"/>
+  <text x="56" y="216" font-size="14" font-weight="500" fill="#085041" data-page-node-id="XyppCFcdW1xMZsqQ1PcbUo">API 路由层 · app/api/</text>
+  <rect x="60" y="232" width="130" height="56" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5" data-page-node-id="ZbY9XnkkVeWU0KF6v8GHyc"/>
+  <text x="125" y="254" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041" data-page-node-id="W6ZHZH4z61owUVmFUq1SIc">配置生成</text>
+  <text x="125" y="272" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" data-page-node-id="Cfn3klkucRq5AlXmhZ8uqS">config_routes</text>
+  <rect x="202" y="232" width="130" height="56" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5" data-page-node-id="6LITwjM5YVOz9o5KFfFFqc"/>
+  <text x="267" y="254" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041" data-page-node-id="5xfDHe3mHk7NvlI113nTDv">设备管理</text>
+  <text x="267" y="272" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" data-page-node-id="kGZ6XEQGDVvFtoduR4W1mH">device_routes</text>
+  <rect x="344" y="232" width="130" height="56" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5" data-page-node-id="4p8QnOZekHxfcFduUXAWmW"/>
+  <text x="409" y="254" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041" data-page-node-id="AwD3DBBvG9syDAl8UIwdIo">文件服务</text>
+  <text x="409" y="272" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" data-page-node-id="QkRf5kUamAsSnpUAEAngQN">file_server</text>
+  <rect x="486" y="232" width="134" height="56" rx="8" fill="#9FE1CB" stroke="#0F6E56" stroke-width="0.5" data-page-node-id="CVpGBpWVWChYuEyU3mCX6y"/>
+  <text x="553" y="254" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041" data-page-node-id="9lHnm5LIJFkT1fBJTFXhAq">其他路由</text>
+  <text x="553" y="272" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" data-page-node-id="NIrvIaDdzM0x0M56Vh45bI">note·tool·ws 等</text>
+  <line x1="340" y1="310" x2="340" y2="336" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a1)" fill="none" data-page-node-id="5bLbaGsoxmQ9A5xmq3kTZz"/>
+  <text x="352" y="328" font-size="12" fill="#5F5E5A" data-page-node-id="yfaehVls3da7nRoRyQYO7a">调用</text>
+  <rect x="40" y="340" width="600" height="120" rx="20" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5" data-page-node-id="nc3T7Zsjtg9WGF3yzzqqBr"/>
+  <text x="56" y="366" font-size="14" font-weight="500" fill="#633806" data-page-node-id="vVQc2bE82PEaeeOzAl3tNU">服务层 · app/services + vendors + tools</text>
+  <rect x="60" y="382" width="130" height="56" rx="8" fill="#FAC775" stroke="#854F0B" stroke-width="0.5" data-page-node-id="F2J9gbUHLGpoFSBOT41b0I"/>
+  <text x="125" y="404" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806" data-page-node-id="jRKxy1TPOtVCZWYkOuapBQ">配置生成器</text>
+  <text x="125" y="422" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" data-page-node-id="2UrpSgrfDva6AvgqwW5Tut">config_generator</text>
+  <rect x="202" y="382" width="130" height="56" rx="8" fill="#FAC775" stroke="#854F0B" stroke-width="0.5" data-page-node-id="wuCVxDqwzOZClDNgg96c44"/>
+  <text x="267" y="404" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806" data-page-node-id="Ce8oKAIvYSdl1bqevFxvoL">设备连接器</text>
+  <text x="267" y="422" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" data-page-node-id="nMJUwDSDr5qFfFDeTcCrRd">device_connector</text>
+  <rect x="344" y="382" width="130" height="56" rx="8" fill="#FAC775" stroke="#854F0B" stroke-width="0.5" data-page-node-id="oKnhfvtabx9ky9XmaAG327"/>
+  <text x="409" y="404" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806" data-page-node-id="QpKD2BjbD8G9aoDPTKInwW">备份服务</text>
+  <text x="409" y="422" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" data-page-node-id="ePvPwp7ALgtduJGOqa1tMc">backup_service</text>
+  <rect x="486" y="382" width="134" height="56" rx="8" fill="#FAC775" stroke="#854F0B" stroke-width="0.5" data-page-node-id="09KhTCwA7qP8LPWZK76pFQ"/>
+  <text x="553" y="404" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806" data-page-node-id="zYC8wkgeZloFdQQEQkhI1Y">厂商适配+工具</text>
+  <text x="553" y="422" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" data-page-node-id="0oOdzKbuTqkJNJOnQ33aAK">vendors·tools</text>
+  <line x1="340" y1="460" x2="340" y2="486" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a1)" fill="none" data-page-node-id="13dJzvkPt0DLFUkjz2hotj"/>
+  <text x="352" y="478" font-size="12" fill="#5F5E5A" data-page-node-id="U2LrPVtMXsBzQ33AnpobrI">读写</text>
+  <rect x="40" y="490" width="600" height="120" rx="20" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5" data-page-node-id="cP9WbJdfgrppSPFwrMHrPD"/>
+  <text x="56" y="516" font-size="14" font-weight="500" fill="#3C3489" data-page-node-id="MXMsnbRsNBTamfLwGtFNER">数据与存储</text>
+  <rect x="60" y="532" width="186" height="56" rx="8" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5" data-page-node-id="FMouhZkcHHiXRQtIEg9eiR"/>
+  <text x="153" y="554" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#3C3489" data-page-node-id="2l9vuNiutQeOf1nPaoF2jT">SQLite 数据库</text>
+  <text x="153" y="572" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#534AB7" data-page-node-id="TKzZaSWDxhfOa94t86iteG">设备/配置/笔记/审计</text>
+  <rect x="267" y="532" width="186" height="56" rx="8" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5" data-page-node-id="6lHx4M3l61wWY9sFAAbyUJ"/>
+  <text x="360" y="554" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#3C3489" data-page-node-id="NimhfTjorW03GOvRrwZHlj">备份落盘</text>
+  <text x="360" y="572" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#534AB7" data-page-node-id="8euar3h6kDDXRh3cUTRaxi">backups/设备名/*.cfg</text>
+  <rect x="474" y="532" width="146" height="56" rx="8" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5" data-page-node-id="SmJLrIzttVNCuIp2YPxGgL"/>
+  <text x="547" y="554" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#3C3489" data-page-node-id="Sy2ASD5vHAfSWUVjPUl2uB">模板与手册</text>
+  <text x="547" y="572" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#534AB7" data-page-node-id="CVRzLKcU7g5p5GSxbrpSeJ">templates·manuals</text>
+</svg>
+</div>
+
+<h2 data-page-node-id="ya9UTaHfp7Fhxmh9wfeyM2">3. 核心流程一：配置生成</h2>
+<div class="figure" data-page-node-id="rpaIcr9mF3rU36sSTtkYjI">
+<svg viewBox="0 0 680 310" width="100%" xmlns="http://www.w3.org/2000/svg" data-page-node-id="nha1nMn5v8iMGaUF4mmFRx">
+  <defs data-page-node-id="Rsx8plkosuK1XXTrsA7oAt"><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse" data-page-node-id="CpPewOeDtbHc5k2itoSCpz"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="uxFvN50a3krNJqthxvgPrH"/></marker></defs>
+  <rect x="40" y="60" width="130" height="64" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" data-page-node-id="aHc93LTzrcgzQEqDvlGjhE"/>
+  <text x="105" y="84" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041" data-page-node-id="flzehF2AMxCzVA8cttlxap">填写表单</text>
+  <text x="105" y="104" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" data-page-node-id="oer5eTBDf4U7uYMFxb7R3Y">厂商/接口/VLAN</text>
+  <line x1="172" y1="92" x2="188" y2="92" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a2)" fill="none" data-page-node-id="Xle1jD9a842NAr40bKgqOW"/>
+  <rect x="190" y="60" width="130" height="64" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" data-page-node-id="gZjpoHC9KH2JrNDe9VVAYG"/>
+  <text x="255" y="84" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041" data-page-node-id="fSLDlbDdHkZkWTtKN0A9aD">收集参数</text>
+  <text x="255" y="104" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" data-page-node-id="uF0mg7kTOEZ3WgZg35cHka">collectFormConfig</text>
+  <line x1="322" y1="92" x2="338" y2="92" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a2)" fill="none" data-page-node-id="9UwaUHRbUdEzV1qxXb1qAy"/>
+  <rect x="340" y="60" width="130" height="64" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5" data-page-node-id="YD4KOoqTrNlV3KqSIk6qMj"/>
+  <text x="405" y="84" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C" data-page-node-id="BrmDAKstIgkOONDWMYsoXR">生成请求</text>
+  <text x="405" y="104" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5" data-page-node-id="bZSfFKkVojtK6gZBNWeIkB">POST /configs/generate</text>
+  <line x1="472" y1="92" x2="488" y2="92" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a2)" fill="none" data-page-node-id="X9KV8Ez84f3iPfpDyJoQBm"/>
+  <rect x="490" y="60" width="150" height="64" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5" data-page-node-id="G8KpqRPUq1fwMp7EhxCXTI"/>
+  <text x="565" y="84" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806" data-page-node-id="AmHDXvryAcXMMoDIjaNkuQ">厂商拼接</text>
+  <text x="565" y="104" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" data-page-node-id="F2UStJxFFy1QuoGzPwOth3">huawei/h3c/…</text>
+  <line x1="565" y1="124" x2="565" y2="150" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a2)" fill="none" data-page-node-id="vuM80mxF8XnCLDawgQccQq"/>
+  <rect x="40" y="154" width="600" height="56" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5" data-page-node-id="5VoERrZ1xMEEhMUbGELOIS"/>
+  <text x="340" y="176" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#27500A" data-page-node-id="6X6Bwv3muJJMA0E85hUAKR">返回配置文本 → 页面预览</text>
+  <text x="340" y="194" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3B6D11" data-page-node-id="50YO1o9LatXiChgK3PwFFH">可继续：校验 / 推送到设备 / 导出下载</text>
+  <rect x="40" y="234" width="600" height="52" rx="8" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="4 3" data-page-node-id="afVffmcaagOzZnjFqbAxVl"/>
+  <text x="340" y="254" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#444441" data-page-node-id="pbinh03CDPCYNCmqloRH5I">关键机制：每个配置块都有 enable 开关（默认否）</text>
+  <text x="340" y="272" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#444441" data-page-node-id="69zp2BEYfYRmVtuNwC4o7Y">前端仅收集 enable=true 的块，厂商生成器用 if xxx.get("enable") 决定是否输出该段命令</text>
+</svg>
+</div>
+
+<h2 data-page-node-id="NvwGJJeQs5CufBGUkmEMWD">4. 核心流程二：设备备份</h2>
+<div class="figure" data-page-node-id="RO1y7SUlW03MXee9kfoUV9">
+<svg viewBox="0 0 680 330" width="100%" xmlns="http://www.w3.org/2000/svg" data-page-node-id="RV7eoNmWTDEsr7beFwTAwR">
+  <defs data-page-node-id="poRpa53CDmUeg4OeRcqCZj"><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse" data-page-node-id="rWVPmVjTPVLNvc8K3BrA09"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="4x5528OkZYN1LXKA1YhdBl"/></marker></defs>
+  <rect x="40" y="60" width="180" height="64" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" data-page-node-id="6FGqhDSgkSxcXlLopjbRCv"/>
+  <text x="130" y="84" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041" data-page-node-id="uVzzGpLaxfCDLSNto61gzL">备份面板</text>
+  <text x="130" y="104" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" data-page-node-id="koLSJbnJVEKJ8vHu02z0jF">打开仅加载历史</text>
+  <line x1="222" y1="92" x2="248" y2="92" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a3)" fill="none" data-page-node-id="6J91aNVRuqJiB7O1AhAwPe"/>
+  <rect x="250" y="60" width="180" height="64" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5" data-page-node-id="S9RArOUy6WOJGifCBinV0l"/>
+  <text x="340" y="84" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#0C447C" data-page-node-id="6mEOHVYMXZ90jddR5kIgMH">POST /{id}/backup</text>
+  <text x="340" y="104" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#185FA5" data-page-node-id="fqt9NqUTXHFoR3I3ekLHVy">device_routes</text>
+  <line x1="432" y1="92" x2="458" y2="92" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a3)" fill="none" data-page-node-id="HvzMshyp6qTxsuBADp7XKC"/>
+  <rect x="460" y="60" width="180" height="64" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5" data-page-node-id="XDNVKjsqWknwq3CDNrbizD"/>
+  <text x="550" y="84" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806" data-page-node-id="PoRxN2fwvLOZVlHUmEcGRL">建立连接</text>
+  <text x="550" y="104" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" data-page-node-id="28uEoctdOUELHdEuABNU6A">tcp_probe 3s → 登录</text>
+  <line x1="550" y1="124" x2="550" y2="150" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a3)" fill="none" data-page-node-id="vN1F1hAnuTMSnTpEsMGhXb"/>
+  <rect x="460" y="154" width="180" height="64" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5" data-page-node-id="jdyEJH5WK6b5aYQvRBnkvA"/>
+  <text x="550" y="178" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806" data-page-node-id="H1A6aTJNhHFfGxpzsV9CAd">抓取运行配置</text>
+  <text x="550" y="198" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" data-page-node-id="Ey3zTc5vtEALCcMeDXOcuJ">关分页·清ANSI·去空行</text>
+  <line x1="458" y1="186" x2="432" y2="186" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a3)" fill="none" data-page-node-id="kCbrhWQ4sbPVVI4IzFMGFC"/>
+  <rect x="250" y="154" width="180" height="64" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5" data-page-node-id="9cB66ALMBG8O1mhV68Gaza"/>
+  <text x="340" y="178" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#633806" data-page-node-id="UDyd87VQEDLakdqQM5g7DA">双写存储</text>
+  <text x="340" y="198" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#854F0B" data-page-node-id="LAuZFOj6B9NWo2w8vCzZfk">.cfg 落盘 + DB 索引</text>
+  <line x1="248" y1="186" x2="222" y2="186" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a3)" fill="none" data-page-node-id="E8FWqHuNdOxZeG9IlkF5La"/>
+  <rect x="40" y="154" width="180" height="64" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" data-page-node-id="Lr4Cyakb7j7hRejzCG39Rg"/>
+  <text x="130" y="178" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#085041" data-page-node-id="IrAF4k0Nk04A9JAttiAxba">前端列表刷新</text>
+  <text x="130" y="198" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#0F6E56" data-page-node-id="xGsdwiYd7V3vzhHCsnxZEF">检测缺失·可恢复文件</text>
+  <rect x="40" y="244" width="600" height="52" rx="8" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="4 3" data-page-node-id="Pm8qVPyi3wBHCpGnecL5Yr"/>
+  <text x="340" y="264" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#444441" data-page-node-id="j6C9mTmvIdZrE3Jb2LGIpV">配置全文存于数据库 device_configs.content，backups/ 下的 .cfg 只是落盘副本</text>
+  <text x="340" y="282" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#444441" data-page-node-id="k2DWWsxQtBMSgVkdQcNOe2">删除记录自动删文件；文件缺失时网页标记 ⚠ 并可从数据库一键恢复</text>
+</svg>
+</div>
+
+<h2 data-page-node-id="cGmR4eCwlmF3dyVPUHj3tR">5. 数据存储结构</h2>
+<div class="figure" data-page-node-id="BqF9OlPGzTEaa9LhZLwxEQ">
+<svg viewBox="0 0 680 404" width="100%" xmlns="http://www.w3.org/2000/svg" data-page-node-id="YEUONwJKdw4AD0UyNCV4D6">
+  <defs data-page-node-id="IWLeMDXpxi1RETsmy33erM"><marker id="a4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse" data-page-node-id="u1ZEYJ3Y8i8n8mhQFZcrV0"><path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" data-page-node-id="OTxZ1BGKXl6LZTDK3AIFoX"/></marker></defs>
+  <rect x="40" y="60" width="270" height="256" rx="20" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5" data-page-node-id="VfXpwIkhz8sVRFz1g8uTOx"/>
+  <text x="56" y="86" font-size="14" font-weight="500" fill="#3C3489" data-page-node-id="dobwAvxN5V0Q49H5hyfeGe">SQLite · app/data/netops.db</text>
+  <rect x="70" y="104" width="210" height="44" rx="8" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5" data-page-node-id="n0UpOaeQs0Wv2Hx6TVRvSB"/>
+  <text x="175" y="126" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#3C3489" data-page-node-id="6m5XmMCO4SMNOJ76EURCMU">devices</text>
+  <text x="175" y="141" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#534AB7" data-page-node-id="m0k4gIDcOazQGoo7ZAe0Ga">设备清单</text>
+  <rect x="70" y="156" width="210" height="44" rx="8" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5" data-page-node-id="YfPyN7HOAdvZW98spx6zev"/>
+  <text x="175" y="178" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#3C3489" data-page-node-id="Dy8vncQtXaubydWI6gtrvk">device_configs</text>
+  <text x="175" y="193" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#534AB7" data-page-node-id="QpOqcLIGInzWqJIn68jZwP">配置全文 + 备份索引</text>
+  <rect x="70" y="208" width="210" height="44" rx="8" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5" data-page-node-id="2kYJD1GxdxBdwFhEZBH0Ol"/>
+  <text x="175" y="230" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#3C3489" data-page-node-id="k8FxJcL0qOHhCF1uGg4TrE">notes</text>
+  <text x="175" y="245" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#534AB7" data-page-node-id="kdQkwly7kK5Td8WUtcXHpl">学习笔记</text>
+  <rect x="70" y="260" width="210" height="44" rx="8" fill="#CECBF6" stroke="#534AB7" stroke-width="0.5" data-page-node-id="oo9yDGnZydYFNYVIFWDi9l"/>
+  <text x="175" y="282" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#3C3489" data-page-node-id="a9P6EFsmi1zfGxjL6DJjOa">audit_logs</text>
+  <text x="175" y="297" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#534AB7" data-page-node-id="1kY4t9NwfJZQRRZfZE2DIz">操作审计</text>
+  <line x1="312" y1="188" x2="368" y2="188" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#a4)" fill="none" data-page-node-id="7BV7ifz2sFoz7mCym1EPr3"/>
+  <text x="340" y="176" text-anchor="middle" font-size="12" fill="#5F5E5A" data-page-node-id="zb8kwqAGb9WgvROT3EAHeL">file_path</text>
+  <rect x="370" y="60" width="270" height="256" rx="20" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5" data-page-node-id="vyDWXL7wRAgh5YGhDJfsXM"/>
+  <text x="386" y="86" font-size="14" font-weight="500" fill="#27500A" data-page-node-id="mcfMtflvjAtFBNRsHZ26tk">磁盘文件 · data/</text>
+  <rect x="400" y="104" width="210" height="56" rx="8" fill="#C0DD97" stroke="#3B6D11" stroke-width="0.5" data-page-node-id="JfQm265IRqNtLxT4rOnqmh"/>
+  <text x="505" y="126" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#27500A" data-page-node-id="DPtJ0h5FJTiL6Vd7Oq0Ej1">backups/设备名/*.cfg</text>
+  <text x="505" y="144" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3B6D11" data-page-node-id="riivCoaBbVZpWbk0ZcQhMC">备份落盘副本</text>
+  <rect x="400" y="174" width="210" height="56" rx="8" fill="#C0DD97" stroke="#3B6D11" stroke-width="0.5" data-page-node-id="LuwCP1blJy6udUHhscBmiN"/>
+  <text x="505" y="196" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#27500A" data-page-node-id="EXpDapasNijje3UuqYQW8a">backups/uploads/</text>
+  <text x="505" y="214" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3B6D11" data-page-node-id="IAOLPK4R3eF2WSKODvACuX">TFTP / FTP 上传目录</text>
+  <rect x="400" y="244" width="210" height="56" rx="8" fill="#C0DD97" stroke="#3B6D11" stroke-width="0.5" data-page-node-id="IPChQtl4PY16KzatJzJqs5"/>
+  <text x="505" y="266" text-anchor="middle" dominant-baseline="central" font-size="13" font-weight="500" fill="#27500A" data-page-node-id="S9lrE8mlQNhXWdmRXX8A3O">templates/ · manuals/</text>
+  <text x="505" y="284" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#3B6D11" data-page-node-id="REg2OSljHtwVeJx1STXARt">配置模板 · 厂商手册</text>
+  <rect x="40" y="336" width="600" height="48" rx="8" fill="none" stroke="#888780" stroke-width="0.5" stroke-dasharray="4 3" data-page-node-id="XgNHQ0JgEa8TxVUPXIYYUl"/>
+  <text x="340" y="360" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#444441" data-page-node-id="cdNOgAgQJhaobAU6Gyeyjn">双写机制：备份时配置全文写入数据库，同时导出一份 .cfg 副本到磁盘</text>
+  <text x="340" y="376" text-anchor="middle" dominant-baseline="central" font-size="12" fill="#444441" data-page-node-id="Vhr0yycEk77o7ay6d5Is6A">网页列表以数据库为准 — 所以手动删 .cfg 文件不影响网页显示</text>
+</svg>
+</div>
+
+<h2 data-page-node-id="FZT9VHTXJkdrGPpq4hWSCA">6. 后端模块速查表</h2>
+<table data-page-node-id="TCAE5O7ei91kaAK5Jg61IC">
+  <tr data-page-node-id="GRO5YElcj2DP18ZeBoe3Ny"><th data-page-node-id="Q8RH818RHxxJUppewD8taP">文件</th><th data-page-node-id="xG1aDU8CM3g0tD2FVN40u3">职责</th></tr>
+  <tr data-page-node-id="YnffHRrRw4Rr7S0YRbiPs4"><td data-page-node-id="bEOAL7IGg9DLl7cspuOo16"><code data-page-node-id="rWpIbPlkckcZlfYdUTPDBd">app/main.py</code></td><td data-page-node-id="99wa0FDujsetag40vEHs9z">FastAPI 入口，注册所有路由，挂载静态目录，启动时 init_db</td></tr>
+  <tr data-page-node-id="MZ73ni60Z3WoH8iIlycVus"><td data-page-node-id="zkUNYJ61E8alm2NdabT2SP"><code data-page-node-id="CPjBJoIkS2VFd2K6pO2vGi">app/core/config.py</code></td><td data-page-node-id="A8ac8FkKvPXyVsKRSYbaqG">全局配置（数据库路径、目录、超时等）。注意 BASE_DIR = app/，实际数据库在 <code data-page-node-id="oQl376oRY58FMvLWWOZpUH">app/data/netops.db</code></td></tr>
+  <tr data-page-node-id="3aG0ei8jmWc2mNBnH3BSKC"><td data-page-node-id="oBe2Kaau1YvPa9SeYUvOd1"><code data-page-node-id="LegsjNrjg9w1GI9cUXYi6f">app/db/models.py</code></td><td data-page-node-id="lPFhgAK9DI2rioKSxZ7i9Q">ORM 模型：Device / DeviceConfig / Note / AuditLog 等。时间统一用 <code data-page-node-id="CrWELclf5xFQfbPfRDH9qS">_now()</code>（本地时间）</td></tr>
+  <tr data-page-node-id="EG01bGjq7B62Ujs8ZA8WKy"><td data-page-node-id="3orjNgqAuwMvi3dyqO7Gi2"><code data-page-node-id="tgcmoe9G7jEkFiRsTVwmBn">app/db/base.py</code></td><td data-page-node-id="gwv9d2FA9D509GqGpHojGf">建表 + 轻量迁移（ALTER TABLE 加列）</td></tr>
+  <tr data-page-node-id="RoheH1U4nxxOS84Nyp1leK"><td data-page-node-id="rxJvgQ1Q91eaC9tkGAoPf6"><code data-page-node-id="1biZIL6SZyyG8tQ0khP0jj">app/api/config_routes.py</code></td><td data-page-node-id="tc4iyHs0aTd5hk6qsrpYHt">配置生成 / 校验 / 推送接口</td></tr>
+  <tr data-page-node-id="dD7FLQO0MXI73NBI7dY63u"><td data-page-node-id="bEbM2r1oGxumhANkX8T7ZV"><code data-page-node-id="NvdMC6iYLHHSuohC10PfWa">app/api/device_routes.py</code></td><td data-page-node-id="8b2Pxtumel8kR6SXQWgf5I">设备 CRUD、连接测试、备份（单台/批量）、备份历史（列表含 file_exists，删除记录同步删文件，支持恢复文件）</td></tr>
+  <tr data-page-node-id="IKzNtEvR4KSmX0mqhZtrAn"><td data-page-node-id="Rt1mrK0D2zg6cKE16fuzsJ"><code data-page-node-id="HB92g59CWej9pmNLQ0oDoZ">app/api/file_server_routes.py</code></td><td data-page-node-id="OEuHI4QQisMP0szjcAlBRg">TFTP/FTP 启停、状态（含最近 50 笔传输日志）</td></tr>
+  <tr><td><code>app/api/topology_routes.py</code></td><td>拓扑图 CRUD、节点/链路 CRUD、整图/单节点配置生成、拓扑体检、按链路补全端口、ZIP 导出</td></tr>
+  <tr data-page-node-id="nCmBXTojXuryAKNdFHTuf4"><td data-page-node-id="6iazAfkGEwxvzAzzSZxUga"><code data-page-node-id="S0C93pkIWOdi3mXbg9UvmU">app/api/note_routes.py</code></td><td data-page-node-id="wXxC29D8Fj2dnijDY8CoaZ">笔记 CRUD + 标题/内容搜索</td></tr>
+  <tr data-page-node-id="Zl7H8vxwSxtLuZ7jY1AV6X"><td data-page-node-id="6GokRGkZncDmH6KZRTjIWP"><code data-page-node-id="h07tOz8iUJfbquQFZod2RC">app/api/template_routes.py</code> / <code data-page-node-id="DjDzSUAVm7aH6iGeyPoPkw">manual_routes.py</code> / <code data-page-node-id="sS4rovb4FQ3vpRJAGihzeh">tool_routes.py</code> / <code data-page-node-id="7gaPvvayUPnkTwAQN0A3dA">vendor_routes.py</code> / <code data-page-node-id="PCYpQmKIooTr3dhnQCJpoL">ws_routes.py</code></td><td data-page-node-id="fNsWHb99bydpTH8GKht4Dj">模板、厂商手册、网络工具箱（ping/traceroute/子网计算/端口扫描等）、厂商信息、WebSocket</td></tr>
+  <tr data-page-node-id="KrcPg7OsXtfKr8WlihjBj2"><td data-page-node-id="lcZE2iELyGrJWyVIXLe8VT"><code data-page-node-id="LIyixWPp4Kg5ZYsdXN7i7p">app/services/config_generator.py</code></td><td data-page-node-id="arzo8amQvSm7FKWPEAjuyZ">按厂商分发到 vendors/ 生成配置</td></tr>
+  <tr data-page-node-id="PH6zKeZ253gMWTzXHR4JFi"><td data-page-node-id="HCGcXlkk94goZ4Ah0no6hK"><code data-page-node-id="Yr6ArB7D3YK9HaKcAGEo4V">app/services/device_connector.py</code></td><td data-page-node-id="jM3KdcSTGhh5RQY43GxFCx">TCP 快速探测(3s) + Telnet/SSH 连接、智能提示符读取、ANSI 转义清洗、空行过滤、Ctrl+C 复位 + screen-length 0 关分页</td></tr>
+  <tr data-page-node-id="mcFDLNWErRqHz4M97OJXCs"><td data-page-node-id="pEYeq6J8gPgUaiODGIIqeP"><code data-page-node-id="CeaFtbLeYuB3CCcqeyzOow">app/services/backup_service.py</code></td><td data-page-node-id="G8sZjCKD6L7l78N6YYS122">备份双写（.cfg 落盘 + DB 索引）、批量备份、后台自动备份、文件存在检测 / 删除 / 恢复（防路径越界）</td></tr>
+  <tr><td><code>app/services/topology_service.py</code></td><td>拓扑核心逻辑：<b>node.config 直接存 DeviceConfig 序列化</b>（生成时零转换）、四厂商端口命名规则、拓扑体检（端口占用 / IP 冲突 / VLAN 未定义 / 链路两端 trunk 不一致 / 与受管设备 IP 重复等）、按链路自动补全端口并写入接口配置、ZIP 打包</td></tr>
+  <tr data-page-node-id="8QQHQdB1EG9m7jGpgvwBv9"><td data-page-node-id="2Ywj36D5g6cozuIw2rZI4O"><code data-page-node-id="mw0jQTbpR7uOd7pruimSzF">app/services/file_server_service.py</code></td><td data-page-node-id="5kq96mzJQjC0Em5XCZuwNP">纯 asyncio TFTP（RFC1350，含传输日志、端口占用友好提示、启动重试）+ pyftpdlib 线程 FTP</td></tr>
+  <tr data-page-node-id="LplrgaCVUnhBzQs5EjBWcA"><td data-page-node-id="IScB82o61rVcFte3yRMBqV"><code data-page-node-id="Y8lgAdInVfSBdwvWjQlngq">app/vendors/*.py</code></td><td data-page-node-id="rqqfLaBePJroQNOviprMt2">huawei / h3c / ruijie / maipu 四厂商配置生成器（继承 base.py）</td></tr>
+  <tr data-page-node-id="l4GY9yt9t5aLyHInh82dxe"><td data-page-node-id="FgsNKDRDpuFC7Wbmp7UdAB"><code data-page-node-id="Rlz3EcB9ZPAVAvg6mjgslL">app/tools/*.py</code></td><td data-page-node-id="J7LzHQB5g3PmRrftCVRviE">网络工具箱：ping、traceroute、子网计算、端口扫描、DNS、配置对比等</td></tr>
+</table>
+
+<h2 data-page-node-id="ym2scDA3c9n0VfTQ287ty0">7. 前端要点（static/）</h2>
+<ul data-page-node-id="Z3FtkEZ6ZcBBbrBHlhJ1dp">
+  <li data-page-node-id="IGKeLYcRR5q0ZaQsD0oMgR"><b data-page-node-id="99jlpph6AaEfgM2RntB9Eq">index.html</b>：8 个页面（总览 dashboard、配置生成 config、设备管理 devices、<b>拓扑图 topology</b>、网络工具箱 tools、厂商手册 manual、模板 templates、笔记 notes），通过 nav-item 的 data-page 切换（支持 <code>?page=xxx</code> 深链接，另有外链 /docs）。拓扑图页逻辑独立在 <code>static/topology.js</code>，画布用 AntV X6（已本地化到 <code>static/vendor/</code>，不依赖 CDN）</li>
+  <li data-page-node-id="xiMJdwT4h3eatZLvApDeuJ"><b data-page-node-id="oihKaHin8mjth7RH86yqif">app.js</b>：约 2200 行，所有逻辑在一个 IIFE 里，<code data-page-node-id="JUau7Cv1VDsJEpeVeUCLEh">window.App</code> 暴露 onclick 所需函数（新按钮必须在这里导出）。表单收集用 <code data-page-node-id="WSpHIafTWHnhvrqGTmGY0Z">collectFormConfig</code>（仅收集 enable=true 的块），回填用 <code data-page-node-id="XdBSq0jffnb24QEaAEjVY8">fillFormFromConfig</code>（缺失字段设 'false'），页面初始化调 <code data-page-node-id="dxfCKuPTokAY9MpnWE7PUK">resetConfigForm()</code> 保持表单空白</li>
+</ul>
+
+<h2 data-page-node-id="FnooG3MwsoQMPWncy9CYYN">8. 关键约定（修改前必读）</h2>
+<div class="tip" data-page-node-id="GCkGntWzlZJOeCECW8WHfD">
+  <ul style="margin:0; padding-left:18px;" data-page-node-id="EBk4jmo3UGOEcte9Xt9h5D">
+    <li data-page-node-id="CRD9rnvmdmuQT4x1BiJyjs">所有配置类的 <code data-page-node-id="WFQemMijlkOuL1Ao5ziU5z">enable</code> 字段默认 <b data-page-node-id="lZ78MhDJvhrteAvPw73pqE">False</b>：后端 <code data-page-node-id="JxMsMk4IlbHHLRZUE88GX2">Field(False,...)</code> + 厂商生成器 <code data-page-node-id="F2kPfovFtm71uxGHY95Ce6">if xxx.get("enable", False)</code> + 前端下拉默认"否"</li>
+    <li data-page-node-id="S7W9iH2q8uPvEer4EWn5fB">设备配置顶层字段用 <code data-page-node-id="wYXqqB9Tw70OeBMBGHe4Dg">interface</code>（单数）；VLAN 列表前端收集 <code data-page-node-id="SOokYjjXGPFNUxcuClEbwZ">name</code> 字段；华为/华三用 <code data-page-node-id="TGcjKZbrzXHWAxdR61lgD2">description</code> 命令，锐捷/迈普用 <code data-page-node-id="GwCXeFsYo0cZKx5TLrHPik">name</code> 命令</li>
+    <li data-page-node-id="hloquFCJG4CIo27amsyWxA">Windows 下 TFTP 的坑：Proactor 事件循环里 UDP addr 是 IPv4 映射 4 元组需规范化；<code data-page-node-id="fri27DMw8yt6blq8bycNtC">create_datagram_endpoint</code> 必须带 <code data-page-node-id="hW0krUOaCehn5jr8cA0X7h">local_addr=("0.0.0.0", 0)</code>；本机跑 Tftpd64 会抢占 69 端口</li>
+    <li data-page-node-id="n6aYv59CuCz2FJi8REYReu">强杀 uvicorn（taskkill /F）会产生孤儿 socket 占死端口，只能重启电脑释放 —— 永远温和停止</li>
+    <li data-page-node-id="TiAMftNcHj7yechKtCNNTn">备份数据双写：DB 是唯一事实来源，.cfg 是副本；删记录走 API 会同步删文件，手动删文件后网页会标记缺失并可恢复</li>
+  </ul>
+</div>
+
+<h2 data-page-node-id="l8uku4lwQLc4FEzaoq5pBy">9. 常见修改场景指南</h2>
+<table data-page-node-id="CVSfabM58UpNh3zyKIwCgQ">
+  <tr data-page-node-id="FmPaucuuWzbiojlRq2JFSl"><th data-page-node-id="HBQQPYJzdQsMoER4v4viA2">想做什么</th><th data-page-node-id="iEZ7mKgDHZesDuaJQH3o0b">要动的地方（自上而下）</th></tr>
+  <tr data-page-node-id="nFACDbB5OcxHSBD2gCqsJ3"><td data-page-node-id="J3i7Jhe0txZ2UqYgIFyzF2">新增一个配置功能块</td><td data-page-node-id="8K7o8Q4MAc2VzU5YIutLVz">① <code data-page-node-id="Ndc2Uoral0XUonLCzcYHMH">app/models/</code> 加 Pydantic 模型（enable 默认 False）→ ② 四个 <code data-page-node-id="CAgqk9jBRNY6RVDakYV905">app/vendors/*.py</code> 各加生成逻辑 → ③ <code data-page-node-id="c4TEHo79PpUmJMkcW8KrGe">config_routes.py</code> 接收 → ④ <code data-page-node-id="CnDVxwSuShMI7LclscFPsv">index.html</code> 加表单块 → ⑤ <code data-page-node-id="jDiZGxBGPpwHBqzV80KZd2">app.js</code> 的 collectFormConfig / fillFormFromConfig / resetConfigForm 同步</td></tr>
+  <tr data-page-node-id="QSVlYOFnkpzOD5mSOlKtzE"><td data-page-node-id="VROmYDQ7TZHthAaY24OUnA">新增页面/功能页</td><td data-page-node-id="GANgFgmSJuzIeAhPGVWJo5">① <code data-page-node-id="N6EGMcMXtschtvFH0FQquw">index.html</code> 加 section + nav-item → ② <code data-page-node-id="ExQYdAN8Lby0EXgTB4mhcL">app.js</code> 加加载与渲染函数并导出到 window.App → ③ 需要接口时在 <code data-page-node-id="8laFd9p35WDvWnUyUed6Ak">app/api/</code> 新建路由文件并在 <code data-page-node-id="WYLTpciYD7GwBNx0IBt925">main.py</code> 注册</td></tr>
+  <tr data-page-node-id="RiVdXtd0f5OxelRMYjlvd0"><td data-page-node-id="tmgzTnepysDabU5kEfg3Xc">新增厂商支持</td><td data-page-node-id="hnbzCz1gf6dbPJpsYQnNNg">① <code data-page-node-id="XMtAq9E2iMjDo7oIjrFOHE">app/vendors/</code> 新建文件继承 base.py → ② registry 注册 → ③ 前端厂商下拉加选项</td></tr>
+  <tr data-page-node-id="WpQ7QCmVCP5zGNow7ipiZs"><td data-page-node-id="39VDJtFyytGC9KH92tK3Ik">改数据库表结构</td><td data-page-node-id="97Lw8f3e9J2Iaywwfthhkf">改 <code data-page-node-id="xJJjXFVHmQRlKpN8VmS3BG">models.py</code> + 在 <code data-page-node-id="0gQvyT5dJV05h95misJxGQ">base.py</code> 的 init_db 里加对应 ALTER TABLE 迁移（SQLite 轻量迁移，不动旧数据）</td></tr>
+</table>
+
+</body>
+</html>

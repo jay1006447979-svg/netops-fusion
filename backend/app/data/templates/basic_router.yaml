@@ -1,0 +1,28 @@
+# 基础路由器模板
+name: 基础路由器
+description: 包含基本接口和静态路由的路由器配置
+vendor: huawei
+device_type: router
+config:
+  hostname: HUAWEI-Router
+  basic:
+    mgmt_interface:
+      interface: Vlanif1
+      ip_address: 192.168.1.1
+      mask: 255.255.255.0
+      gateway: 192.168.1.254
+      description: 管理接口
+    ssh:
+      enable: true
+      port: 22
+    user:
+      username: admin
+      password: Admin@123
+      level: 15
+      encrypted: true
+  routing:
+    static_routes:
+      - dest_network: 0.0.0.0
+        mask: 0.0.0.0
+        next_hop: 192.168.1.254
+        description: 默认路由

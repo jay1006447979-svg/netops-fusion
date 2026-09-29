@@ -1,0 +1,23 @@
+# OSPF 路由器模板
+name: OSPF路由器
+description: 包含OSPF动态路由协议的路由器配置
+vendor: huawei
+device_type: router
+config:
+  hostname: HUAWEI-OSPF
+  basic:
+    ssh:
+      enable: true
+  routing:
+    static_routes: []
+    ospf:
+      process_id: 1
+      router_id: 1.1.1.1
+      area_id: "0"
+      networks:
+        - address: 10.0.1.0
+          mask: 0.0.0.3
+          area: "0"
+        - address: 172.16.0.0
+          mask: 0.0.0.255
+          area: "0"
