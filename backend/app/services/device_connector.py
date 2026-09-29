@@ -151,11 +151,57 @@ class CommandRollbackEngine:
         return [(cmd, self.generate_undo(cmd)) for cmd in commands]
 
     def get_rollback_commands(self, executed: List[CommandResult]) -> List[str]:
-        """从已执行命令中提取需要回滚的 undo 命令 (逆序)"""
-        rollback = []
-        for cr in reversed(executed):
-            if cr.success and cr.undo_command:
-                rollback.append(cr.undo_command)
+        """从已执行命令中提取需要回滚的 undo 命令 (逆序), 带视图栈管理:
+
+        子命令(如 vlan 视图下的 name、接口视图下的 ip address)的 undo 必须在
+        其执行时所在的视图下发送。此方法回放视图进出序列, 为每条 undo 命令
+        自动补齐 quit/进入视图的切换命令, 结束后回到系统视图, 避免在错误
+        视图下发送 undo 导致回滚失败。
+        """
+        if not any(cr.success and cr.undo_command for cr in executed):
+            return []
+
+        # 正向回放: 记录每条命令执行时所处的视图栈
+        view_stack: List[str] = []
+        views_by_idx: List[tuple] = []
+        for cr in executed:
+            views_by_idx.append(tuple(view_stack))
+            cmd = cr.command.strip()
+            if not cr.success:
+                continue  # 失败的命令不改变视图
+            if any(re.match(p, cmd) for p in self.VIEW_ENTER_PATTERNS):
+                view_stack.append(cmd)
+            elif cmd == "quit":
+                if view_stack:
+                    view_stack.pop()
+            elif cmd == "return":
+                view_stack.clear()
+
+        # 逆序回放 undo, 维护当前视图栈并补齐切换命令
+        rollback: List[str] = []
+        current = list(view_stack)
+        for i in range(len(executed) - 1, -1, -1):
+            cr = executed[i]
+            if not (cr.success and cr.undo_command):
+                continue
+            target = list(views_by_idx[i])
+            # 求当前视图与目标视图的公共前缀
+            p = 0
+            while p < min(len(current), len(target)) and current[p] == target[p]:
+                p += 1
+            # 先退出多出的层级
+            for _ in range(len(current) - p):
+                rollback.append("quit")
+                current.pop()
+            # 再进入目标视图剩余层级
+            for v in target[p:]:
+                rollback.append(v)
+                current.append(v)
+            rollback.append(cr.undo_command)
+
+        # 回到系统视图
+        for _ in range(len(current)):
+            rollback.append("quit")
         return rollback
 
 

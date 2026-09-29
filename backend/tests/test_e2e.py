@@ -1,4 +1,9 @@
-"""端到端 API 测试 — 启动服务器并验证所有路由"""
+"""端到端 API 测试 — 启动服务器并验证所有路由
+
+运行方式:
+    python tests/test_e2e.py            # 脚本模式, 输出详细报告
+    python -m pytest tests/test_e2e.py  # pytest 模式 (收集为 1 个用例)
+"""
 
 from __future__ import annotations
 
@@ -7,12 +12,13 @@ import os
 import subprocess
 import sys
 import time
+from pathlib import Path
 
 import httpx
 
 BASE = "http://127.0.0.1:8765"
-VENV_PY = r"C:\Users\User\.workbuddy\binaries\python\envs\netops\Scripts\python.exe"
-BACKEND_DIR = r"D:\WorkBuddy\NetWorkFig\netops-fusion\backend"
+BACKEND_DIR = str(Path(__file__).resolve().parent.parent)
+VENV_PY = sys.executable  # 默认用当前解释器, 可用 E2E_PYTHON 环境变量覆盖
 
 
 def start_server() -> subprocess.Popen:
@@ -103,8 +109,7 @@ async def run_tests():
             r2 = await c.get("/api/info")
             ok2 = check("GET /api/info", r2)
             record("GET /api/info", ok2)
-            if ok2:
-                info = r2.json()
+            info = r2.json() if ok2 else {}
             print(f"         app={info.get('app')}, vendors={info.get('vendors')}")
 
         r = await c.get("/health")
@@ -432,7 +437,14 @@ async def run_tests():
         CommandResult(command="bad-cmd", success=False, undo_command=None),
     ]
     rollback = engine_hw.get_rollback_commands(executed)
-    expected_rb = ["undo description Mgmt", "undo ip address 10.1.1.1 24", "undo sysname R1"]
+    # 视图栈管理: interface Vlanif10 视图下的子命令 undo 原地执行,
+    # 回滚到系统视图的 sysname 前必须先 quit 退出接口视图
+    expected_rb = [
+        "undo description Mgmt",
+        "undo ip address 10.1.1.1 24",
+        "quit",
+        "undo sysname R1",
+    ]
     ok = rollback == expected_rb
     print(f"  [{'PASS' if ok else 'FAIL'}] 逆序回滚: {rollback}")
     if not ok:
@@ -450,6 +462,32 @@ async def run_tests():
     print(f"  [{'PASS' if ok else 'FAIL'}] 只回滚成功命令: {rollback2}  (期望: ['undo cmd3', 'undo cmd1'])")
     record("只回滚成功命令", ok)
 
+    # 视图栈场景: vlan 视图下配置, 失败后回滚需自动切换到各命令所在视图
+    executed3 = [
+        CommandResult(command="sysname R1", success=True, undo_command="undo sysname R1"),
+        CommandResult(command="vlan 10", success=True, undo_command=None),
+        CommandResult(command="name Mgmt", success=True, undo_command="undo name Mgmt"),
+        CommandResult(command="quit", success=True, undo_command=None),
+        CommandResult(command="interface Vlanif10", success=True, undo_command=None),
+        CommandResult(command="ip address 10.10.10.1 24", success=True, undo_command="undo ip address 10.10.10.1 24"),
+        CommandResult(command="bad-cmd", success=False, undo_command=None),
+    ]
+    rollback3 = engine_hw.get_rollback_commands(executed3)
+    # 逆序: ip address(interface 视图原地) → name Mgmt(quit 后重进 vlan 10) → sysname(quit 回系统视图)
+    expected3 = [
+        "undo ip address 10.10.10.1 24",
+        "quit",
+        "vlan 10",
+        "undo name Mgmt",
+        "quit",
+        "undo sysname R1",
+    ]
+    ok = rollback3 == expected3
+    print(f"  [{'PASS' if ok else 'FAIL'}] 视图栈回滚: {rollback3}")
+    if not ok:
+        print(f"         期望: {expected3}")
+    record("视图栈回滚", ok)
+
     # ---- 汇总 ----
     section("测试汇总")
     total = results["pass"] + results["fail"]
@@ -463,21 +501,30 @@ async def run_tests():
     return results["fail"] == 0
 
 
-if __name__ == "__main__":
-    import httpx as _hx
+def run_suite() -> bool:
+    """启动(或复用)服务器并运行完整套件, 返回是否全部通过"""
+    proc = None
     try:
-        _hx.get(f"{BASE}/health", timeout=2)
+        httpx.get(f"{BASE}/health", timeout=2)
         print(f"服务器已在运行 ({BASE})")
-        proc = None
-    except:
+    except Exception:
         print("启动服务器...")
         proc = start_server()
         print(f"服务器已启动 (PID={proc.pid})")
     try:
-        ok = asyncio.run(run_tests())
+        return asyncio.run(run_tests())
     finally:
         if proc:
             proc.terminate()
             proc.wait(timeout=10)
-        print("\n服务器已停止")
+            print("\n服务器已停止")
+
+
+def test_e2e_suite():
+    """pytest 收集入口: 完整端到端套件"""
+    assert run_suite(), "端到端测试存在失败项"
+
+
+if __name__ == "__main__":
+    ok = run_suite()
     sys.exit(0 if ok else 1)

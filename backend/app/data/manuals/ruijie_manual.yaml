@@ -1,0 +1,2973 @@
+vendor: ruijie
+total: 490
+references:
+- '项目生成器: backend/app/vendors/ruijie.py'
+- '锐捷RG-S2000命令参考: https://ruijie.com.cn/fw/wd/930083'
+- '锐捷RG-N18000-E命令参考: https://www.ruijie.com/en-global/support/documents'
+- '锐捷RG-S5750-S命令手册: https://www.ruijie.com.cn/fw/wd/57599/'
+- 'ManualsLib RG-IS2700命令参考: https://www.manualslib.com/manual/3031209'
+- 'netops_toolkit 数据源: Desktop 命令手册 Python 数据文件'
+reliability: 中等 — 基础命令可靠,高级命令可能有细节差异,建议对照具体设备型号文档
+categories:
+- name: 系统管理
+  commands:
+  - command: hostname <name>
+    syntax: hostname <name>
+    description: 设置设备主机名
+    source: netops_toolkit
+    example: hostname RG-Core-SW-01
+  - command: show version
+    syntax: show version
+    description: 查看设备硬件和软件版本信息
+    source: netops_toolkit
+    example: show version
+  - command: show running-config
+    syntax: show running-config
+    description: 查看当前运行配置
+    source: netops_toolkit
+    example: show running-config
+  - command: show startup-config
+    syntax: show startup-config
+    description: 查看启动配置文件
+    source: netops_toolkit
+    example: show startup-config
+  - command: write
+    syntax: write / copy running-config startup-config
+    description: 保存当前配置到启动配置文件
+    source: netops_toolkit
+    example: write
+  - command: reload
+    syntax: reload
+    description: 重启交换机
+    source: netops_toolkit
+    example: reload
+  - command: delete flash:config.text
+    syntax: 'delete flash:config.text
+
+      delete flash:vlan.dat
+
+      reload'
+    description: 清除配置文件并重启恢复出厂设置
+    source: netops_toolkit
+    example: delete flash:config.text
+  - command: clock set <HH:MM:SS> <YYYY-MM-DD>
+    syntax: clock set <HH:MM:SS> <YYYY-MM-DD>
+    description: 设置系统时间
+    source: netops_toolkit
+    example: clock set 14:30:00 2026-04-21
+  - command: show clock
+    syntax: show clock
+    description: 显示当前系统时间
+    source: netops_toolkit
+    example: show clock
+  - command: show cpu
+    syntax: show cpu
+    description: 查看CPU使用情况
+    source: netops_toolkit
+    example: show cpu
+  - command: show memory
+    syntax: show memory
+    description: 查看内存使用情况
+    source: netops_toolkit
+    example: show memory
+  - command: line console 0
+    syntax: 'line console 0
+
+      exec-timeout <minutes>'
+    description: 设置控制台闲置超时时间
+    source: netops_toolkit
+    example: 'line console 0
+
+      exec-timeout 30'
+  - command: show environment
+    syntax: show environment
+    description: 查看温度、风扇、电源等环境信息
+    source: netops_toolkit
+    example: show environment
+  - command: show fan
+    syntax: show fan
+    description: 显示风扇状态信息
+    source: netops_toolkit
+    example: show fan
+  - command: show power
+    syntax: show power
+    description: 显示电源模块状态
+    source: netops_toolkit
+    example: show power
+  - command: write
+    syntax: write / copy running-config startup-config
+    description: 保存当前配置到启动配置文件
+    source: netops_toolkit
+    example: write
+  - command: enable password
+    syntax: enable password {level <1-15>} {<password> | encryption-type <type> <encrypted-pwd>}
+    description: 设置特权模式密码
+    example: enable password level 15 ruijie@123
+    source: ai_knowledge
+  - command: show running-config
+    syntax: show running-config [interface <iface> | include <keyword> | section <module>]
+    description: 显示当前运行配置
+    example: show running-config | include vlan
+    source: ai_knowledge
+  - command: write memory / copy running-config startup-config
+    syntax: write [memory] | copy running-config startup-config
+    description: 保存当前配置到NVRAM/Flash
+    source: ai_knowledge
+  - command: configure terminal
+    syntax: configure terminal
+    description: 进入全局配置模式(特权模式下)
+    source: ai_knowledge
+  - command: end
+    syntax: end
+    description: 直接返回特权模式(任意层级)
+    source: ai_knowledge
+  - command: exit
+    syntax: exit
+    description: 退回到上一级模式
+    source: ai_knowledge
+  - command: banner motd
+    syntax: 'banner motd #<text>#'
+    description: 设置MOTD登录提示信息(Banner)
+    source: ai_knowledge
+  - command: banner login
+    syntax: 'banner login #<text>#'
+    description: 设置登录前Banner信息
+    source: ai_knowledge
+  - command: clock timezone
+    syntax: clock timezone <zone-name> hours <offset-hours> minutes <offset-mins>
+    description: 设置时区
+    example: clock timezone Beijing hours 8 minutes 0
+    source: ai_knowledge
+  - command: reload
+    syntax: reload [/skip-config] [in <minutes>] [at <HH:MM>]
+    description: 重启设备(可延迟重启)
+    source: ai_knowledge
+  - command: erase startup-config
+    syntax: erase startup-config
+    description: 擦除启动配置(恢复出厂)
+    source: ai_knowledge
+  - command: false
+    syntax: no <command>
+    description: 取消/删除某条配置(Cisco风格)
+    example: no ip domain-lookup
+    source: ai_knowledge
+  - command: show cpu
+    syntax: show cpu [history | process | utilization]
+    description: CPU利用率
+    source: ai_knowledge
+  - command: show memory
+    syntax: show memory [allocated | free | statistics]
+    description: 内存使用情况
+    source: ai_knowledge
+  - command: show environment
+    syntax: show environment [all | fan | power | temperature | status]
+    description: 环境状态(温度/电源/风扇)
+    source: ai_knowledge
+  - command: show inventory
+    syntax: show inventory
+    description: 硬件设备清单
+    source: ai_knowledge
+  - command: show license
+    syntax: show license [brief | feature | usage]
+    description: License授权状态
+    source: ai_knowledge
+  - command: show bootvar
+    syntax: show bootvar
+    description: 启动配置文件和软件镜像
+    source: ai_knowledge
+  - command: show flash
+    syntax: show flash [all | filesys | detailed]
+    description: Flash存储文件列表
+    source: ai_knowledge
+  - command: show mac-address-table
+    syntax: show mac-address-table [address <mac> | dynamic | static | vlan <vlan> | count]
+    description: MAC地址表
+    source: ai_knowledge
+  - command: show mac-address-table count
+    syntax: show mac-address-table count [vlan <vlan>]
+    description: MAC地址数量统计
+    source: ai_knowledge
+  - command: show arp
+    syntax: show arp [<ip> | vlan <vlan> | interface <iface> | detail]
+    description: ARP缓存表
+    source: ai_knowledge
+  - command: clear counters interface
+    syntax: clear counters interface [<iface>]
+    description: 清除接口统计计数器
+    source: ai_knowledge
+  - command: clear arp-cache
+    syntax: clear arp-cache [interface <iface> | <ip> | *]
+    description: 清除ARP缓存
+    source: ai_knowledge
+  - command: clear mac-address-table
+    syntax: clear mac-address-table [dynamic | all]
+    description: 清除MAC地址表
+    source: ai_knowledge
+  - command: dir
+    syntax: 'dir [flash: | nvram:]'
+    description: 列出文件目录
+    source: ai_knowledge
+  - command: more
+    syntax: more <filename>
+    description: 分页查看文件
+    source: ai_knowledge
+  - command: delete
+    syntax: delete [force] <filename>
+    description: 删除文件
+    source: ai_knowledge
+  - command: rename
+    syntax: rename <old-name> <new-name>
+    description: 重命名文件
+    source: ai_knowledge
+  - command: format
+    syntax: 'format flash:'
+    description: 格式化Flash存储
+    source: ai_knowledge
+  - command: copy
+    syntax: copy <source-url> <dest-url>
+    description: 文件复制(tftp:/ftp:/flash:之间)
+    example: copy running-config tftp://192.168.1.100/config.cfg
+    source: ai_knowledge
+  - command: debug
+    syntax: debug <feature> [options]
+    description: 开启调试输出(谨慎使用)
+    source: ai_knowledge
+  - command: undebug all
+    syntax: undebug all
+    description: 关闭所有调试输出
+    source: ai_knowledge
+  - command: terminal monitor
+    syntax: terminal monitor
+    description: 终端实时显示日志消息
+    source: ai_knowledge
+- name: 用户管理
+  commands:
+  - command: username <name> privilege <level> password <password>
+    syntax: username <name> privilege <level> password <password>
+    description: 创建本地用户并设置权限级别和密码
+    source: netops_toolkit
+    example: username admin privilege 15 password Admin@123
+  - command: username <name> privilege <level> secret <password>
+    syntax: username <name> privilege <level> secret <password>
+    description: 使用加密存储的密码创建用户
+    source: netops_toolkit
+    example: username admin privilege 15 secret Admin@123
+  - command: no username <name>
+    syntax: no username <name>
+    description: 删除指定用户
+    source: netops_toolkit
+    example: no username guest
+  - command: enable secret <password>
+    syntax: enable secret <password>
+    description: 设置进入特权模式的密码
+    source: netops_toolkit
+    example: enable secret Enable@123
+  - command: enable password <password>
+    syntax: enable password <password>
+    description: 设置明文存储的特权密码(不推荐)
+    source: netops_toolkit
+    example: enable password Enable@123
+  - command: show users
+    syntax: show users
+    description: 查看当前登录用户
+    source: netops_toolkit
+    example: show users
+  - command: privilege exec level <level> <command>
+    syntax: privilege exec level <level> <command>
+    description: 配置命令权限级别(0-15级)
+    source: netops_toolkit
+    example: privilege exec level 5 show running-config
+  - command: username <name> role <role-name>
+    syntax: username <name> role <role-name>
+    description: 为用户分配角色
+    source: netops_toolkit
+    example: username netadmin role network-admin
+  - command: role name <role-name>
+    syntax: role name <role-name>
+    description: 创建自定义角色
+    source: netops_toolkit
+    example: role name monitor
+  - command: role name <role-name>
+    syntax: 'role name <role-name>
+
+      rule permit command <command>'
+    description: 为角色配置命令权限
+    source: netops_toolkit
+    example: 'role name monitor
+
+      rule permit command show'
+  - command: show running-config | include username
+    syntax: show running-config | include username
+    description: 查看已配置的用户
+    source: netops_toolkit
+    example: show running-config | include username
+- name: SSH配置
+  commands:
+  - command: ip ssh server enable
+    syntax: ip ssh server enable
+    description: 启用SSH服务器功能
+    source: netops_toolkit
+    example: ip ssh server enable
+  - command: crypto key generate rsa [modulus <bits>]
+    syntax: crypto key generate rsa [modulus <bits>]
+    description: 生成RSA密钥对
+    source: netops_toolkit
+    example: crypto key generate rsa modulus 2048
+  - command: ip ssh version <1|2>
+    syntax: ip ssh version <1|2>
+    description: 设置SSH协议版本
+    source: netops_toolkit
+    example: ip ssh version 2
+  - command: ip ssh timeout <seconds>
+    syntax: ip ssh timeout <seconds>
+    description: 设置SSH连接超时时间
+    source: netops_toolkit
+    example: ip ssh timeout 120
+  - command: ip ssh authentication-retries <times>
+    syntax: ip ssh authentication-retries <times>
+    description: 设置SSH认证重试次数
+    source: netops_toolkit
+    example: ip ssh authentication-retries 3
+  - command: line vty 0 4
+    syntax: 'line vty 0 4
+
+      transport input ssh
+
+      login local'
+    description: 配置VTY线路只允许SSH登录并使用本地认证
+    source: netops_toolkit
+    example: 'line vty 0 4
+
+      transport input ssh
+
+      login local'
+  - command: show ip ssh
+    syntax: show ip ssh
+    description: 查看SSH服务状态
+    source: netops_toolkit
+    example: show ip ssh
+  - command: show ssh
+    syntax: show ssh
+    description: 查看当前SSH连接
+    source: netops_toolkit
+    example: show ssh
+  - command: crypto key zeroize rsa
+    syntax: crypto key zeroize rsa
+    description: 删除RSA密钥对
+    source: netops_toolkit
+    example: crypto key zeroize rsa
+  - command: crypto key generate ecdsa
+    syntax: crypto key generate ecdsa
+    description: 生成ECDSA密钥对
+    source: netops_toolkit
+    example: crypto key generate ecdsa
+- name: Telnet配置
+  commands:
+  - command: telnet server enable
+    syntax: telnet server enable
+    description: 启用Telnet服务器(不推荐用于生产环境)
+    source: netops_toolkit
+    example: telnet server enable
+  - command: no telnet server enable
+    syntax: no telnet server enable
+    description: 关闭Telnet服务器提高安全性
+    source: netops_toolkit
+    example: no telnet server enable
+  - command: line vty 0 4
+    syntax: 'line vty 0 4
+
+      transport input telnet
+
+      login local'
+    description: 配置VTY线路允许Telnet登录
+    source: netops_toolkit
+    example: 'line vty 0 4
+
+      transport input telnet
+
+      login local'
+  - command: telnet server port <port>
+    syntax: telnet server port <port>
+    description: 修改Telnet服务端口(默认23)
+    source: netops_toolkit
+    example: telnet server port 2323
+  - command: line vty 0 4
+    syntax: 'line vty 0 4
+
+      exec-timeout <minutes>'
+    description: 设置VTY会话超时时间
+    source: netops_toolkit
+    example: 'line vty 0 4
+
+      exec-timeout 30'
+- name: Console配置
+  commands:
+  - command: line console 0
+    syntax: 'line console 0
+
+      password <password>
+
+      login'
+    description: 设置Console登录密码
+    source: netops_toolkit
+    example: 'line console 0
+
+      password Console@123
+
+      login'
+  - command: line console 0
+    syntax: 'line console 0
+
+      login local'
+    description: Console使用本地用户认证
+    source: netops_toolkit
+    example: 'line console 0
+
+      login local'
+  - command: line console 0
+    syntax: 'line console 0
+
+      speed <baud-rate>'
+    description: 设置Console波特率
+    source: netops_toolkit
+    example: 'line console 0
+
+      speed 115200'
+  - command: line console 0
+    syntax: 'line console 0
+
+      no password
+
+      no login'
+    description: 取消Console登录密码
+    source: netops_toolkit
+    example: 'line console 0
+
+      no password
+
+      no login'
+- name: 域名解析
+  commands:
+  - command: ip name-server <ip>
+    syntax: ip name-server <ip>
+    description: 配置DNS服务器地址
+    source: netops_toolkit
+    example: ip name-server 8.8.8.8
+  - command: ip name-server <ip1> <ip2>
+    syntax: ip name-server <ip1> <ip2>
+    description: 配置主备DNS服务器
+    source: netops_toolkit
+    example: ip name-server 8.8.8.8 114.114.114.114
+  - command: ip domain-lookup
+    syntax: ip domain-lookup
+    description: 启用DNS域名解析功能
+    source: netops_toolkit
+    example: ip domain-lookup
+  - command: no ip domain-lookup
+    syntax: no ip domain-lookup
+    description: 禁用DNS域名解析功能
+    source: netops_toolkit
+    example: no ip domain-lookup
+  - command: ip domain-name <domain>
+    syntax: ip domain-name <domain>
+    description: 配置默认域名后缀
+    source: netops_toolkit
+    example: ip domain-name example.com
+  - command: ip host <hostname> <ip>
+    syntax: ip host <hostname> <ip>
+    description: 配置静态主机名到IP的映射
+    source: netops_toolkit
+    example: ip host server1 192.168.1.100
+  - command: show hosts
+    syntax: show hosts
+    description: 查看主机名和DNS配置
+    source: netops_toolkit
+    example: show hosts
+- name: 以太网接口
+  commands:
+  - command: interface <interface>
+    syntax: interface <interface>
+    description: 进入指定接口配置模式
+    source: netops_toolkit
+    example: interface GigabitEthernet 0/1
+  - command: description <text>
+    syntax: description <text>
+    description: 为接口添加描述信息
+    source: netops_toolkit
+    example: description To-Server-Room
+  - command: no shutdown
+    syntax: no shutdown
+    description: 激活接口
+    source: netops_toolkit
+    example: no shutdown
+  - command: shutdown
+    syntax: shutdown
+    description: 关闭接口
+    source: netops_toolkit
+    example: shutdown
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip address <ip> <mask>'
+    description: 为三层接口配置IP地址
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      ip address 192.168.1.1 255.255.255.0'
+  - command: ip address <ip> <mask> secondary
+    syntax: ip address <ip> <mask> secondary
+    description: 为接口配置从IP地址
+    source: netops_toolkit
+    example: ip address 192.168.2.1 255.255.255.0 secondary
+  - command: no ip address
+    syntax: no ip address
+    description: 删除接口IP地址
+    source: netops_toolkit
+    example: no ip address
+  - command: speed <10|100|1000|auto>
+    syntax: speed <10|100|1000|auto>
+    description: 设置接口速率
+    source: netops_toolkit
+    example: speed 1000
+  - command: duplex <half|full|auto>
+    syntax: duplex <half|full|auto>
+    description: 设置接口双工模式
+    source: netops_toolkit
+    example: duplex full
+  - command: flowcontrol receive on
+    syntax: flowcontrol receive on
+    description: 启用流控功能
+    source: netops_toolkit
+    example: flowcontrol receive on
+  - command: mtu <bytes>
+    syntax: mtu <bytes>
+    description: 设置接口MTU值
+    source: netops_toolkit
+    example: mtu 9000
+  - command: show interface <interface>
+    syntax: show interface <interface>
+    description: 查看接口详细状态
+    source: netops_toolkit
+    example: show interface GigabitEthernet 0/1
+  - command: show interface brief
+    syntax: show interface brief
+    description: 查看所有接口简要状态
+    source: netops_toolkit
+    example: show interface brief
+  - command: interface range <interface-range>
+    syntax: interface range <interface-range>
+    description: 批量进入多个接口进行配置
+    source: netops_toolkit
+    example: interface range GigabitEthernet 0/1-10
+  - command: clear counters <interface>
+    syntax: clear counters <interface>
+    description: 清除接口统计计数器
+    source: netops_toolkit
+    example: clear counters GigabitEthernet 0/1
+  - command: interface
+    syntax: interface <interface-type> <slot/port> [.<subif>]
+    description: 进入接口视图
+    example: interface GigabitEthernet 0/1
+    source: ai_knowledge
+  - command: speed
+    syntax: speed {auto|10|100|1000|10000}
+    description: 接口速率(Mbps)
+    source: ai_knowledge
+  - command: duplex
+    syntax: duplex {auto|full|half}
+    description: 双工模式
+    source: ai_knowledge
+  - command: ip address
+    syntax: ip address <ip-address> <subnet-mask>
+    description: 配置IP地址
+    example: ip address 192.168.1.1 255.255.255.0
+    source: ai_knowledge
+  - command: ip address dhcp
+    syntax: ip address dhcp [client-id <id> | hostname <host>]
+    description: DHCP获取IP地址
+    source: ai_knowledge
+  - command: show interfaces
+    syntax: show interfaces [<iface> | status | counters | description | switchport]
+    description: 接口详细状态
+    source: ai_knowledge
+  - command: show interfaces status
+    syntax: show interfaces status
+    description: 所有接口简要状态表
+    source: ai_knowledge
+  - command: show ip interface
+    syntax: show ip interface [brief | <iface>]
+    description: 三层接口IP状态
+    source: ai_knowledge
+  - command: test cable-diagnostics tdr
+    syntax: test cable-diagnostics tdr interface <iface>
+    description: TDR网线线序检测
+    source: ai_knowledge
+- name: VLAN接口
+  commands:
+  - command: vlan <id>
+    syntax: vlan <id>
+    description: 创建指定ID的VLAN
+    source: netops_toolkit
+    example: vlan 10
+  - command: vlan <id>
+    syntax: 'vlan <id>
+
+      name <name>'
+    description: 为VLAN设置名称
+    source: netops_toolkit
+    example: 'vlan 10
+
+      name Sales_Department'
+  - command: vlan range <id1-id2>
+    syntax: vlan range <id1-id2>
+    description: 批量创建连续VLAN
+    source: netops_toolkit
+    example: vlan range 10-20
+  - command: vlan <id1>,<id2>,<id3>
+    syntax: vlan <id1>,<id2>,<id3>
+    description: 批量创建多个不连续VLAN
+    source: netops_toolkit
+    example: vlan 10,20,30,40
+  - command: no vlan <id>
+    syntax: no vlan <id>
+    description: 删除指定VLAN
+    source: netops_toolkit
+    example: no vlan 10
+  - command: show vlan [brief]
+    syntax: show vlan [brief]
+    description: 查看VLAN信息
+    source: netops_toolkit
+    example: show vlan brief
+  - command: interface vlan <id>
+    syntax: interface vlan <id>
+    description: 创建VLAN三层接口(SVI)
+    source: netops_toolkit
+    example: interface vlan 10
+  - command: interface vlan <id>
+    syntax: 'interface vlan <id>
+
+      ip address <ip> <mask>'
+    description: 为VLAN接口配置IP地址
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      ip address 192.168.10.1 255.255.255.0'
+  - command: interface vlan <id>
+    syntax: 'interface vlan <id>
+
+      description <text>'
+    description: 为VLAN接口添加描述
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      description Gateway_for_VLAN10'
+  - command: interface vlan <id>
+    syntax: 'interface vlan <id>
+
+      no shutdown'
+    description: 激活VLAN接口
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      no shutdown'
+  - command: show interface vlan <id>
+    syntax: show interface vlan <id>
+    description: 查看VLAN接口状态
+    source: netops_toolkit
+    example: show interface vlan 10
+  - command: name (VLAN Ruijie)
+    syntax: name <vlan-name>
+    description: VLAN名称(VLAN配置下)
+    example: name Office_Net
+    source: ai_knowledge
+  - command: switchport mode
+    syntax: switchport mode {access|trunk|hybrid}
+    description: 接口VLAN模式(锐捷用switchport风格)
+    source: ai_knowledge
+  - command: switchport access vlan
+    syntax: switchport access vlan <vlan-id>
+    description: Access接口所属VLAN
+    example: switchport access vlan 10
+    source: ai_knowledge
+  - command: switchport trunk allowed vlan
+    syntax: switchport trunk allowed vlan {<vlan-list>|all|except <vlan-list>|remove <vlan-list>|add <vlan-list>}
+    description: Trunk接口允许的VLAN(支持add/remove操作)
+    example: switchport trunk allowed vlan add 20
+    source: ai_knowledge
+  - command: show vlan
+    syntax: show vlan [id <vlan-id> | brief | summary]
+    description: 显示VLAN配置和成员
+    source: ai_knowledge
+  - command: show interfaces switchport
+    syntax: show interfaces switchport [interface <iface>]
+    description: 显示接口VLAN模式和归属
+    source: ai_knowledge
+- name: 接口VLAN
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      switchport mode access
+
+      switchport access vlan <id>'
+    description: 配置接口为Access模式并加入VLAN
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      switchport mode access
+
+      switchport access vlan 10'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      switchport mode trunk
+
+      switchport trunk allowed vlan <ids>'
+    description: 配置接口为Trunk模式并允许指定VLAN
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/24
+
+      switchport mode trunk
+
+      switchport trunk allowed vlan 10,20,30'
+  - command: switchport trunk allowed vlan all
+    syntax: switchport trunk allowed vlan all
+    description: 配置Trunk允许所有VLAN通过
+    source: netops_toolkit
+    example: switchport trunk allowed vlan all
+  - command: switchport trunk allowed vlan add <id>
+    syntax: switchport trunk allowed vlan add <id>
+    description: 向Trunk添加VLAN
+    source: netops_toolkit
+    example: switchport trunk allowed vlan add 40
+  - command: switchport trunk allowed vlan remove <id>
+    syntax: switchport trunk allowed vlan remove <id>
+    description: 从Trunk移除VLAN
+    source: netops_toolkit
+    example: switchport trunk allowed vlan remove 40
+  - command: switchport trunk native vlan <id>
+    syntax: switchport trunk native vlan <id>
+    description: 设置Trunk接口Native VLAN
+    source: netops_toolkit
+    example: switchport trunk native vlan 99
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      switchport mode hybrid'
+    description: 配置接口为Hybrid模式
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      switchport mode hybrid'
+  - command: switchport hybrid untagged vlan <ids>
+    syntax: switchport hybrid untagged vlan <ids>
+    description: Hybrid接口剥离VLAN标签
+    source: netops_toolkit
+    example: switchport hybrid untagged vlan 10,20
+  - command: switchport hybrid tagged vlan <ids>
+    syntax: switchport hybrid tagged vlan <ids>
+    description: Hybrid接口保留VLAN标签
+    source: netops_toolkit
+    example: switchport hybrid tagged vlan 100
+  - command: switchport hybrid native vlan <id>
+    syntax: switchport hybrid native vlan <id>
+    description: 设置Hybrid接口PVID
+    source: netops_toolkit
+    example: switchport hybrid native vlan 10
+  - command: show interface <interface> switchport
+    syntax: show interface <interface> switchport
+    description: 查看接口VLAN配置详情
+    source: netops_toolkit
+    example: show interface GigabitEthernet 0/1 switchport
+- name: 链路聚合
+  commands:
+  - command: interface aggregateport <id>
+    syntax: interface aggregateport <id>
+    description: 创建链路聚合组
+    source: netops_toolkit
+    example: interface aggregateport 1
+  - command: interface aggregateport <id>
+    syntax: 'interface aggregateport <id>
+
+      aggregport mode active'
+    description: 配置聚合组为LACP主动模式
+    source: netops_toolkit
+    example: 'interface aggregateport 1
+
+      aggregport mode active'
+  - command: interface aggregateport <id>
+    syntax: 'interface aggregateport <id>
+
+      aggregport mode on'
+    description: 配置聚合组为静态聚合模式
+    source: netops_toolkit
+    example: 'interface aggregateport 1
+
+      aggregport mode on'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      port-group <id>'
+    description: 将物理端口加入聚合组
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      port-group 1'
+  - command: interface range <range>
+    syntax: 'interface range <range>
+
+      port-group <id>'
+    description: 批量将端口加入聚合组
+    source: netops_toolkit
+    example: 'interface range GigabitEthernet 0/1-4
+
+      port-group 1'
+  - command: aggregateport load-balance <mode>
+    syntax: aggregateport load-balance <mode>
+    description: 配置负载均衡模式
+    source: netops_toolkit
+    example: aggregateport load-balance src-dst-mac
+  - command: interface aggregateport <id>
+    syntax: 'interface aggregateport <id>
+
+      aggregport min-links <number>'
+    description: 设置最小活跃链路数
+    source: netops_toolkit
+    example: 'interface aggregateport 1
+
+      aggregport min-links 2'
+  - command: interface aggregateport <id>
+    syntax: 'interface aggregateport <id>
+
+      aggregport max-links <number>'
+    description: 设置最大活跃链路数
+    source: netops_toolkit
+    example: 'interface aggregateport 1
+
+      aggregport max-links 4'
+  - command: interface aggregateport <id>
+    syntax: 'interface aggregateport <id>
+
+      switchport mode trunk
+
+      switchport trunk allowed vlan <ids>'
+    description: 将聚合组配置为Trunk模式
+    source: netops_toolkit
+    example: 'interface aggregateport 1
+
+      switchport mode trunk
+
+      switchport trunk allowed vlan 10,20,30'
+  - command: interface aggregateport <id>
+    syntax: 'interface aggregateport <id>
+
+      ip address <ip> <mask>'
+    description: 为三层聚合组配置IP地址
+    source: netops_toolkit
+    example: 'interface aggregateport 1
+
+      ip address 192.168.1.1 255.255.255.0'
+  - command: show aggregateport <id> [summary]
+    syntax: show aggregateport <id> [summary]
+    description: 查看链路聚合状态
+    source: netops_toolkit
+    example: show aggregateport 1 summary
+  - command: show aggregateport summary
+    syntax: show aggregateport summary
+    description: 查看所有聚合组摘要
+    source: netops_toolkit
+    example: show aggregateport summary
+  - command: show aggregateport load-balance
+    syntax: show aggregateport load-balance
+    description: 查看当前负载均衡模式
+    source: netops_toolkit
+    example: show aggregateport load-balance
+- name: 静态路由
+  commands:
+  - command: ip route <network> <mask> <next-hop>
+    syntax: ip route <network> <mask> <next-hop>
+    description: 添加静态路由
+    source: netops_toolkit
+    example: ip route 192.168.100.0 255.255.255.0 10.0.0.1
+  - command: ip route 0.0.0.0 0.0.0.0 <gateway>
+    syntax: ip route 0.0.0.0 0.0.0.0 <gateway>
+    description: 配置默认路由
+    source: netops_toolkit
+    example: ip route 0.0.0.0 0.0.0.0 192.168.1.254
+  - command: ip route <network> <mask> <next-hop> <distance>
+    syntax: ip route <network> <mask> <next-hop> <distance>
+    description: 配置备份路由(管理距离越大优先级越低)
+    source: netops_toolkit
+    example: ip route 0.0.0.0 0.0.0.0 192.168.2.254 200
+  - command: no ip route <network> <mask>
+    syntax: no ip route <network> <mask>
+    description: 删除指定静态路由
+    source: netops_toolkit
+    example: no ip route 192.168.100.0 255.255.255.0
+  - command: show ip route
+    syntax: show ip route
+    description: 查看IP路由表
+    source: netops_toolkit
+    example: show ip route
+  - command: show ip route static
+    syntax: show ip route static
+    description: 只查看静态路由
+    source: netops_toolkit
+    example: show ip route static
+  - command: show ip route <network>
+    syntax: show ip route <network>
+    description: 查看特定网段的路由信息
+    source: netops_toolkit
+    example: show ip route 192.168.1.0
+- name: OSPF配置
+  commands:
+  - command: router ospf <process-id>
+    syntax: router ospf <process-id>
+    description: 启用OSPF路由进程
+    source: netops_toolkit
+    example: router ospf 1
+  - command: router ospf <process-id>
+    syntax: 'router ospf <process-id>
+
+      router-id <id>'
+    description: 配置OSPF Router ID
+    source: netops_toolkit
+    example: 'router ospf 1
+
+      router-id 1.1.1.1'
+  - command: router ospf <process-id>
+    syntax: 'router ospf <process-id>
+
+      network <network> <wildcard> area <area-id>'
+    description: 宣告OSPF网络
+    source: netops_toolkit
+    example: 'router ospf 1
+
+      network 192.168.0.0 0.0.255.255 area 0'
+  - command: area <area-id> authentication [message-digest]
+    syntax: area <area-id> authentication [message-digest]
+    description: 配置OSPF区域认证
+    source: netops_toolkit
+    example: 'router ospf 1
+
+      area 0 authentication message-digest'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip ospf authentication message-digest
+
+      ip ospf message-digest-key 1 md5 <key>'
+    description: 配置接口OSPF认证
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      ip ospf authentication message-digest
+
+      ip ospf message-digest-key 1 md5 OSPFKey123'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip ospf cost <cost>'
+    description: 配置OSPF接口开销值
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      ip ospf cost 10'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip ospf priority <priority>'
+    description: 配置接口OSPF DR选举优先级
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      ip ospf priority 100'
+  - command: router ospf <process-id>
+    syntax: 'router ospf <process-id>
+
+      passive-interface <interface>'
+    description: 配置被动接口不发送OSPF报文
+    source: netops_toolkit
+    example: 'router ospf 1
+
+      passive-interface vlan 10'
+  - command: router ospf <process-id>
+    syntax: 'router ospf <process-id>
+
+      default-information originate'
+    description: 向OSPF下发默认路由
+    source: netops_toolkit
+    example: 'router ospf 1
+
+      default-information originate'
+  - command: show ip ospf neighbor
+    syntax: show ip ospf neighbor
+    description: 查看OSPF邻居状态
+    source: netops_toolkit
+    example: show ip ospf neighbor
+  - command: show ip ospf database
+    syntax: show ip ospf database
+    description: 查看OSPF链路状态数据库
+    source: netops_toolkit
+    example: show ip ospf database
+  - command: show ip ospf interface
+    syntax: show ip ospf interface
+    description: 查看OSPF接口信息
+    source: netops_toolkit
+    example: show ip ospf interface
+  - command: show ip route ospf
+    syntax: show ip route ospf
+    description: 查看OSPF学习到的路由
+    source: netops_toolkit
+    example: show ip route ospf
+- name: BGP配置
+  commands:
+  - command: router bgp <as-number>
+    syntax: router bgp <as-number>
+    description: 启用BGP路由进程
+    source: netops_toolkit
+    example: router bgp 65001
+  - command: router bgp <as-number>
+    syntax: 'router bgp <as-number>
+
+      bgp router-id <id>'
+    description: 配置BGP Router ID
+    source: netops_toolkit
+    example: 'router bgp 65001
+
+      bgp router-id 1.1.1.1'
+  - command: router bgp <as-number>
+    syntax: 'router bgp <as-number>
+
+      neighbor <ip> remote-as <as-number>'
+    description: 配置BGP邻居
+    source: netops_toolkit
+    example: 'router bgp 65001
+
+      neighbor 192.168.1.2 remote-as 65002'
+  - command: neighbor <ip> description <desc>
+    syntax: neighbor <ip> description <desc>
+    description: 为BGP邻居添加描述
+    source: netops_toolkit
+    example: neighbor 192.168.1.2 description To-ISP
+  - command: router bgp <as-number>
+    syntax: 'router bgp <as-number>
+
+      network <network> mask <mask>'
+    description: 宣告BGP网络
+    source: netops_toolkit
+    example: 'router bgp 65001
+
+      network 192.168.0.0 mask 255.255.0.0'
+  - command: neighbor <ip> next-hop-self
+    syntax: neighbor <ip> next-hop-self
+    description: 向邻居通告路由时将下一跳设为自身
+    source: netops_toolkit
+    example: neighbor 192.168.1.2 next-hop-self
+  - command: clear ip bgp <neighbor> soft [in|out]
+    syntax: clear ip bgp <neighbor> soft [in|out]
+    description: 软复位BGP邻居
+    source: netops_toolkit
+    example: clear ip bgp 192.168.1.2 soft
+  - command: show ip bgp neighbors
+    syntax: show ip bgp neighbors
+    description: 查看BGP邻居状态
+    source: netops_toolkit
+    example: show ip bgp neighbors
+  - command: show ip bgp
+    syntax: show ip bgp
+    description: 查看BGP路由表
+    source: netops_toolkit
+    example: show ip bgp
+  - command: show ip route bgp
+    syntax: show ip route bgp
+    description: 查看BGP学习到的路由
+    source: netops_toolkit
+    example: show ip route bgp
+- name: RIP配置
+  commands:
+  - command: router rip
+    syntax: router rip
+    description: 启用RIP路由进程
+    source: netops_toolkit
+    example: router rip
+  - command: router rip
+    syntax: 'router rip
+
+      version <1|2>'
+    description: 设置RIP版本
+    source: netops_toolkit
+    example: 'router rip
+
+      version 2'
+  - command: router rip
+    syntax: 'router rip
+
+      network <network>'
+    description: 宣告RIP网络
+    source: netops_toolkit
+    example: 'router rip
+
+      network 192.168.1.0'
+  - command: router rip
+    syntax: 'router rip
+
+      passive-interface <interface>'
+    description: 配置被动接口不发送RIP更新
+    source: netops_toolkit
+    example: 'router rip
+
+      passive-interface vlan 10'
+  - command: router rip
+    syntax: 'router rip
+
+      default-information originate'
+    description: 向RIP下发默认路由
+    source: netops_toolkit
+    example: 'router rip
+
+      default-information originate'
+  - command: router rip
+    syntax: 'router rip
+
+      no auto-summary'
+    description: 关闭RIP自动汇总
+    source: netops_toolkit
+    example: 'router rip
+
+      no auto-summary'
+  - command: show ip route rip
+    syntax: show ip route rip
+    description: 查看RIP学习到的路由
+    source: netops_toolkit
+    example: show ip route rip
+  - command: show ip rip database
+    syntax: show ip rip database
+    description: 查看RIP数据库
+    source: netops_toolkit
+    example: show ip rip database
+- name: ACL配置
+  commands:
+  - command: ip access-list standard <name|number>
+    syntax: 'ip access-list standard <name|number>
+
+      permit|deny <source>'
+    description: 创建标准ACL(1-99)
+    source: netops_toolkit
+    example: 'ip access-list standard 1
+
+      permit 192.168.1.0 0.0.0.255'
+  - command: ip access-list extended <name|number>
+    syntax: 'ip access-list extended <name|number>
+
+      permit|deny <protocol> <src> <dst> [eq <port>]'
+    description: 创建扩展ACL(100-199)
+    source: netops_toolkit
+    example: 'ip access-list extended 100
+
+      permit tcp any any eq 80'
+  - command: ip access-list extended <name>
+    syntax: ip access-list extended <name>
+    description: 创建命名扩展ACL
+    source: netops_toolkit
+    example: 'ip access-list extended WEB_ACCESS
+
+      permit tcp any any eq 80'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip access-group <acl> in|out'
+    description: 在接口应用ACL
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      ip access-group 100 in'
+  - command: line vty 0 4
+    syntax: 'line vty 0 4
+
+      access-class <acl> in'
+    description: 限制VTY访问
+    source: netops_toolkit
+    example: 'line vty 0 4
+
+      access-class 1 in'
+  - command: show access-lists [name|number]
+    syntax: show access-lists [name|number]
+    description: 查看ACL配置
+    source: netops_toolkit
+    example: show access-lists
+  - command: show access-lists <name>
+    syntax: show access-lists <name>
+    description: 查看ACL匹配统计
+    source: netops_toolkit
+    example: show access-lists 100
+  - command: no ip access-list <standard|extended> <name|number>
+    syntax: no ip access-list <standard|extended> <name|number>
+    description: 删除指定ACL
+    source: netops_toolkit
+    example: no ip access-list extended 100
+  - command: ip access-list extended <name>
+    syntax: 'ip access-list extended <name>
+
+      deny ip host <ip> any'
+    description: 拒绝特定IP访问
+    source: netops_toolkit
+    example: 'ip access-list extended BLOCK_HOST
+
+      deny ip host 192.168.1.100 any'
+  - command: ip access-list extended <name>
+    syntax: 'ip access-list extended <name>
+
+      permit tcp any any eq <port>'
+    description: 允许特定端口流量
+    source: netops_toolkit
+    example: 'ip access-list extended WEB_ONLY
+
+      permit tcp any any eq 80
+
+      permit tcp any any eq 443'
+- name: 端口安全
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      switchport port-security'
+    description: 启用端口安全功能
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      switchport port-security'
+  - command: switchport port-security maximum <number>
+    syntax: switchport port-security maximum <number>
+    description: 限制最大MAC地址数
+    source: netops_toolkit
+    example: switchport port-security maximum 1
+  - command: switchport port-security violation protect|restrict|shutdown
+    syntax: switchport port-security violation protect|restrict|shutdown
+    description: 配置违规处理方式(保护/限制/关闭)
+    source: netops_toolkit
+    example: switchport port-security violation shutdown
+  - command: switchport port-security mac-address <mac>
+    syntax: switchport port-security mac-address <mac>
+    description: 配置静态安全MAC地址
+    source: netops_toolkit
+    example: switchport port-security mac-address 0011.2233.4455
+  - command: switchport port-security mac-address sticky
+    syntax: switchport port-security mac-address sticky
+    description: 启用粘性MAC学习
+    source: netops_toolkit
+    example: switchport port-security mac-address sticky
+  - command: switchport port-security aging time <minutes>
+    syntax: switchport port-security aging time <minutes>
+    description: 设置安全MAC老化时间
+    source: netops_toolkit
+    example: switchport port-security aging time 60
+  - command: show port-security [interface <interface>]
+    syntax: show port-security [interface <interface>]
+    description: 查看端口安全配置
+    source: netops_toolkit
+    example: show port-security interface GigabitEthernet 0/1
+  - command: show port-security address
+    syntax: show port-security address
+    description: 查看安全MAC地址表
+    source: netops_toolkit
+    example: show port-security address
+  - command: clear port-security sticky [interface <interface>]
+    syntax: clear port-security sticky [interface <interface>]
+    description: 清除粘性MAC地址
+    source: netops_toolkit
+    example: clear port-security sticky interface GigabitEthernet 0/1
+- name: DHCP Snooping
+  commands:
+  - command: ip dhcp snooping
+    syntax: ip dhcp snooping
+    description: 全局启用DHCP Snooping
+    source: netops_toolkit
+    example: ip dhcp snooping
+  - command: ip dhcp snooping vlan <vlan-id>
+    syntax: ip dhcp snooping vlan <vlan-id>
+    description: 在指定VLAN启用DHCP Snooping
+    source: netops_toolkit
+    example: ip dhcp snooping vlan 10,20,30
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip dhcp snooping trust'
+    description: 配置连接DHCP服务器的信任端口
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/24
+
+      ip dhcp snooping trust'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip dhcp snooping limit rate <rate>'
+    description: 限制DHCP请求包速率(pps)
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      ip dhcp snooping limit rate 100'
+  - command: ip dhcp snooping information option
+    syntax: ip dhcp snooping information option
+    description: 启用DHCP Option82功能
+    source: netops_toolkit
+    example: ip dhcp snooping information option
+  - command: show ip dhcp snooping binding
+    syntax: show ip dhcp snooping binding
+    description: 查看DHCP Snooping绑定表
+    source: netops_toolkit
+    example: show ip dhcp snooping binding
+  - command: show ip dhcp snooping
+    syntax: show ip dhcp snooping
+    description: 查看DHCP Snooping配置
+    source: netops_toolkit
+    example: show ip dhcp snooping
+- name: ARP安全
+  commands:
+  - command: arp <ip> <mac> arpa
+    syntax: arp <ip> <mac> arpa
+    description: 配置静态ARP绑定
+    source: netops_toolkit
+    example: arp 192.168.1.100 0011.2233.4455 arpa
+  - command: ip arp inspection vlan <vlan-id>
+    syntax: ip arp inspection vlan <vlan-id>
+    description: 在VLAN启用ARP检查
+    source: netops_toolkit
+    example: ip arp inspection vlan 10
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip arp inspection trust'
+    description: 配置ARP检查信任端口
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/24
+
+      ip arp inspection trust'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip arp inspection limit rate <rate>'
+    description: 限制ARP请求速率(pps)
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      ip arp inspection limit rate 100'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      arp protective'
+    description: 启用接口ARP防护功能
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      arp protective'
+  - command: arp gratuitous-check enable
+    syntax: arp gratuitous-check enable
+    description: 启用免费ARP检测
+    source: netops_toolkit
+    example: arp gratuitous-check enable
+  - command: show arp
+    syntax: show arp
+    description: 查看ARP表
+    source: netops_toolkit
+    example: show arp
+  - command: clear arp-cache
+    syntax: clear arp-cache
+    description: 清除ARP缓存
+    source: netops_toolkit
+    example: clear arp-cache
+- name: IPSG配置
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip verify source'
+    description: 启用IP源地址检查
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      ip verify source'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip verify source port-security'
+    description: 启用IP源防护结合端口安全
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      ip verify source port-security'
+  - command: ip source binding <mac> vlan <id> <ip> interface <interface>
+    syntax: ip source binding <mac> vlan <id> <ip> interface <interface>
+    description: 配置静态IP源绑定
+    source: netops_toolkit
+    example: ip source binding 0011.2233.4455 vlan 10 192.168.10.100 interface GigabitEthernet 0/1
+  - command: show ip verify source
+    syntax: show ip verify source
+    description: 查看IP源防护绑定表
+    source: netops_toolkit
+    example: show ip verify source
+  - command: show ip source binding
+    syntax: show ip source binding
+    description: 查看源绑定信息
+    source: netops_toolkit
+    example: show ip source binding
+- name: STP基础
+  commands:
+  - command: spanning-tree
+    syntax: spanning-tree
+    description: 全局启用生成树协议
+    source: netops_toolkit
+    example: spanning-tree
+  - command: no spanning-tree
+    syntax: no spanning-tree
+    description: 关闭生成树协议
+    source: netops_toolkit
+    example: no spanning-tree
+  - command: spanning-tree mode <stp|rstp|mstp>
+    syntax: spanning-tree mode <stp|rstp|mstp>
+    description: 设置生成树模式
+    source: netops_toolkit
+    example: spanning-tree mode rstp
+  - command: spanning-tree root primary|secondary
+    syntax: spanning-tree root primary|secondary
+    description: 配置交换机为根网桥或备份根
+    source: netops_toolkit
+    example: spanning-tree root primary
+  - command: spanning-tree priority <priority>
+    syntax: spanning-tree priority <priority>
+    description: 配置网桥优先级(0-61440, 步长4096)
+    source: netops_toolkit
+    example: spanning-tree priority 4096
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      spanning-tree port-priority <priority>'
+    description: 配置端口优先级(0-240, 步长16)
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      spanning-tree port-priority 128'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      spanning-tree cost <cost>'
+    description: 配置端口路径开销
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      spanning-tree cost 200000'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      spanning-tree portfast'
+    description: 配置端口快速进入转发状态
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      spanning-tree portfast'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      spanning-tree bpduguard enable'
+    description: 启用端口BPDU防护
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      spanning-tree bpduguard enable'
+  - command: spanning-tree portfast bpduguard default
+    syntax: spanning-tree portfast bpduguard default
+    description: 全局启用端口快速的BPDU防护
+    source: netops_toolkit
+    example: spanning-tree portfast bpduguard default
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      spanning-tree bpdufilter enable'
+    description: 启用BPDU过滤
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      spanning-tree bpdufilter enable'
+  - command: show spanning-tree
+    syntax: show spanning-tree
+    description: 查看生成树状态
+    source: netops_toolkit
+    example: show spanning-tree
+  - command: show spanning-tree interface <interface>
+    syntax: show spanning-tree interface <interface>
+    description: 查看接口STP状态
+    source: netops_toolkit
+    example: show spanning-tree interface GigabitEthernet 0/1
+  - command: spanning-tree mode
+    syntax: spanning-tree mode {stp|mstp|rstp}
+    description: STP协议模式
+    example: spanning-tree mode rstp
+    source: ai_knowledge
+  - command: spanning-tree enable
+    syntax: spanning-tree enable
+    description: 全局启用STP
+    source: ai_knowledge
+  - command: spanning-tree disable
+    syntax: spanning-tree disable
+    description: 禁用STP(全局或接口下)
+    source: ai_knowledge
+  - command: spanning-tree root primary
+    syntax: spanning-tree vlan <vlan-list> root primary
+    description: 设置主根桥(自动设最低优先级)
+    source: ai_knowledge
+  - command: spanning-tree root secondary
+    syntax: spanning-tree vlan <vlan-list> root secondary
+    description: 设置备根桥
+    source: ai_knowledge
+  - command: spanning-tree portfast
+    syntax: spanning-tree portfast [disable | bpdu-filter-default | bpduguard-default]
+    description: PortFast边缘端口(直连终端)
+    source: ai_knowledge
+  - command: spanning-tree bpduguard
+    syntax: spanning-tree bpduguard enable
+    description: BPDU保护(边缘端口收到BPDU则err-disable)
+    source: ai_knowledge
+  - command: spanning-tree guard root
+    syntax: spanning-tree guard root
+    description: 根保护(防非法Root桥)
+    source: ai_knowledge
+  - command: spanning-tree loopguard default
+    syntax: spanning-tree loopguard default
+    description: 环路保护(防单向链路故障)
+    source: ai_knowledge
+  - command: spanning-tree cost
+    syntax: spanning-tree cost <cost>
+    description: 接口路径开销
+    source: ai_knowledge
+  - command: spanning-tree port-priority
+    syntax: spanning-tree port-priority <priority>
+    description: 接口端口优先级(0-240,步长16)
+    source: ai_knowledge
+  - command: spanning-tree link-type
+    syntax: spanning-tree link-type {point-to-point|shared}
+    description: 手动设置链路类型
+    source: ai_knowledge
+  - command: instance (MSTP Ruijie)
+    syntax: instance <instance-id> vlan <vlan-list>
+    description: MSTI映射VLAN
+    source: ai_knowledge
+  - command: revision (MSTP)
+    syntax: revision <level>
+    description: MSTP修订级别
+    source: ai_knowledge
+  - command: show spanning-tree
+    syntax: show spanning-tree [summary | detail | active | mst]
+    description: STP拓扑和状态
+    source: ai_knowledge
+- name: MSTP配置
+  commands:
+  - command: spanning-tree mode mstp
+    syntax: spanning-tree mode mstp
+    description: 配置生成树模式为MSTP
+    source: netops_toolkit
+    example: spanning-tree mode mstp
+  - command: spanning-tree mst configuration
+    syntax: spanning-tree mst configuration
+    description: 进入MST配置模式
+    source: netops_toolkit
+    example: spanning-tree mst configuration
+  - command: spanning-tree mst configuration
+    syntax: 'spanning-tree mst configuration
+
+      name <name>'
+    description: 配置MST域名
+    source: netops_toolkit
+    example: 'spanning-tree mst configuration
+
+      name RG-MST'
+  - command: spanning-tree mst configuration
+    syntax: 'spanning-tree mst configuration
+
+      revision <level>'
+    description: 配置MST修订级别
+    source: netops_toolkit
+    example: 'spanning-tree mst configuration
+
+      revision 1'
+  - command: spanning-tree mst configuration
+    syntax: 'spanning-tree mst configuration
+
+      instance <instance-id> vlan <vlan-list>'
+    description: 将VLAN映射到MST实例
+    source: netops_toolkit
+    example: 'spanning-tree mst configuration
+
+      instance 1 vlan 10,20,30'
+  - command: spanning-tree mst <instance-id> priority <priority>
+    syntax: spanning-tree mst <instance-id> priority <priority>
+    description: 配置MST实例优先级
+    source: netops_toolkit
+    example: spanning-tree mst 1 priority 4096
+  - command: spanning-tree mst <instance-id> root primary
+    syntax: spanning-tree mst <instance-id> root primary
+    description: 配置实例为主根网桥
+    source: netops_toolkit
+    example: spanning-tree mst 1 root primary
+  - command: show spanning-tree mst configuration
+    syntax: show spanning-tree mst configuration
+    description: 查看MST配置信息
+    source: netops_toolkit
+    example: show spanning-tree mst configuration
+  - command: show spanning-tree mst <instance-id>
+    syntax: show spanning-tree mst <instance-id>
+    description: 查看指定MST实例状态
+    source: netops_toolkit
+    example: show spanning-tree mst 1
+- name: VRRP配置
+  commands:
+  - command: interface vlan <id>
+    syntax: 'interface vlan <id>
+
+      standby <group> ip <virtual-ip>'
+    description: 在接口启用VRRP并配置虚拟IP
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      standby 1 ip 192.168.10.254'
+  - command: standby <group> priority <priority>
+    syntax: standby <group> priority <priority>
+    description: 配置VRRP优先级(1-254)
+    source: netops_toolkit
+    example: standby 1 priority 150
+  - command: standby <group> preempt
+    syntax: standby <group> preempt
+    description: 启用抢占模式
+    source: netops_toolkit
+    example: standby 1 preempt
+  - command: standby <group> preempt delay <seconds>
+    syntax: standby <group> preempt delay <seconds>
+    description: 配置抢占延迟时间
+    source: netops_toolkit
+    example: standby 1 preempt delay 60
+  - command: standby <group> authentication <text|md5> <key>
+    syntax: standby <group> authentication <text|md5> <key>
+    description: 配置VRRP认证
+    source: netops_toolkit
+    example: standby 1 authentication md5 VRRPKey123
+  - command: standby <group> track <interface> decrement <value>
+    syntax: standby <group> track <interface> decrement <value>
+    description: 跟踪接口状态调整优先级
+    source: netops_toolkit
+    example: standby 1 track GigabitEthernet 0/1 decrement 50
+  - command: standby <group> timers <hello> <hold>
+    syntax: standby <group> timers <hello> <hold>
+    description: 配置VRRP通告间隔和保持时间
+    source: netops_toolkit
+    example: standby 1 timers 1 3
+  - command: show standby [brief]
+    syntax: show standby [brief]
+    description: 查看VRRP状态
+    source: netops_toolkit
+    example: show standby brief
+  - command: show standby <interface> <group>
+    syntax: show standby <interface> <group>
+    description: 查看指定接口VRRP详情
+    source: netops_toolkit
+    example: show standby vlan 10 1
+  - command: vrrp <vrid> ip
+    syntax: vrrp <vrid> ip <virtual-ip> [secondary]
+    description: 创建VRRP备份组和虚拟IP
+    example: vrrp 1 ip 192.168.1.254
+    source: ai_knowledge
+  - command: vrrp <vrid> priority
+    syntax: vrrp <vrid> priority <value>
+    description: VRRP优先级(默认100)
+    source: ai_knowledge
+  - command: vrrp <vrid> preempt
+    syntax: vrrp <vrid> preempt [delay <seconds>]
+    description: 抢占模式及延迟
+    source: ai_knowledge
+  - command: vrrp <vrid> preempt delay minimum
+    syntax: vrrp <vrid> preempt delay minimum <seconds>
+    description: 最小抢占延迟
+    source: ai_knowledge
+  - command: vrrp <vrid> track
+    syntax: vrrp <vrid> track {interface <iface> [decrement <pri>] | object <obj-id> [decrement <pri>]}
+    description: VRRP跟踪对象
+    source: ai_knowledge
+  - command: vrrp <vrid> timers advertise
+    syntax: vrrp <vrid> timers advertise <interval>
+    description: VRRP通告间隔(秒)
+    source: ai_knowledge
+  - command: vrrp <vrid> authentication
+    syntax: vrrp <vrid> authentication {text <pw> | md5 key-chain <chain> | md5 key-string <pw>}
+    description: VRRP认证
+    source: ai_knowledge
+  - command: show vrrp
+    syntax: show vrrp [brief | interface <iface>]
+    description: VRRP备份组状态
+    source: ai_knowledge
+- name: 堆叠配置
+  commands:
+  - command: stacking enable
+    syntax: stacking enable
+    description: 启用堆叠功能
+    source: netops_toolkit
+    example: stacking enable
+  - command: stacking priority <priority>
+    syntax: stacking priority <priority>
+    description: 配置堆叠主控选举优先级
+    source: netops_toolkit
+    example: stacking priority 200
+  - command: stacking member <member-id>
+    syntax: stacking member <member-id>
+    description: 配置堆叠成员编号
+    source: netops_toolkit
+    example: stacking member 1
+  - command: interface tengigabitethernet <slot>/<port>
+    syntax: 'interface tengigabitethernet <slot>/<port>
+
+      stack-port <id>'
+    description: 配置堆叠端口
+    source: netops_toolkit
+    example: 'interface tengigabitethernet 0/1
+
+      stack-port 1'
+  - command: show stacking
+    syntax: show stacking
+    description: 查看堆叠状态
+    source: netops_toolkit
+    example: show stacking
+  - command: show stacking members
+    syntax: show stacking members
+    description: 查看堆叠成员信息
+    source: netops_toolkit
+    example: show stacking members
+  - command: stacking merge
+    syntax: stacking merge
+    description: 合并堆叠配置
+    source: netops_toolkit
+    example: stacking merge
+- name: BFD配置
+  commands:
+  - command: bfd
+    syntax: bfd
+    description: 全局启用BFD功能
+    source: netops_toolkit
+    example: bfd
+  - command: bfd <session-name> bind peer-ip <ip> [interface <interface>]
+    syntax: bfd <session-name> bind peer-ip <ip> [interface <interface>]
+    description: 创建BFD会话
+    source: netops_toolkit
+    example: bfd TO-R1 bind peer-ip 192.168.1.1 interface vlan 10
+  - command: bfd <session-name>
+    syntax: "bfd <session-name>\n discriminator local <id>\n discriminator remote <id>\n min-rx-interval <ms>\n min-tx-interval <ms>\n detect-multiplier <value>"
+    description: 配置BFD会话参数
+    source: netops_toolkit
+    example: 'bfd TO-R1
+
+      discriminator local 1
+
+      discriminator remote 2
+
+      min-rx-interval 100
+
+      min-tx-interval 100
+
+      detect-multiplier 3'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      bfd enable'
+    description: 接口启用BFD与OSPF联动
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      bfd enable'
+  - command: standby <group> bfd
+    syntax: standby <group> bfd
+    description: VRRP启用BFD快速检测
+    source: netops_toolkit
+    example: standby 1 bfd
+  - command: show bfd session
+    syntax: show bfd session
+    description: 查看BFD会话状态
+    source: netops_toolkit
+    example: show bfd session
+  - command: show bfd
+    syntax: show bfd
+    description: 查看BFD配置信息
+    source: netops_toolkit
+    example: show bfd
+- name: 日志配置
+  commands:
+  - command: logging on
+    syntax: logging on
+    description: 启用系统日志功能
+    source: netops_toolkit
+    example: logging on
+  - command: logging host <ip>
+    syntax: logging host <ip>
+    description: 配置日志服务器地址
+    source: netops_toolkit
+    example: logging host 192.168.1.100
+  - command: logging trap <level>
+    syntax: logging trap <level>
+    description: 设置发送到服务器的日志级别(emergencies/alerts/critical/errors/warnings/notifications/informational/debugging)
+    source: netops_toolkit
+    example: logging trap informational
+  - command: logging source-interface <interface>
+    syntax: logging source-interface <interface>
+    description: 设置发送日志的源接口
+    source: netops_toolkit
+    example: logging source-interface vlan 1
+  - command: logging buffered <size>
+    syntax: logging buffered <size>
+    description: 配置日志缓冲区大小
+    source: netops_toolkit
+    example: logging buffered 65535
+  - command: logging console <level>
+    syntax: logging console <level>
+    description: 设置控制台日志输出级别
+    source: netops_toolkit
+    example: logging console warnings
+  - command: show logging
+    syntax: show logging
+    description: 查看系统日志
+    source: netops_toolkit
+    example: show logging
+  - command: clear logging
+    syntax: clear logging
+    description: 清除日志缓冲区
+    source: netops_toolkit
+    example: clear logging
+- name: SNMP配置
+  commands:
+  - command: snmp-server
+    syntax: snmp-server
+    description: 启用SNMP服务
+    source: netops_toolkit
+    example: snmp-server
+  - command: snmp-server community <string> ro
+    syntax: snmp-server community <string> ro
+    description: 配置SNMP只读团体字
+    source: netops_toolkit
+    example: snmp-server community public ro
+  - command: snmp-server community <string> rw
+    syntax: snmp-server community <string> rw
+    description: 配置SNMP读写团体字
+    source: netops_toolkit
+    example: snmp-server community private rw
+  - command: snmp-server contact <info>
+    syntax: 'snmp-server contact <info>
+
+      snmp-server location <location>'
+    description: 配置SNMP联系人和管理位置
+    source: netops_toolkit
+    example: 'snmp-server contact admin@example.com
+
+      snmp-server location Server_Room_A'
+  - command: snmp-server enable traps
+    syntax: snmp-server enable traps
+    description: 启用所有SNMP Trap
+    source: netops_toolkit
+    example: snmp-server enable traps
+  - command: snmp-server host <ip> traps <community>
+    syntax: snmp-server host <ip> traps <community>
+    description: 配置Trap接收服务器
+    source: netops_toolkit
+    example: snmp-server host 192.168.1.100 traps public
+  - command: snmp-server user <username> <group> auth [md5|sha] <auth-password> priv [des|aes] <priv-password>
+    syntax: snmp-server user <username> <group> auth [md5|sha] <auth-password> priv [des|aes] <priv-password>
+    description: 配置SNMPv3用户
+    source: netops_toolkit
+    example: snmp-server user snmpadmin snmpgroup auth sha AuthPass123 priv aes PrivPass123
+  - command: snmp-server group <groupname> v3 {noauth|auth|priv}
+    syntax: snmp-server group <groupname> v3 {noauth|auth|priv}
+    description: 配置SNMPv3组
+    source: netops_toolkit
+    example: snmp-server group snmpgroup v3 priv
+  - command: show snmp
+    syntax: show snmp
+    description: 查看SNMP配置和统计
+    source: netops_toolkit
+    example: show snmp
+- name: NTP配置
+  commands:
+  - command: ntp server <ip>
+    syntax: ntp server <ip>
+    description: 配置NTP时间服务器
+    source: netops_toolkit
+    example: ntp server 192.168.1.100
+  - command: ntp authenticate
+    syntax: 'ntp authenticate
+
+      ntp authentication-key <key> md5 <password>
+
+      ntp trusted-key <key>
+
+      ntp server <ip> key <key>'
+    description: 配置NTP密钥认证
+    source: netops_toolkit
+    example: 'ntp authenticate
+
+      ntp authentication-key 1 md5 NTPKey123
+
+      ntp trusted-key 1
+
+      ntp server 192.168.1.100 key 1'
+  - command: ntp source <interface>
+    syntax: ntp source <interface>
+    description: 配置NTP源接口
+    source: netops_toolkit
+    example: ntp source vlan 1
+  - command: clock timezone <name> <offset>
+    syntax: clock timezone <name> <offset>
+    description: 配置时区
+    source: netops_toolkit
+    example: clock timezone CST +8
+  - command: show ntp status
+    syntax: show ntp status
+    description: 查看NTP同步状态
+    source: netops_toolkit
+    example: show ntp status
+  - command: show ntp associations
+    syntax: show ntp associations
+    description: 查看NTP服务器关联
+    source: netops_toolkit
+    example: show ntp associations
+- name: NetStream配置
+  commands:
+  - command: ip netstream enable
+    syntax: ip netstream enable
+    description: 全局启用NetStream功能
+    source: netops_toolkit
+    example: ip netstream enable
+  - command: ip netstream export host <ip> <port>
+    syntax: ip netstream export host <ip> <port>
+    description: 配置NetStream数据输出目标
+    source: netops_toolkit
+    example: ip netstream export host 192.168.1.100 9996
+  - command: ip netstream export source <interface>
+    syntax: ip netstream export source <interface>
+    description: 配置NetStream输出源接口
+    source: netops_toolkit
+    example: ip netstream export source vlan 1
+  - command: ip netstream export version <5|9>
+    syntax: ip netstream export version <5|9>
+    description: 配置NetStream输出版本
+    source: netops_toolkit
+    example: ip netstream export version 9
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip netstream [in|out]'
+    description: 接口启用NetStream流量采集
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      ip netstream in'
+  - command: show ip netstream statistics
+    syntax: show ip netstream statistics
+    description: 查看NetStream统计信息
+    source: netops_toolkit
+    example: show ip netstream statistics
+- name: 优先级映射
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      mls qos trust cos'
+    description: 信任端口的CoS优先级
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      mls qos trust cos'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      mls qos trust dscp'
+    description: 信任端口的DSCP优先级
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      mls qos trust dscp'
+  - command: mls qos srr-queue output cos-map queue <queue-id> <cos-values>
+    syntax: mls qos srr-queue output cos-map queue <queue-id> <cos-values>
+    description: 配置CoS值到输出队列的映射
+    source: netops_toolkit
+    example: mls qos srr-queue output cos-map queue 1 0 1
+  - command: mls qos srr-queue output dscp-map queue <queue-id> <dscp-values>
+    syntax: mls qos srr-queue output dscp-map queue <queue-id> <dscp-values>
+    description: 配置DSCP值到输出队列的映射
+    source: netops_toolkit
+    example: mls qos srr-queue output dscp-map queue 1 0 8 16 24
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      mld qos cos <cos-value>'
+    description: 配置接口默认CoS值
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      mls qos cos 5'
+  - command: show mls qos interface <interface>
+    syntax: show mls qos interface <interface>
+    description: 查看接口QoS配置
+    source: netops_toolkit
+    example: show mls qos interface GigabitEthernet 0/1
+- name: 流量整形
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      traffic-shape group <acl> <bps> [burst-size]'
+    description: 对匹配ACL的流量进行整形
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      traffic-shape group 100 10000000'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      shape average <bps>'
+    description: 对端口流量进行整形
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      shape average 10000000'
+  - command: policy-map <policy-name>
+    syntax: 'policy-map <policy-name>
+
+      class <class-name>
+
+      shape average <bps>'
+    description: 在策略中配置流量整形
+    source: netops_toolkit
+    example: 'policy-map SHAPE-POLICY
+
+      class class-default
+
+      shape average 50000000'
+  - command: show traffic-shape [interface <interface>]
+    syntax: show traffic-shape [interface <interface>]
+    description: 查看流量整形统计
+    source: netops_toolkit
+    example: show traffic-shape interface GigabitEthernet 0/1
+  - command: rate-limit
+    syntax: rate-limit {input | output} <bps> [burst-normal <bytes>] [burst-max <bytes>] [conform-action {transmit | set-qos-mark <pri>}] [exceed-action {drop | set-qos-mark <pri>}]
+    description: 接口速率限制(单速双桶CAR)
+    example: rate-limit input 10000000 187500 375000 conform-action transmit exceed-action drop
+    source: ai_knowledge
+  - command: rate-limit output
+    syntax: rate-limit output <bps> [burst-normal <bytes>]
+    description: 出方向限速
+    source: ai_knowledge
+  - command: srr-queue bandwidth limit
+    syntax: srr-queue bandwidth limit <percent>
+    description: SRR队列带宽限制百分比
+    source: ai_knowledge
+  - command: srr-queue bandwidth shape
+    syntax: srr-queue bandwidth shape <weight1> <weight2> <weight3> <weight4>
+    description: SRR队列整形权重
+    source: ai_knowledge
+  - command: srr-queue bandwidth share
+    syntax: srr-queue bandwidth share <weight1> <weight2> <weight3> <weight4>
+    description: SRR队列共享权重
+    source: ai_knowledge
+  - command: mls qos trust
+    syntax: mls qos trust {cos | dscp | ip-precedence}
+    description: QoS信任模式
+    source: ai_knowledge
+  - command: mls qos cos
+    syntax: mls qos cos <cos-value>
+    description: 默认CoS优先级
+    source: ai_knowledge
+  - command: class-map
+    syntax: class-map [match-all | match-any] <class-name>
+    description: 创建流分类(Class Map)
+    source: ai_knowledge
+  - command: match
+    syntax: match {access-group {name <acl> | <acl-num>} | ip dscp <dscp> | ip precedence <prec> | vlan <vlan>}
+    description: 流分类匹配规则
+    source: ai_knowledge
+  - command: policy-map
+    syntax: policy-map <policy-name>
+    description: 创建流策略(Policy Map)
+    source: ai_knowledge
+  - command: class (Policy)
+    syntax: class {<class-name> | class-default}
+    description: 策略中关联分类
+    source: ai_knowledge
+  - command: police
+    syntax: police cir <bps> bc <bytes> [pir <pbs>] [conform-action <act>] [exceed-action <act>] [violate-action <act>]
+    description: 流策略中CAR限速
+    source: ai_knowledge
+  - command: set
+    syntax: set {dscp <dscp> | ip precedence <prec> | cos <cos>}
+    description: 流策略中重标记
+    source: ai_knowledge
+  - command: drop
+    syntax: drop
+    description: 流策略丢弃匹配流量
+    source: ai_knowledge
+  - command: service-policy
+    syntax: service-policy {input | output} <policy-name>
+    description: 接口应用QoS策略
+    source: ai_knowledge
+  - command: show policy-map
+    syntax: show policy-map [<policy-name>]
+    description: QoS策略配置
+    source: ai_knowledge
+- name: 拥塞管理
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      priority-queue out'
+    description: 启用接口优先级队列
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      priority-queue out'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      srr-queue bandwidth shape <weight1> <weight2> ...'
+    description: 配置队列带宽分配比例
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      srr-queue bandwidth shape 10 20 30 40'
+  - command: policy-map <policy-name>
+    syntax: 'policy-map <policy-name>
+
+      class <class-name>
+
+      police <bps> <burst> conform-action transmit exceed-action drop'
+    description: 配置流量限速策略
+    source: netops_toolkit
+    example: 'policy-map LIMIT-POLICY
+
+      class class-default
+
+      police 10000000 10000 conform-action transmit exceed-action drop'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      service-policy {input|output} <policy-name>'
+    description: 在接口应用QoS策略
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      service-policy input LIMIT-POLICY'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      random-detect'
+    description: 启用加权随机早期检测
+    source: netops_toolkit
+    example: 'interface GigabitEthernet 0/1
+
+      random-detect'
+  - command: show policy-map interface <interface>
+    syntax: show policy-map interface <interface>
+    description: 查看接口QoS策略统计
+    source: netops_toolkit
+    example: show policy-map interface GigabitEthernet 0/1
+- name: 基础配置
+  commands:
+  - command: ipv6 unicast-routing
+    syntax: ipv6 unicast-routing
+    description: 启用IPv6单播路由功能
+    source: netops_toolkit
+    example: ipv6 unicast-routing
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ipv6 address <ipv6-address>/<prefix-length>'
+    description: 配置接口IPv6地址
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      ipv6 address 2001:db8::1/64'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ipv6 address fe80::1 link-local'
+    description: 配置IPv6链路本地地址
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      ipv6 address fe80::1 link-local'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ipv6 address autoconfig'
+    description: 启用无状态地址自动配置
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      ipv6 address autoconfig'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ipv6 neighbor <ipv6-address> <mac>'
+    description: 配置静态IPv6邻居
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      ipv6 neighbor 2001:db8::100 0011.2233.4455'
+  - command: show ipv6 interface [brief]
+    syntax: show ipv6 interface [brief]
+    description: 查看IPv6接口信息
+    source: netops_toolkit
+    example: show ipv6 interface brief
+  - command: show ipv6 neighbors
+    syntax: show ipv6 neighbors
+    description: 查看IPv6邻居表
+    source: netops_toolkit
+    example: show ipv6 neighbors
+- name: IPv6路由
+  commands:
+  - command: ipv6 route <prefix>/<length> <next-hop>
+    syntax: ipv6 route <prefix>/<length> <next-hop>
+    description: 添加IPv6静态路由
+    source: netops_toolkit
+    example: ipv6 route 2001:db8:1::/64 2001:db8::254
+  - command: ipv6 route ::/0 <next-hop>
+    syntax: ipv6 route ::/0 <next-hop>
+    description: 配置IPv6默认路由
+    source: netops_toolkit
+    example: ipv6 route ::/0 2001:db8::254
+  - command: ipv6 router ospf <process-id>
+    syntax: ipv6 router ospf <process-id>
+    description: 启用OSPFv3进程
+    source: netops_toolkit
+    example: 'ipv6 router ospf 1
+
+      router-id 1.1.1.1'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ipv6 ospf <process-id> area <area-id>'
+    description: 接口启用OSPFv3
+    source: netops_toolkit
+    example: 'interface vlan 10
+
+      ipv6 ospf 1 area 0'
+  - command: show ipv6 route
+    syntax: show ipv6 route
+    description: 查看IPv6路由表
+    source: netops_toolkit
+    example: show ipv6 route
+  - command: show ipv6 ospf neighbor
+    syntax: show ipv6 ospf neighbor
+    description: 查看OSPFv3邻居
+    source: netops_toolkit
+    example: show ipv6 ospf neighbor
+- name: 用户与AAA
+  commands:
+  - command: username
+    syntax: username <name> privilege <level> [encryption-type <type>] password {0|7} <password>
+    description: 创建本地用户并设置密码和权限级别
+    example: username admin privilege 15 password 0 Admin@123
+    source: ai_knowledge
+  - command: username (privilege)
+    syntax: username <name> privilege <0-15>
+    description: 修改用户权限级别
+    source: ai_knowledge
+  - command: aaa new-model
+    syntax: aaa new-model
+    description: 启用AAA认证新模式
+    source: ai_knowledge
+  - command: aaa authentication login
+    syntax: aaa authentication login {default | <list-name>} method {local | group {radius | tacacs+}}
+    description: AAA登录认证方法列表
+    source: ai_knowledge
+  - command: aaa authorization exec
+    syntax: aaa authorization exec {default | <name>} method local
+    description: AAA授权方法
+    source: ai_knowledge
+  - command: aaa accounting exec
+    syntax: aaa accounting exec {default | <name>} {start-stop | none} group {radius | tacacs+}
+    description: AAA计费方法
+    source: ai_knowledge
+  - command: radius-server host
+    syntax: radius-server host <ip> [auth-port <port>] [acct-port <port>] [key <shared-key>]
+    description: 配置RADIUS服务器
+    source: ai_knowledge
+  - command: radius-server key
+    syntax: radius-server key <string>
+    description: 全局RADIUS共享密钥
+    source: ai_knowledge
+  - command: radius-server timeout
+    syntax: radius-server timeout <seconds>
+    description: RADIUS服务器超时时间
+    source: ai_knowledge
+  - command: radius-server retransmit
+    syntax: radius-server retransmit <retries>
+    description: RADIUS请求重传次数
+    source: ai_knowledge
+  - command: tacacs-server host
+    syntax: tacacs-server host <ip> [key <key>]
+    description: 配置TACACS+服务器
+    source: ai_knowledge
+  - command: line console
+    syntax: line console <start> <end>
+    description: 进入Console线路配置
+    source: ai_knowledge
+  - command: line vty
+    syntax: line vty <start> <end>
+    description: 进入VTY远程登录线路配置
+    example: line vty 0 4
+    source: ai_knowledge
+  - command: login
+    syntax: login [local]
+    description: 启用登录认证(本地用户)
+    source: ai_knowledge
+  - command: password (line)
+    syntax: password {0|7|type <type>} <password>
+    description: 线路密码(Console/VTY)
+    source: ai_knowledge
+  - command: privilege level
+    syntax: privilege level <0-15>
+    description: 线路特权级别
+    source: ai_knowledge
+  - command: show users
+    syntax: show users [all]
+    description: 在线用户列表
+    source: ai_knowledge
+- name: SSH/Telnet/Console
+  commands:
+  - command: crypto key generate rsa
+    syntax: crypto key generate rsa [modulus {512|1024|2048}]
+    description: 生成本地RSA密钥对(SSH必需)
+    source: ai_knowledge
+  - command: ip ssh port
+    syntax: ip ssh port <port-number>
+    description: SSH服务端口
+    example: ip ssh port 2222
+    source: ai_knowledge
+  - command: ip ssh version
+    syntax: ip ssh version {1|2|all}
+    description: SSH协议版本
+    source: ai_knowledge
+  - command: ip ssh time-out
+    syntax: ip ssh time-out <seconds>
+    description: SSH登录超时时间
+    source: ai_knowledge
+  - command: transport input
+    syntax: transport input {all|ssh|telnet|none}
+    description: VTY允许的传输协议
+    example: transport input ssh telnet
+    source: ai_knowledge
+  - command: session-timeout
+    syntax: session-timeout <minutes> [output]
+    description: 会话空闲超时自动注销
+    source: ai_knowledge
+  - command: exec-timeout
+    syntax: exec-timeout <minutes> [<seconds>]
+    description: 执行模式空闲超时
+    source: ai_knowledge
+  - command: terminal length
+    syntax: terminal length <lines>
+    description: 终端显示行数(0=不分页)
+    source: ai_knowledge
+  - command: history size
+    syntax: history size <size>
+    description: 命令历史记录大小
+    source: ai_knowledge
+- name: 路由配置
+  commands:
+  - command: ip route
+    syntax: ip route <dest-ip> <mask> {<next-hop>|<iface>} [<distance>] [tag <tag>]
+    description: 静态路由
+    example: ip route 0.0.0.0 0.0.0.0 192.168.1.254
+    source: ai_knowledge
+  - command: no ip route
+    syntax: no ip route <dest-ip> <mask> {<next-hop>|<iface>}
+    description: 删除静态路由
+    source: ai_knowledge
+  - command: router ospf
+    syntax: router ospf <process-id> [vrf <vrf>]
+    description: 启动OSPF进程
+    example: router ospf 1
+    source: ai_knowledge
+  - command: router-id
+    syntax: router-id <router-id>
+    description: OSPF Router-ID(OSPF路由器配置下)
+    source: ai_knowledge
+  - command: network (OSPF Ruijie)
+    syntax: network <ip-address> <wildcard-mask> area <area-id>
+    description: OSPF宣告网段
+    example: network 192.168.1.0 0.0.0.255 area 0
+    source: ai_knowledge
+  - command: area (OSPF Ruijie)
+    syntax: area <area-id> [authentication message-digest] [stub | nssa]
+    description: OSPF区域属性
+    source: ai_knowledge
+  - command: auto-cost reference-bandwidth
+    syntax: auto-cost reference-bandwidth <mbps>
+    description: OSPF参考带宽(默认100Mbps)
+    source: ai_knowledge
+  - command: ip ospf cost
+    syntax: ip ospf cost <cost-value>
+    description: 接口OSPF开销值
+    source: ai_knowledge
+  - command: ip ospf priority
+    syntax: ip ospf priority <priority>
+    description: DR/BDR选举优先级
+    source: ai_knowledge
+  - command: ip ospf hello-interval
+    syntax: ip ospf hello-interval <seconds>
+    description: Hello报文间隔
+    source: ai_knowledge
+  - command: ip ospf dead-interval
+    syntax: ip ospf dead-interval <seconds>
+    description: 邻居死亡时间
+    source: ai_knowledge
+  - command: ip ospf network type
+    syntax: ip ospf network type {broadcast|point-to-point|point-to-multipoint|non-broadcast}
+    description: OSPF网络类型
+    source: ai_knowledge
+  - command: ip ospf authentication
+    syntax: ip ospf authentication {message-digest-key <id> md5 <pw> | text <pw>}
+    description: OSPF接口认证
+    source: ai_knowledge
+  - command: neighbor remote-as
+    syntax: neighbor <ip> remote-as <as-num>
+    description: BGP邻居及其AS号
+    source: ai_knowledge
+  - command: neighbor ebgp-multihop
+    syntax: neighbor <ip> ebgp-multihop <hop-count>
+    description: EBGP多跳连接
+    source: ai_knowledge
+  - command: neighbor password
+    syntax: neighbor <ip> password <password>
+    description: BGP MD5认证密码
+    source: ai_knowledge
+  - command: neighbor activate
+    syntax: neighbor <ip> activate
+    description: 激活BGP邻居(IPv4地址族下)
+    source: ai_knowledge
+  - command: network (BGP Ruijie)
+    syntax: network <prefix> mask <mask-len>
+    description: BGP宣告网络
+    source: ai_knowledge
+  - command: redistribute
+    syntax: redistribute <protocol> [process <pid>] [route-map <map>]
+    description: BGP引入其他协议路由
+    source: ai_knowledge
+  - command: default-information originate
+    syntax: default-information originate [always]
+    description: BGP通告默认路由
+    source: ai_knowledge
+  - command: show ip route
+    syntax: show ip route [<network> [mask]] [static | connected | ospf | bgp]
+    description: IPv4路由表
+    source: ai_knowledge
+  - command: show ip ospf neighbor
+    syntax: show ip ospf neighbor [detail | brief]
+    description: OSPF邻居状态
+    source: ai_knowledge
+  - command: show ip bgp summary
+    syntax: show ip bgp summary
+    description: BGP邻居汇总
+    source: ai_knowledge
+  - command: show ip bgp
+    syntax: show ip bgp [regexp <pattern> | neighbors <ip> advertised-routes]
+    description: BGP路由表
+    source: ai_knowledge
+- name: 安全配置
+  commands:
+  - command: access-list
+    syntax: access-list {standard | extended} <acl-number> {{permit|deny} {source <src> [wildcard <mask>]} | {protocol {tcp|udp|icmp} source <src> destination <dst> [eq <port>]}}
+    description: 创建ACL(标准1-99/1300-1999,扩展100-199/2000-2699)
+    example: access-list extended 101 permit tcp any any eq 80
+    source: ai_knowledge
+  - command: ip access-group
+    syntax: ip access-group {<acl-num> | name <acl-name>} {in | out}
+    description: 接口应用ACL过滤流量
+    source: ai_knowledge
+  - command: mac access-list extended
+    syntax: mac access-list extended <name>
+    description: 扩展MAC ACL(基于源目MAC/VLAN/CoS等)
+    source: ai_knowledge
+  - command: port-security
+    syntax: port-security [action {shutdown|protect|restrict}]
+    description: 启用端口安全及违例动作
+    source: ai_knowledge
+  - command: port-security maximum
+    syntax: port-security maximum <num>
+    description: 最大学习MAC数
+    source: ai_knowledge
+  - command: port-security mac-address sticky
+    syntax: port-security mac-address sticky [mac-address <mac>]
+    description: Sticky MAC绑定学习
+    source: ai_knowledge
+  - command: port-security violation
+    syntax: port-security violation {protect|restrict|shutdown}
+    description: MAC越界保护动作
+    source: ai_knowledge
+  - command: mac-address-table static
+    syntax: mac-address-table static <mac> vlan <vlan-id> interface <iface>
+    description: 静态MAC表项
+    source: ai_knowledge
+  - command: mac-address-table blackhole
+    syntax: mac-address-table blackhole <mac> vlan <vlan-id>
+    description: 黑洞MAC
+    source: ai_knowledge
+  - command: dot1x system-auth-control
+    syntax: dot1x system-auth-control [port-auto | mac-auth-only]
+    description: 全局启用802.1X认证
+    source: ai_knowledge
+  - command: dot1x port-control
+    syntax: dot1x port-control {auto | force-authorized | force-unauthorized}
+    description: 802.1X端口控制方式
+    source: ai_knowledge
+  - command: dot1x timeout
+    syntax: dot1x timeout {quiet-period | re-auth-period | tx-period | supp-timeout | server-timeout} <seconds>
+    description: 802.1X定时器参数
+    source: ai_knowledge
+  - command: dot1x max-user
+    syntax: dot1x max-user <count>
+    description: 单端口最大用户数
+    source: ai_knowledge
+  - command: dot1x port-method
+    syntax: dot1x port-method {mac-based | port-based}
+    description: 802.1X控制粒度
+    source: ai_knowledge
+  - command: arp inspection enable
+    syntax: arp inspection enable
+    description: 全局启用ARP Inspection(DAI)
+    source: ai_knowledge
+  - command: arp inspection trust
+    syntax: arp inspection trust
+    description: ARP Inspection信任接口
+    source: ai_knowledge
+  - command: ip dhcp snooping trust
+    syntax: ip dhcp snooping trust
+    description: DHCP Snooping信任接口
+    source: ai_knowledge
+  - command: storm-control
+    syntax: storm-control {broadcast | multicast | unicast} level {bps <rate> | pps <pps> | percent <%>}
+    description: 风暴抑制阈值(支持bps/pps/百分比)
+    source: ai_knowledge
+  - command: storm-control action
+    syntax: storm-control action {shutdown | trap}
+    description: 风暴抑制动作
+    source: ai_knowledge
+  - command: ip verify source
+    syntax: ip verify source [vlan dhcp-snooping] [port-security]
+    description: IPSG源IP验证
+    source: ai_knowledge
+  - command: ip source binding
+    syntax: ip source binding ip-address <ip> mac-address <mac> [vlan <vlan-id>]
+    description: IP+MAC静态绑定
+    source: ai_knowledge
+  - command: show access-lists
+    syntax: show access-lists [<acl-num> | summary]
+    description: ACL配置和统计
+    source: ai_knowledge
+  - command: show port-security
+    syntax: show port-security [address | interface <iface>]
+    description: 端口安全状态
+    source: ai_knowledge
+- name: 接口与聚合
+  commands:
+  - command: interface aggregateport
+    syntax: interface aggregateport <agg-id> [{mode {on|lacp-active|lacp-passive}}]
+    description: 创建聚合接口(锐捷叫AggregatePort)
+    example: interface aggregateport 1 mode lacp-active
+    source: ai_knowledge
+  - command: port-group
+    syntax: port-group <agg-id> [mode {on|active|passive}]
+    description: 物理接口加入聚合组
+    example: port-group 1 mode lacp-active
+    source: ai_knowledge
+  - command: lacp system-priority
+    syntax: lacp system-priority <priority>
+    description: LACP系统优先级
+    source: ai_knowledge
+  - command: lacp port-priority
+    syntax: lacp port-priority <priority>
+    description: LACP端口优先级
+    source: ai_knowledge
+  - command: lacp fast-switchover
+    syntax: lacp fast-switchover
+    description: LACP快速切换
+    source: ai_knowledge
+  - command: lldp run
+    syntax: lldp run
+    description: 全局启用LLDP
+    source: ai_knowledge
+  - command: lldp enable
+    syntax: lldp enable [tx-rx | tx | rx]
+    description: 接口LLDP工作模式
+    source: ai_knowledge
+  - command: lldp timer
+    syntax: lldp timer {tx-hold <multiplier> | tx-interval <sec> | reinit-delay <sec>}
+    description: LLDP定时器参数
+    source: ai_knowledge
+  - command: poe legacy enable
+    syntax: poe legacy enable
+    description: PoE Legacy兼容模式
+    source: ai_knowledge
+  - command: poe mode
+    syntax: poe mode {auto | static}
+    description: PoE供电模式
+    source: ai_knowledge
+  - command: power inline
+    syntax: power inline {auto | never | static}
+    description: 接口PoE供电控制
+    source: ai_knowledge
+  - command: show lldp neighbors
+    syntax: show lldp neighbors [detail | interface <iface>]
+    description: LLDP邻居信息
+    source: ai_knowledge
+  - command: show power inline
+    syntax: show power inline [interface <iface>]
+    description: PoE供电状态
+    source: ai_knowledge
+- name: 端口隔离与环路检测
+  commands:
+  - command: switchport protected
+    syntax: switchport protected
+    description: 启用端口隔离(同VLAN内隔离)
+    source: ai_knowledge
+  - command: switchport isolate
+    syntax: switchport isolate [group <group-id>]
+    description: 隔离组端口隔离
+    source: ai_knowledge
+  - command: loopback-detection enable
+    syntax: loopback-detection enable
+    description: 全局启用环路检测
+    source: ai_knowledge
+  - command: loopback-detection interval-time
+    syntax: loopback-detection interval-time <seconds>
+    description: 环路检测间隔
+    source: ai_knowledge
+  - command: loopback-detection control
+    syntax: loopback-detect control {block | shutdown | learning | nolearning}
+    description: 环路检测动作
+    source: ai_knowledge
+  - command: rmon event
+    syntax: rmon event <id> log owner <owner>
+    description: RMON事件定义(环路检测告警)
+    source: ai_knowledge
+- name: 服务配置(NTP/SNMP/DNS/DHCP/日志)
+  commands:
+  - command: ntp server
+    syntax: ntp server <ip> [prefer] [key <key-id>]
+    description: NTP服务器
+    example: ntp server 192.168.1.1 prefer
+    source: ai_knowledge
+  - command: ntp authenticate
+    syntax: ntp authenticate
+    description: 启用NTP认证
+    source: ai_knowledge
+  - command: ntp authentication-key
+    syntax: ntp authentication-key <id> md5 <password>
+    description: NTP认证密钥
+    source: ai_knowledge
+  - command: ntp master
+    syntax: ntp master [<stratum>]
+    description: 本地时钟作为NTP主时钟
+    source: ai_knowledge
+  - command: snmp-server community
+    syntax: snmp-server community <community-string> {ro | rw} [ipv6 | acl <acl>]
+    description: SNMP团体名(ro=只读/rw=读写)
+    source: ai_knowledge
+  - command: snmp-server location
+    syntax: snmp-server location <location-text>
+    description: 设备位置(sysLocation)
+    source: ai_knowledge
+  - command: snmp-server contact
+    syntax: snmp-server contact <contact-text>
+    description: 联系信息(sysContact)
+    source: ai_knowledge
+  - command: snmp-server host
+    syntax: snmp-server host <ip> {traps | informs} version {1|2c|3} <community> [udp-port <port>]
+    description: SNMP Trap目标主机
+    source: ai_knowledge
+  - command: snmp-server enable traps
+    syntax: snmp-server enable traps [notification-type]
+    description: 启用SNMP Trap通知
+    source: ai_knowledge
+  - command: snmp-server enable
+    syntax: snmp-server enable
+    description: 启用SNMP Agent
+    source: ai_knowledge
+  - command: logging host
+    syntax: logging host <server-ip> [facility <facility>]
+    description: Syslog日志服务器
+    source: ai_knowledge
+  - command: logging buffered
+    syntax: logging buffered [size <bytes>] [severity-level <level>]
+    description: 日志缓冲区大小和记录级别
+    source: ai_knowledge
+  - command: logging console
+    syntax: logging console [severity-level <level>]
+    description: 控制台日志级别
+    source: ai_knowledge
+  - command: service dhcp
+    syntax: service dhcp
+    description: 全局启用DHCP服务
+    source: ai_knowledge
+  - command: ip dhcp excluded-address
+    syntax: ip dhcp excluded-address <low-ip> [high-ip]
+    description: DHCP排除不分配的IP段
+    source: ai_knowledge
+  - command: ip dns server
+    syntax: ip dns server <dns-ip>
+    description: DNS解析服务器
+    source: ai_knowledge
+  - command: show ntp associations
+    syntax: show ntp associations [detail]
+    description: NTP同步关联状态
+    source: ai_knowledge
+  - command: show snmp
+    syntax: show snmp [community | engineID | group | host | user | view]
+    description: SNMP配置信息
+    source: ai_knowledge
+  - command: show ip dhcp binding
+    syntax: show ip dhcp binding [<ip> | <mac>]
+    description: DHCP地址绑定表
+    source: ai_knowledge
+  - command: show logging
+    syntax: show logging [last <lines> | reverse]
+    description: 日志缓冲区内容
+    source: ai_knowledge
+- name: NAT与网络地址转换
+  commands:
+  - command: ip nat pool
+    syntax: ip nat pool <pool-name> <start-ip> <end-ip> {netmask <mask> | prefix-length <len>}
+    description: NAT地址池(公网IP范围)
+    source: ai_knowledge
+  - command: ip nat inside source list
+    syntax: ip nat inside source list <acl-num> pool <pool-name> [overload]
+    description: PAT端口复用(SNAT overload)
+    source: ai_knowledge
+  - command: ip nat inside source static
+    syntax: ip nat inside source static <local-ip> <global-ip>
+    description: 静态一对一NAT
+    source: ai_knowledge
+  - command: ip nat inside destination list
+    syntax: ip nat inside destination list <acl-num> pool <pool-name>
+    description: DNAT目的地址转换
+    source: ai_knowledge
+  - command: ip nat service
+    syntax: ip nat service {tcp | udp} <global-ip> <global-port> <local-ip> <local-port>
+    description: DNAT端口映射(发布内部服务器)
+    source: ai_knowledge
+  - command: show ip nat translations
+    syntax: show ip nat translations [verbose | protocol {tcp | udp} | icmp]
+    description: NAT转换表
+    source: ai_knowledge
+  - command: show ip nat statistics
+    syntax: show ip nat statistics
+    description: NAT统计信息
+    source: ai_knowledge
+cases:
+- title: 接入交换机基础配置
+  description: 接入层交换机初始化配置案例，包含VLAN划分、管理IP配置、远程管理等
+  steps:
+  - configure terminal
+  - hostname RG-Access-SW-01
+  - vlan 10
+  - ' name Sales_Department'
+  - vlan 20
+  - ' name Engineering_Department'
+  - vlan 30
+  - ' name Management'
+  - interface vlan 30
+  - ' ip address 192.168.30.1 255.255.255.0'
+  - interface range GigabitEthernet 0/1-10
+  - ' switchport mode access'
+  - ' switchport access vlan 10'
+  - interface range GigabitEthernet 0/11-20
+  - ' switchport mode access'
+  - ' switchport access vlan 20'
+  - ip route 0.0.0.0 0.0.0.0 192.168.30.254
+  - username admin privilege 15 secret Admin@123
+  - ip ssh version 2
+  - crypto key generate rsa modulus 2048
+  - line vty 0 4
+  - ' transport input ssh'
+  - ' login local'
+  - spanning-tree mode rstp
+  - spanning-tree portfast default
+  - write
+- title: 端口安全完整配置
+  description: 配置端口安全防止非法设备接入，包含MAC地址绑定和违规处理
+  steps:
+  - configure terminal
+  - interface GigabitEthernet 0/1
+  - ' description Secure-Port-for-PC'
+  - ' switchport mode access'
+  - ' switchport access vlan 10'
+  - ' switchport port-security'
+  - ' switchport port-security maximum 1'
+  - ' switchport port-security violation shutdown'
+  - ' switchport port-security mac-address sticky'
+  - ' spanning-tree portfast'
+  - ' spanning-tree bpduguard enable'
+  - switchport port-security mac-address sticky
+  - exit
+  - errdisable recovery cause psecure-violation
+  - errdisable recovery interval 300
+  - write
+- title: 核心交换机VRRP配置
+  description: 配置双核心交换机VRRP实现网关冗余
+  steps:
+  - '核心交换机A配置:'
+  - configure terminal
+  - hostname RG-Core-A
+  - vlan 10
+  - ' name Users_VLAN'
+  - interface vlan 10
+  - ' ip address 192.168.10.2 255.255.255.0'
+  - ' standby 1 ip 192.168.10.1'
+  - ' standby 1 priority 150'
+  - ' standby 1 preempt'
+  - ' standby 1 authentication md5 VRRPAuth'
+  - ''
+  - '核心交换机B配置:'
+  - configure terminal
+  - hostname RG-Core-B
+  - vlan 10
+  - ' name Users_VLAN'
+  - interface vlan 10
+  - ' ip address 192.168.10.3 255.255.255.0'
+  - ' standby 1 ip 192.168.10.1'
+  - ' standby 1 priority 100'
+  - ' standby 1 preempt'
+  - ' standby 1 authentication md5 VRRPAuth'
+  - write
+- title: 链路聚合配置案例
+  description: 配置交换机间链路聚合提高带宽和冗余
+  steps:
+  - configure terminal
+  - vlan 10
+  - vlan 20
+  - vlan 30
+  - interface aggregateport 1
+  - ' description To-Distribution-SW'
+  - ' switchport mode trunk'
+  - ' switchport trunk allowed vlan 10,20,30'
+  - ' aggregport mode active'
+  - interface range GigabitEthernet 0/23-24
+  - ' port-group 1'
+  - interface range GigabitEthernet 0/1-10
+  - ' switchport mode access'
+  - ' switchport access vlan 10'
+  - interface range GigabitEthernet 0/11-20
+  - ' switchport mode access'
+  - ' switchport access vlan 20'
+  - write
+- title: OSPF动态路由配置
+  description: 配置OSPF协议实现企业网络互联
+  steps:
+  - configure terminal
+  - hostname RG-Core-Router
+  - interface vlan 10
+  - ' ip address 192.168.10.1 255.255.255.0'
+  - interface vlan 20
+  - ' ip address 192.168.20.1 255.255.255.0'
+  - interface vlan 100
+  - ' description To-WAN'
+  - ' ip address 10.0.0.1 255.255.255.252'
+  - router ospf 1
+  - ' router-id 1.1.1.1'
+  - ' network 192.168.10.0 0.0.0.255 area 0'
+  - ' network 192.168.20.0 0.0.0.255 area 0'
+  - ' network 10.0.0.0 0.0.0.3 area 1'
+  - ' passive-interface vlan 10'
+  - ' passive-interface vlan 20'
+  - ' default-information originate always'
+  - ip route 0.0.0.0 0.0.0.0 10.0.0.2
+  - write
+- title: DHCP Snooping安全配置
+  description: 配置DHCP Snooping防止DHCP欺骗攻击
+  steps:
+  - configure terminal
+  - ip dhcp snooping
+  - ip dhcp snooping vlan 10,20,30
+  - interface GigabitEthernet 0/24
+  - ' description DHCP-Server-Port'
+  - ' ip dhcp snooping trust'
+  - interface range GigabitEthernet 0/1-23
+  - ' ip dhcp snooping limit rate 100'
+  - ip dhcp snooping information option
+  - show ip dhcp snooping
+  - show ip dhcp snooping binding
+  - write
+- title: MSTP多生成树配置
+  description: 配置MSTP实现VLAN级负载均衡和冗余
+  steps:
+  - configure terminal
+  - spanning-tree mode mstp
+  - spanning-tree mst configuration
+  - ' name RG-MST-Instance'
+  - ' revision 1'
+  - ' instance 1 vlan 10,20'
+  - ' instance 2 vlan 30,40'
+  - instance 3 vlan 50,60
+  - exit
+  - spanning-tree mst 1 priority 4096
+  - spanning-tree mst 2 priority 8192
+  - spanning-tree mst 3 priority 12288
+  - interface range GigabitEthernet 0/1-10
+  - ' spanning-tree portfast'
+  - interface range GigabitEthernet 0/23-24
+  - ' spanning-tree link-type point-to-point'
+  - write
+- title: QoS限速配置案例
+  description: 配置QoS策略限制特定流量带宽
+  steps:
+  - configure terminal
+  - access-list 100 permit tcp any any eq 80
+  - access-list 100 permit tcp any any eq 443
+  - access-list 101 permit tcp any any range 6000 7000
+  - class-map match-all WEB-TRAFFIC
+  - ' match access-group 100'
+  - class-map match-all P2P-TRAFFIC
+  - ' match access-group 101'
+  - policy-map LIMIT-POLICY
+  - ' class WEB-TRAFFIC'
+  - '  police 50000000 10000 conform-action transmit exceed-action drop'
+  - ' class P2P-TRAFFIC'
+  - '  police 10000000 5000 conform-action transmit exceed-action drop'
+  - ' interface GigabitEthernet 0/1'
+  - ' service-policy input LIMIT-POLICY'
+  - write
+- title: IPv6基础配置案例
+  description: 配置交换机IPv6功能实现双栈网络
+  steps:
+  - configure terminal
+  - ipv6 unicast-routing
+  - vlan 10
+  - ' name IPv6-Test'
+  - interface vlan 10
+  - ' ip address 192.168.10.1 255.255.255.0'
+  - ' ipv6 address 2001:db8:10::1/64'
+  - ' ipv6 address fe80::1 link-local'
+  - ' ipv6 nd prefix 2001:db8:10::/64'
+  - interface GigabitEthernet 0/1
+  - ' switchport mode access'
+  - ' switchport access vlan 10'
+  - ipv6 route ::/0 2001:db8::ffff
+  - show ipv6 interface brief
+  - show ipv6 neighbors
+  - write
+- title: SNMP网管配置案例
+  description: 配置SNMPv3实现安全的网络管理
+  steps:
+  - configure terminal
+  - snmp-server
+  - snmp-server contact network-admin@example.com
+  - snmp-server location DataCenter_RackA
+  - snmp-server group admin-group v3 priv
+  - snmp-server user snmpadmin admin-group auth sha AuthKey@2026 priv aes128 PrivKey@2026
+  - snmp-server enable traps
+  - snmp-server host 192.168.1.100 traps version 3 priv snmpadmin
+  - show snmp
+  - show snmp user
+  - show snmp group
+  - write

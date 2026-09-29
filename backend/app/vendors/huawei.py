@@ -24,8 +24,13 @@ class HuaweiGenerator(BaseConfigGenerator):
 
         ssh = config.get("ssh")
         if ssh and ssh.get("enable", False):
+            # SSH 用户名取自配置 (用户配置里的 username), 避免硬编码
+            ssh_user = (config.get("user") or {}).get("username") or ssh.get("username") or "admin"
             lines.append("\n#\n# SSH配置\n#\n")
+            # rsa local-key-pair create 在多数 VRP 版本会交互询问密钥长度,
+            # 紧跟一行密钥位数作为应答, 避免脚本推送时挂起等待输入
             lines.append("rsa local-key-pair create\n")
+            lines.append(f"{ssh.get('key_modulus', 2048)}\n")
             lines.append("stelnet server enable\n")
             lines.append(f"ssh server port {ssh.get('port', 22)}\n")
             lines.append(f"ssh server timeout {ssh.get('timeout', 60)}\n")
@@ -33,9 +38,9 @@ class HuaweiGenerator(BaseConfigGenerator):
             lines.append(f"ssh server rekey-interval {ssh.get('rekey_interval', 60)}\n")
             lines.append("ssh server compatible-huawei-version enable\n")
             lines.append(f"ssh version {ssh.get('version', 2)}\n")
-            lines.append("ssh user admin\n")
-            lines.append("ssh user admin authentication-type password\n")
-            lines.append("ssh user admin service-type stelnet\n")
+            lines.append(f"ssh user {ssh_user}\n")
+            lines.append(f"ssh user {ssh_user} authentication-type password\n")
+            lines.append(f"ssh user {ssh_user} service-type stelnet\n")
             lines.append("user-interface vty 0 4\n")
             lines.append(" authentication-mode aaa\n")
             lines.append(" protocol inbound ssh\n")

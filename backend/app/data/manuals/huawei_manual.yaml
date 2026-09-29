@@ -1,0 +1,2837 @@
+vendor: huawei
+total: 482
+references:
+- '项目生成器: backend/app/vendors/huawei.py'
+- '华为官方支持: https://support.huawei.com/enterprise/en/doc/DOC1000128405'
+- '华为VRP命令参考: https://support.huawei.com/enterprise/en/doc/EDOC1100363572'
+- 'VRP常用命令整理: https://cloud.tencent.com/developer/article/1838071'
+- '华为交换机常用命令: https://bbs.huaweicloud.com/blogs/468203'
+- 'netops_toolkit 数据源: Desktop 命令手册 Python 数据文件'
+reliability: 高 — VRP是业界文档最完善的网络OS之一,命令语法经官方文档交叉验证
+categories:
+- name: 系统管理
+  commands:
+  - command: system-view
+    syntax: system-view
+    description: 从用户视图进入系统视图
+    source: netops_toolkit
+    example: '<Huawei> system-view
+
+      [Huawei]'
+  - command: sysname <name>
+    syntax: sysname <name>
+    description: 设置交换机主机名
+    source: netops_toolkit
+    example: '[Huawei] sysname SW-Core
+
+      [SW-Core]'
+  - command: display current-configuration
+    syntax: display current-configuration
+    description: 查看当前运行配置
+    source: netops_toolkit
+    example: '[Huawei] display current-configuration'
+  - command: display saved-configuration
+    syntax: display saved-configuration
+    description: 查看已保存的配置
+    source: netops_toolkit
+    example: '[Huawei] display saved-configuration'
+  - command: save
+    syntax: save
+    description: 保存当前配置到存储器
+    source: netops_toolkit
+    example: <Huawei> save
+  - command: reboot
+    syntax: reboot
+    description: 重启交换机
+    source: netops_toolkit
+    example: <Huawei> reboot
+  - command: reset saved-configuration
+    syntax: 'reset saved-configuration
+
+      reboot'
+    description: 清除配置并重启恢复出厂
+    source: netops_toolkit
+    example: '<Huawei> reset saved-configuration
+
+      <Huawei> reboot'
+  - command: display version
+    syntax: display version
+    description: 查看设备版本和硬件信息
+    source: netops_toolkit
+    example: <Huawei> display version
+  - command: clock datetime <HH:MM:SS> <YYYY-MM-DD>
+    syntax: clock datetime <HH:MM:SS> <YYYY-MM-DD>
+    description: 设置系统时间
+    source: netops_toolkit
+    example: <Huawei> clock datetime 14:30:00 2024-01-15
+  - command: display cpu-usage
+    syntax: 'display cpu-usage
+
+      display memory-usage'
+    description: 查看CPU和内存使用率
+    source: netops_toolkit
+    example: <Huawei> display cpu-usage
+  - command: idle-timeout <minutes>
+    syntax: idle-timeout <minutes>
+    description: 设置用户界面闲置超时时间
+    source: netops_toolkit
+    example: '[Huawei] user-interface console 0
+
+      [Huawei-ui-console0] idle-timeout 30'
+  - command: super password
+    syntax: super password {cipher|simple} <password>
+    description: 设置超级用户密码
+    example: super password cipher Admin@123
+    source: ai_knowledge
+  - command: display current-configuration
+    syntax: display current-configuration [configuration <view> | include <keyword> | exclude <keyword>]
+    description: 查看当前运行配置
+    example: display current-configuration | include vlan
+    source: ai_knowledge
+  - command: display startup
+    syntax: display startup
+    description: 查看当前启动配置文件信息
+    source: ai_knowledge
+  - command: save
+    syntax: save [configuration] [file-name]
+    description: 保存当前配置到存储
+    example: save config.cfg
+    source: ai_knowledge
+  - command: quit
+    syntax: quit
+    description: 退回到上一级视图
+    source: ai_knowledge
+  - command: return
+    syntax: return
+    description: 直接返回用户视图(任意层级)
+    source: ai_knowledge
+  - command: header login information
+    syntax: header login information "text"
+    description: 设置登录前提示信息(Banner)
+    source: ai_knowledge
+  - command: header shell information
+    syntax: header shell information "text"
+    description: 设置登录后Shell提示信息(MOTD)
+    source: ai_knowledge
+  - command: clock timezone
+    syntax: clock timezone <zone> add <offset>
+    description: 设置系统时区
+    example: clock timezone UTC+8 add 08:00:00
+    source: ai_knowledge
+  - command: reboot
+    syntax: reboot [fast | save configuration]
+    description: 重启设备
+    source: ai_knowledge
+  - command: reset saved-configuration
+    syntax: reset saved-configuration
+    description: 清除已保存的配置文件(恢复出厂)
+    source: ai_knowledge
+  - command: undo
+    syntax: undo <command>
+    description: 取消/删除某条配置命令
+    example: undo stelnet server enable
+    source: ai_knowledge
+  - command: display cpu-usage
+    syntax: display cpu-usage [task <task-id>]
+    description: 显示CPU利用率(按任务分解)
+    source: ai_knowledge
+  - command: display memory-usage
+    syntax: display memory-usage
+    description: 显示内存使用率和剩余空间
+    source: ai_knowledge
+  - command: display device
+    syntax: display device [manufinfo | power | fan | temperature]
+    description: 显示硬件设备信息(单板/电源/风扇/温度)
+    source: ai_knowledge
+  - command: display environment
+    syntax: display environment
+    description: 显示设备环境状态(温度/电压/风扇)
+    source: ai_knowledge
+  - command: display power
+    syntax: display power
+    description: 显示电源模块状态
+    source: ai_knowledge
+  - command: display fan
+    syntax: display fan
+    description: 显示风扇模块状态和转速
+    source: ai_knowledge
+  - command: display temperature
+    syntax: display temperature
+    description: 显示板卡温度传感器读数
+    source: ai_knowledge
+  - command: display mac-address
+    syntax: display mac-address [all | dynamic | static | blackhole | vlan <vlan-id>]
+    description: 显示MAC地址表
+    source: ai_knowledge
+  - command: display mac-address summary
+    syntax: display mac-address summary
+    description: 显示MAC地址表汇总统计
+    source: ai_knowledge
+  - command: display arp
+    syntax: display arp [all | <ip> | vlan <vlan-id> | interface <iface>]
+    description: 显示ARP缓存表
+    source: ai_knowledge
+  - command: display arp statistics
+    syntax: display arp statistics [interface <iface>]
+    description: 显示ARP统计信息(收发包数)
+    source: ai_knowledge
+  - command: display current-configuration section
+    syntax: display current-configuration section {acl|interface|ospf|snmp|...}
+    description: 分段显示当前配置(仅指定模块)
+    source: ai_knowledge
+  - command: diagnostic-information
+    syntax: diagnostic-information [<hours:minutes>]
+    description: 收集全面诊断信息(用于故障排查导出)
+    source: ai_knowledge
+  - command: reset counters interface
+    syntax: reset counters interface [<interface-type> [<number>]]
+    description: 清除接口流量统计计数器
+    source: ai_knowledge
+  - command: reset arp-cache
+    syntax: reset arp-cache [all | dynamic | interface <iface> | <ip>]
+    description: 清除ARP缓存表项
+    source: ai_knowledge
+  - command: reset cpu-usage
+    syntax: reset cpu-usage
+    description: 重置CPU历史利用率记录
+    source: ai_knowledge
+  - command: dir
+    syntax: dir [<path> | /all]
+    description: 列出存储设备文件目录
+    source: ai_knowledge
+  - command: more
+    syntax: more <filename>
+    description: 分页查看文本文件内容
+    source: ai_knowledge
+  - command: cd
+    syntax: cd <directory>
+    description: 切换当前目录
+    source: ai_knowledge
+  - command: mkdir
+    syntax: mkdir <directory>
+    description: 创建新目录
+    source: ai_knowledge
+  - command: delete
+    syntax: delete [/unreserved] <filename>
+    description: 删除文件(/unreserved=不可恢复)
+    source: ai_knowledge
+  - command: rename
+    syntax: rename <old-name> <new-name>
+    description: 重命名文件
+    source: ai_knowledge
+  - command: ftp
+    syntax: ftp <server-ip>
+    description: 发起FTP客户端连接(用于上传下载固件/配置)
+    source: ai_knowledge
+  - command: tftp
+    syntax: tftp -a <local-file> -g [-l] <remote-file> <tftp-server-ip>
+    description: 通过TFTP下载文件(-g=get,-l=二进制)
+    source: ai_knowledge
+  - command: display license
+    syntax: display license
+    description: 显示License授权状态和特性
+    source: ai_knowledge
+  - command: display boot-loader
+    syntax: display boot-loader
+    description: 显示下次启动使用的系统软件
+    source: ai_knowledge
+  - command: boot-loader
+    syntax: boot-loader file <filename> [slave | all]
+    description: 指定下次启动的系统软件文件
+    source: ai_knowledge
+  - command: schedule job
+    syntax: schedule job <job-name> time <executing-time> command <command>
+    description: 定时执行任务(如定时重启/备份)
+    source: ai_knowledge
+- name: 用户与权限管理
+  commands:
+  - command: local-user <username>
+    syntax: local-user <username>
+    description: 创建本地用户账号
+    source: netops_toolkit
+    example: '[Huawei] local-user admin'
+  - command: password <cipher|irreversible-cipher> <password>
+    syntax: password <cipher|irreversible-cipher> <password>
+    description: 设置用户密码(cipher密文/irreversible-cipher不可逆加密)
+    source: netops_toolkit
+    example: '[Huawei-luser-admin] password cipher Admin@123'
+  - command: level <0-15>
+    syntax: level <0-15>
+    description: 设置用户权限级别(0访客,1监控,3系统,15管理)
+    source: netops_toolkit
+    example: '[Huawei-luser-admin] level 15'
+  - command: service-type <ssh|telnet|terminal|http|ftp>
+    syntax: service-type <ssh|telnet|terminal|http|ftp>
+    description: 设置用户允许的服务类型
+    source: netops_toolkit
+    example: '[Huawei-luser-admin] service-type ssh telnet'
+  - command: super password <cipher> <password>
+    syntax: super password <cipher> <password>
+    description: 设置切换用户级别密码
+    source: netops_toolkit
+    example: '[Huawei] super password cipher Super@123'
+  - command: aaa
+    syntax: 'aaa
+
+      authentication-scheme <name>'
+    description: 配置AAA认证方案
+    source: netops_toolkit
+    example: '[Huawei] aaa
+
+      [Huawei-aaa] authentication-scheme default'
+  - command: user-interface <console|vty> <number>
+    syntax: user-interface <console|vty> <number>
+    description: 进入用户界面配置
+    source: netops_toolkit
+    example: '[Huawei] user-interface vty 0 4'
+  - command: authentication-mode <aaa|password|none>
+    syntax: authentication-mode <aaa|password|none>
+    description: 设置用户界面认证模式
+    source: netops_toolkit
+    example: '[Huawei-ui-vty0-4] authentication-mode aaa'
+  - command: display users
+    syntax: display users
+    description: 查看当前登录用户
+    source: netops_toolkit
+    example: <Huawei> display users
+  - command: free user-interface <type> <number>
+    syntax: free user-interface <type> <number>
+    description: 强制断开指定用户连接
+    source: netops_toolkit
+    example: <Huawei> free user-interface vty 1
+  - command: aaa
+    syntax: aaa
+    description: 进入AAA视图(认证/授权/计费)
+    source: ai_knowledge
+  - command: local-user
+    syntax: local-user <username> password {cipher|simple} <password>
+    description: 创建本地用户并设置密码
+    example: local-user admin password cipher Admin@123
+    source: ai_knowledge
+  - command: local-user privilege level
+    syntax: local-user <username> privilege level <0-15>
+    description: 设置用户权限级别(华为0-15级,15最高)
+    example: local-user admin privilege level 15
+    source: ai_knowledge
+  - command: local-user service-type
+    syntax: local-user <username> service-type {terminal|ssh|telnet|ftp|http|snmp|x25-pad}
+    description: 设置用户允许的服务类型
+    example: local-user admin service-type ssh telnet terminal
+    source: ai_knowledge
+  - command: local-user ftp-directory
+    syntax: local-user <username> ftp-directory <directory>
+    description: 设置FTP用户的根目录
+    source: ai_knowledge
+  - command: local-user state
+    syntax: local-user <username> state {active|block}
+    description: 设置用户状态(激活/锁定)
+    source: ai_knowledge
+  - command: aaa authentication-scheme
+    syntax: aaa / authentication-scheme <name>
+    description: 创建自定义认证方案(AAA视图下)
+    source: ai_knowledge
+  - command: authentication-mode
+    syntax: authentication-mode {aaa|password}
+    description: 设置接口认证模式(用户界面下)
+    source: ai_knowledge
+  - command: set authentication password
+    syntax: set authentication password {cipher|simple} <password>
+    description: 设置Console口明文/密文密码
+    source: ai_knowledge
+  - command: display users
+    syntax: display users [all]
+    description: 显示当前在线用户列表
+    source: ai_knowledge
+  - command: display local-user
+    syntax: display local-user [<username>]
+    description: 显示本地用户配置信息
+    source: ai_knowledge
+- name: SSH配置
+  commands:
+  - command: rsa local-key-pair create
+    syntax: rsa local-key-pair create
+    description: 生成本地RSA密钥对
+    source: netops_toolkit
+    example: '[Huawei] rsa local-key-pair create
+
+      Input the bits in the modulus[default = 512]: 2048'
+  - command: stelnet server enable
+    syntax: stelnet server enable
+    description: 启用SSH服务器
+    source: netops_toolkit
+    example: '[Huawei] stelnet server enable'
+  - command: ssh server version <v1|v2|all>
+    syntax: ssh server version <v1|v2|all>
+    description: 设置SSH协议版本
+    source: netops_toolkit
+    example: '[Huawei] ssh server version v2'
+  - command: ssh user <username> authentication-type <password|rsa|all>
+    syntax: ssh user <username> authentication-type <password|rsa|all>
+    description: 创建SSH用户并设置认证方式
+    source: netops_toolkit
+    example: '[Huawei] ssh user admin authentication-type password'
+  - command: ssh user <username> service-type <stelnet|sftp|all>
+    syntax: ssh user <username> service-type <stelnet|sftp|all>
+    description: 设置SSH用户服务类型
+    source: netops_toolkit
+    example: '[Huawei] ssh user admin service-type stelnet'
+  - command: ssh server timeout <seconds>
+    syntax: ssh server timeout <seconds>
+    description: 设置SSH连接超时时间
+    source: netops_toolkit
+    example: '[Huawei] ssh server timeout 60'
+  - command: ssh server authentication-retries <times>
+    syntax: ssh server authentication-retries <times>
+    description: 设置SSH认证重试次数
+    source: netops_toolkit
+    example: '[Huawei] ssh server authentication-retries 3'
+  - command: user-interface vty 0 4
+    syntax: 'user-interface vty 0 4
+
+      protocol inbound ssh'
+    description: VTY只允许SSH连接
+    source: netops_toolkit
+    example: '[Huawei] user-interface vty 0 4
+
+      [Huawei-ui-vty0-4] protocol inbound ssh'
+  - command: display ssh server status
+    syntax: 'display ssh server status
+
+      display ssh user-information'
+    description: 查看SSH服务状态和用户信息
+    source: netops_toolkit
+    example: <Huawei> display ssh server status
+  - command: ssh client first-time enable
+    syntax: ssh client first-time enable
+    description: SSH客户端首次登录不检查密钥
+    source: netops_toolkit
+    example: '[Huawei] ssh client first-time enable'
+- name: Telnet配置
+  commands:
+  - command: telnet server enable
+    syntax: telnet server enable
+    description: 启用Telnet服务器(不建议)
+    source: netops_toolkit
+    example: '[Huawei] telnet server enable'
+  - command: user-interface vty 0 4
+    syntax: 'user-interface vty 0 4
+
+      protocol inbound telnet'
+    description: VTY允许Telnet连接
+    source: netops_toolkit
+    example: '[Huawei] user-interface vty 0 4
+
+      [Huawei-ui-vty0-4] protocol inbound telnet'
+  - command: telnet server port <port>
+    syntax: telnet server port <port>
+    description: 修改Telnet服务端口(默认23)
+    source: netops_toolkit
+    example: '[Huawei] telnet server port 2323'
+  - command: undo telnet server enable
+    syntax: undo telnet server enable
+    description: 关闭Telnet服务提高安全性
+    source: netops_toolkit
+    example: '[Huawei] undo telnet server enable'
+- name: Console配置
+  commands:
+  - command: user-interface console 0
+    syntax: 'user-interface console 0
+
+      authentication-mode password
+
+      set authentication password cipher <password>'
+    description: 设置Console登录密码
+    source: netops_toolkit
+    example: '[Huawei] user-interface console 0
+
+      [Huawei-ui-console0] authentication-mode password
+
+      [Huawei-ui-console0] set authentication password cipher Console@123'
+  - command: speed <baud-rate>
+    syntax: speed <baud-rate>
+    description: 设置Console波特率
+    source: netops_toolkit
+    example: '[Huawei-ui-console0] speed 115200'
+- name: 域名解析
+  commands:
+  - command: ip dns server <ip> [priority]
+    syntax: ip dns server <ip> [priority]
+    description: 配置DNS服务器地址
+    source: netops_toolkit
+    example: '[Huawei] ip dns server 8.8.8.8
+
+      [Huawei] ip dns server 114.114.114.114 priority 2'
+  - command: ip domain <domain-name>
+    syntax: ip domain <domain-name>
+    description: 配置默认域名后缀
+    source: netops_toolkit
+    example: '[Huawei] ip domain example.com'
+  - command: ip dns resolve
+    syntax: ip dns resolve
+    description: 启用DNS域名解析功能
+    source: netops_toolkit
+    example: '[Huawei] ip dns resolve'
+  - command: ip host <hostname> <ip>
+    syntax: ip host <hostname> <ip>
+    description: 配置静态主机名解析
+    source: netops_toolkit
+    example: '[Huawei] ip host server1 192.168.1.100'
+  - command: ping <hostname>
+    syntax: ping <hostname>
+    description: 测试域名解析
+    source: netops_toolkit
+    example: <Huawei> ping www.google.com
+- name: 以太网接口
+  commands:
+  - command: interface <interface-type> <interface-number>
+    syntax: interface <interface-type> <interface-number>
+    description: 进入指定接口配置视图
+    source: netops_toolkit
+    example: '[Huawei] interface GigabitEthernet 0/0/1
+
+      [Huawei-GigabitEthernet0/0/1]'
+  - command: description <text>
+    syntax: description <text>
+    description: 为接口添加描述信息
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] description To_Server_Room'
+  - command: undo shutdown
+    syntax: undo shutdown
+    description: 开启接口
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] undo shutdown'
+  - command: shutdown
+    syntax: shutdown
+    description: 关闭接口
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] shutdown'
+  - command: ip address <ip> <mask> [sub]
+    syntax: ip address <ip> <mask> [sub]
+    description: 配置接口IP地址
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] ip address 192.168.1.1 255.255.255.0'
+  - command: ip address <ip> <mask> sub
+    syntax: ip address <ip> <mask> sub
+    description: 配置接口从IP地址
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] ip address 192.168.2.1 255.255.255.0 sub'
+  - command: undo ip address
+    syntax: undo ip address
+    description: 删除接口IP地址
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] undo ip address'
+  - command: duplex <half|full|auto>
+    syntax: duplex <half|full|auto>
+    description: 设置接口双工模式
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] duplex full'
+  - command: statistic enable
+    syntax: statistic enable
+    description: 启用接口流量统计
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] statistic enable'
+  - command: display interface <interface>
+    syntax: display interface <interface>
+    description: 查看接口详细状态
+    source: netops_toolkit
+    example: <Huawei> display interface GigabitEthernet0/0/1
+  - command: display interface brief
+    syntax: display interface brief
+    description: 查看所有接口简要状态
+    source: netops_toolkit
+    example: <Huawei> display interface brief
+  - command: interface range <interface-list>
+    syntax: interface range <interface-list>
+    description: 批量进入多个接口
+    source: netops_toolkit
+    example: '[Huawei] interface range GigabitEthernet 0/0/1 to GigabitEthernet 0/0/10'
+  - command: loopback detect enable
+    syntax: loopback detect enable
+    description: 启用接口环回检测
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] loopback detect enable'
+  - command: interface
+    syntax: interface <interface-type><number>
+    description: 进入指定接口视图
+    example: interface GigabitEthernet0/0/1
+    source: ai_knowledge
+  - command: speed
+    syntax: speed {10|100|1000|auto}
+    description: 强制设置接口速率(Mbps)
+    example: speed 1000
+    source: ai_knowledge
+  - command: duplex
+    syntax: duplex {full|half|auto}
+    description: 设置接口双工模式
+    example: duplex full
+    source: ai_knowledge
+  - command: mtu
+    syntax: mtu <size>
+    description: 设置接口MTU值(字节,通常1500或9216)
+    example: mtu 9216
+    source: ai_knowledge
+  - command: ip address
+    syntax: ip address <ip-address> {<mask>|<mask-length>}
+    description: 配置接口IP地址
+    example: ip address 192.168.1.1 255.255.255.0
+    source: ai_knowledge
+  - command: ip address dhcp-alloc
+    syntax: ip address dhcp-alloc
+    description: 接口通过DHCP获取IP地址
+    source: ai_knowledge
+  - command: undo ip address
+    syntax: undo ip address <ip-address> {<mask>|<mask-length>}
+    description: 删除接口IP地址
+    source: ai_knowledge
+  - command: display interface
+    syntax: display interface [<interface-type> [<number>] | brief]
+    description: 显示接口详细状态和统计信息
+    example: display interface GigabitEthernet 0/0/1
+    source: ai_knowledge
+  - command: display ip interface
+    syntax: display ip interface [brief | <interface-type> <number>]
+    description: 显示三层接口IP配置和状态
+    source: ai_knowledge
+  - command: virtual-cable-test
+    syntax: virtual-cable-test
+    description: 执行网线线序检测(物理接口下)
+    source: ai_knowledge
+- name: VLAN接口
+  commands:
+  - command: vlan <vlan-id>
+    syntax: vlan <vlan-id>
+    description: 创建VLAN
+    source: netops_toolkit
+    example: '[Huawei] vlan 10'
+  - command: vlan batch <vlan-id-list>
+    syntax: vlan batch <vlan-id-list>
+    description: 批量创建多个VLAN
+    source: netops_toolkit
+    example: '[Huawei] vlan batch 10 20 30 to 40'
+  - command: name <vlan-name>
+    syntax: name <vlan-name>
+    description: 为VLAN设置名称
+    source: netops_toolkit
+    example: '[Huawei-vlan10] name Sales_Department'
+  - command: undo vlan <vlan-id>
+    syntax: undo vlan <vlan-id>
+    description: 删除指定VLAN
+    source: netops_toolkit
+    example: '[Huawei] undo vlan 10'
+  - command: display vlan
+    syntax: display vlan
+    description: 查看所有VLAN信息
+    source: netops_toolkit
+    example: <Huawei> display vlan
+  - command: display vlan <vlan-id>
+    syntax: display vlan <vlan-id>
+    description: 查看指定VLAN详细信息
+    source: netops_toolkit
+    example: <Huawei> display vlan 10
+  - command: interface vlanif <vlan-id>
+    syntax: interface vlanif <vlan-id>
+    description: 创建VLAN三层接口
+    source: netops_toolkit
+    example: '[Huawei] interface Vlanif 10'
+  - command: interface vlanif <vlan-id>
+    syntax: 'interface vlanif <vlan-id>
+
+      ip address <ip> <mask>'
+    description: 为VLANIF配置IP地址
+    source: netops_toolkit
+    example: '[Huawei] interface Vlanif 10
+
+      [Huawei-Vlanif10] ip address 192.168.10.1 255.255.255.0'
+  - command: port link-type
+    syntax: port link-type {access|trunk|hybrid}
+    description: 设置接口VLAN链路类型
+    source: ai_knowledge
+  - command: port default vlan
+    syntax: port default vlan <vlan-id>
+    description: 设置Access端口所属的默认VLAN
+    example: port default vlan 10
+    source: ai_knowledge
+  - command: port trunk allow-pass vlan
+    syntax: port trunk allow-pass vlan {<vlan-list>|all}
+    description: 设置Trunk端口允许通过的VLAN列表
+    example: port trunk allow-pass vlan 10 20 30
+    source: ai_knowledge
+  - command: interface Vlanif
+    syntax: interface Vlanif<vlan-id>
+    description: 创建VLANIF三层交换虚拟接口(SVI)
+    example: interface Vlanif100
+    source: ai_knowledge
+  - command: display vlan
+    syntax: display vlan [vlan-id | summary]
+    description: 显示VLAN配置信息和成员接口
+    source: ai_knowledge
+  - command: display port vlan
+    syntax: display port vlan [active]
+    description: 显示所有接口的VLAN配置
+    source: ai_knowledge
+- name: 接口VLAN
+  commands:
+  - command: port link-type access
+    syntax: 'port link-type access
+
+      port default vlan <vlan-id>'
+    description: 配置接口为Access模式并加入VLAN
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port link-type access
+
+      [Huawei-GigabitEthernet0/0/1] port default vlan 10'
+  - command: port link-type trunk
+    syntax: 'port link-type trunk
+
+      port trunk allow-pass vlan <vlan-id-list>'
+    description: 配置接口为Trunk模式
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/24] port link-type trunk
+
+      [Huawei-GigabitEthernet0/0/24] port trunk allow-pass vlan 10 20 30'
+  - command: port trunk allow-pass vlan all
+    syntax: port trunk allow-pass vlan all
+    description: Trunk允许所有VLAN通过
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/24] port trunk allow-pass vlan all'
+  - command: port trunk pvid vlan <vlan-id>
+    syntax: port trunk pvid vlan <vlan-id>
+    description: 设置Trunk接口PVID
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/24] port trunk pvid vlan 99'
+  - command: port link-type hybrid
+    syntax: port link-type hybrid
+    description: 配置接口为Hybrid模式
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port link-type hybrid'
+  - command: port hybrid untagged vlan <vlan-id-list>
+    syntax: port hybrid untagged vlan <vlan-id-list>
+    description: Hybrid接口剥离VLAN标签
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port hybrid untagged vlan 10 20'
+  - command: port hybrid tagged vlan <vlan-id-list>
+    syntax: port hybrid tagged vlan <vlan-id-list>
+    description: Hybrid接口保留VLAN标签
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port hybrid tagged vlan 100'
+  - command: port hybrid pvid vlan <vlan-id>
+    syntax: port hybrid pvid vlan <vlan-id>
+    description: 设置Hybrid接口PVID
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port hybrid pvid vlan 10'
+  - command: port link-type dot1q-tunnel
+    syntax: 'port link-type dot1q-tunnel
+
+      port default vlan <vlan-id>'
+    description: 配置QinQ端口
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port link-type dot1q-tunnel
+
+      [Huawei-GigabitEthernet0/0/1] port default vlan 100'
+- name: 链路聚合
+  commands:
+  - command: interface eth-trunk <trunk-id>
+    syntax: interface eth-trunk <trunk-id>
+    description: 创建链路聚合接口
+    source: netops_toolkit
+    example: '[Huawei] interface Eth-Trunk 1'
+  - command: mode <lacp-static|lacp-dynamic|manual>
+    syntax: mode <lacp-static|lacp-dynamic|manual>
+    description: 设置链路聚合模式
+    source: netops_toolkit
+    example: '[Huawei-Eth-Trunk1] mode lacp-static'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      eth-trunk <trunk-id>'
+    description: 将物理接口加入聚合组
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] eth-trunk 1'
+  - command: eth-trunk <trunk-id>
+    syntax: 'eth-trunk <trunk-id>
+
+      interface range <interface-list>'
+    description: 批量将接口加入聚合组
+    source: netops_toolkit
+    example: '[Huawei] interface range GigabitEthernet 0/0/1 to GigabitEthernet 0/0/4
+
+      [Huawei-port-group] eth-trunk 1'
+  - command: max active-linknumber <number>
+    syntax: max active-linknumber <number>
+    description: 设置最大活跃链路数(LACP模式)
+    source: netops_toolkit
+    example: '[Huawei-Eth-Trunk1] max active-linknumber 4'
+  - command: least active-linknumber <number>
+    syntax: least active-linknumber <number>
+    description: 设置最小活跃链路数
+    source: netops_toolkit
+    example: '[Huawei-Eth-Trunk1] least active-linknumber 2'
+  - command: load-balance <src-dst-mac|src-dst-ip|dst-mac|dst-ip|src-mac|src-ip>
+    syntax: load-balance <src-dst-mac|src-dst-ip|dst-mac|dst-ip|src-mac|src-ip>
+    description: 设置负载均衡算法
+    source: netops_toolkit
+    example: '[Huawei-Eth-Trunk1] load-balance src-dst-ip'
+  - command: display eth-trunk <trunk-id>
+    syntax: display eth-trunk <trunk-id>
+    description: 查看链路聚合状态
+    source: netops_toolkit
+    example: <Huawei> display eth-trunk 1
+  - command: display eth-trunk
+    syntax: display eth-trunk
+    description: 查看所有链路聚合
+    source: netops_toolkit
+    example: <Huawei> display eth-trunk
+  - command: lacp priority <priority>
+    syntax: lacp priority <priority>
+    description: 设置LACP系统优先级
+    source: netops_toolkit
+    example: '[Huawei] lacp priority 100'
+- name: 静态路由
+  commands:
+  - command: ip route-static <dest-network> <mask> <next-hop> [preference]
+    syntax: ip route-static <dest-network> <mask> <next-hop> [preference]
+    description: 配置静态路由
+    source: netops_toolkit
+    example: '[Huawei] ip route-static 192.168.100.0 255.255.255.0 10.0.0.1'
+  - command: ip route-static 0.0.0.0 0.0.0.0 <gateway>
+    syntax: ip route-static 0.0.0.0 0.0.0.0 <gateway>
+    description: 配置默认路由
+    source: netops_toolkit
+    example: '[Huawei] ip route-static 0.0.0.0 0.0.0.0 192.168.1.254'
+  - command: ip route-static <dest> <mask> <next-hop> preference <preference>
+    syntax: ip route-static <dest> <mask> <next-hop> preference <preference>
+    description: 设置静态路由优先级
+    source: netops_toolkit
+    example: '[Huawei] ip route-static 10.0.0.0 24 192.168.1.1 preference 10'
+  - command: ip route-static <dest> <mask> <next-hop> tag <tag>
+    syntax: ip route-static <dest> <mask> <next-hop> tag <tag>
+    description: 为路由设置标记
+    source: netops_toolkit
+    example: '[Huawei] ip route-static 192.168.0.0 16 10.0.0.1 tag 100'
+  - command: ip route-static <dest> <mask> NULL0
+    syntax: ip route-static <dest> <mask> NULL0
+    description: 配置黑洞路由丢弃流量
+    source: netops_toolkit
+    example: '[Huawei] ip route-static 10.10.0.0 24 NULL0'
+  - command: undo ip route-static <dest> <mask> <next-hop>
+    syntax: undo ip route-static <dest> <mask> <next-hop>
+    description: 删除指定静态路由
+    source: netops_toolkit
+    example: '[Huawei] undo ip route-static 192.168.100.0 255.255.255.0 10.0.0.1'
+  - command: display ip routing-table
+    syntax: display ip routing-table
+    description: 查看IP路由表
+    source: netops_toolkit
+    example: <Huawei> display ip routing-table
+  - command: display ip routing-table protocol static
+    syntax: display ip routing-table protocol static
+    description: 只查看静态路由
+    source: netops_toolkit
+    example: <Huawei> display ip routing-table protocol static
+  - command: tracert <ip>
+    syntax: tracert <ip>
+    description: 追踪到目标的路径
+    source: netops_toolkit
+    example: <Huawei> tracert 8.8.8.8
+- name: OSPF配置
+  commands:
+  - command: ospf <process-id> [router-id <router-id>]
+    syntax: ospf <process-id> [router-id <router-id>]
+    description: 启动OSPF进程
+    source: netops_toolkit
+    example: '[Huawei] ospf 1 router-id 1.1.1.1'
+  - command: area <area-id>
+    syntax: area <area-id>
+    description: 进入OSPF区域配置
+    source: netops_toolkit
+    example: '[Huawei-ospf-1] area 0'
+  - command: network <network> <wildcard>
+    syntax: network <network> <wildcard>
+    description: 宣告直连网络到OSPF
+    source: netops_toolkit
+    example: '[Huawei-ospf-1-area-0.0.0.0] network 192.168.0.0 0.0.255.255'
+  - command: area <area-id>
+    syntax: 'area <area-id>
+
+      nssa|stub [no-summary]'
+    description: 配置NSSA或Stub区域
+    source: netops_toolkit
+    example: '[Huawei-ospf-1-area-0.0.0.1] nssa no-summary'
+  - command: preference <preference>
+    syntax: preference <preference>
+    description: 设置OSPF路由优先级
+    source: netops_toolkit
+    example: '[Huawei-ospf-1] preference 10'
+  - command: silent-interface <interface>
+    syntax: silent-interface <interface>
+    description: 禁止接口发送OSPF报文
+    source: netops_toolkit
+    example: '[Huawei-ospf-1] silent-interface Vlanif10'
+  - command: area <area-id>
+    syntax: 'area <area-id>
+
+      authentication-mode simple <password>'
+    description: 配置区域认证
+    source: netops_toolkit
+    example: '[Huawei-ospf-1-area-0.0.0.0] authentication-mode simple Huawei@123'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ospf authentication-mode <md5|simple> <password>'
+    description: 配置接口级OSPF认证
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] ospf authentication-mode md5 1 cipher Huawei@123'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ospf dr-priority <priority>'
+    description: 设置接口DR选举优先级
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] ospf dr-priority 100'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ospf cost <cost>'
+    description: 设置OSPF接口开销
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] ospf cost 10'
+  - command: display ospf peer
+    syntax: display ospf peer
+    description: 查看OSPF邻居关系
+    source: netops_toolkit
+    example: <Huawei> display ospf peer
+  - command: display ospf routing
+    syntax: display ospf routing
+    description: 查看OSPF路由
+    source: netops_toolkit
+    example: <Huawei> display ospf routing
+  - command: display ospf interface
+    syntax: display ospf interface
+    description: 查看OSPF接口信息
+    source: netops_toolkit
+    example: <Huawei> display ospf interface
+  - command: reset ospf process
+    syntax: reset ospf process
+    description: 重启OSPF进程
+    source: netops_toolkit
+    example: <Huawei> reset ospf process
+- name: BGP配置
+  commands:
+  - command: bgp <as-number>
+    syntax: 'bgp <as-number>
+
+      router-id <router-id>'
+    description: 启动BGP进程并设置Router-ID
+    source: netops_toolkit
+    example: '[Huawei] bgp 65001
+
+      [Huawei-bgp] router-id 1.1.1.1'
+  - command: peer <ip> as-number <as-number>
+    syntax: peer <ip> as-number <as-number>
+    description: 配置BGP对等体
+    source: netops_toolkit
+    example: '[Huawei-bgp] peer 10.0.0.2 as-number 65002'
+  - command: peer <ip> connect-interface <interface>
+    syntax: peer <ip> connect-interface <interface>
+    description: 指定BGP更新源接口
+    source: netops_toolkit
+    example: '[Huawei-bgp] peer 10.0.0.2 connect-interface LoopBack0'
+  - command: ipv4-family unicast
+    syntax: 'ipv4-family unicast
+
+      network <network> mask <mask>'
+    description: 宣告网络到BGP
+    source: netops_toolkit
+    example: '[Huawei-bgp] ipv4-family unicast
+
+      [Huawei-bgp-af-ipv4] network 192.168.0.0 255.255.0.0'
+  - command: peer <ip> next-hop-local
+    syntax: peer <ip> next-hop-local
+    description: 设置向IBGP邻居发布路由时下一跳为本地
+    source: netops_toolkit
+    example: '[Huawei-bgp-af-ipv4] peer 192.168.1.2 next-hop-local'
+  - command: import-route direct
+    syntax: import-route direct
+    description: 引入直连路由到BGP
+    source: netops_toolkit
+    example: '[Huawei-bgp-af-ipv4] import-route direct'
+  - command: import-route static
+    syntax: import-route static
+    description: 引入静态路由到BGP
+    source: netops_toolkit
+    example: '[Huawei-bgp-af-ipv4] import-route static'
+  - command: preference external internal local
+    syntax: preference external internal local
+    description: 设置BGP路由优先级
+    source: netops_toolkit
+    example: '[Huawei-bgp] preference 255 100 130'
+  - command: display bgp peer
+    syntax: display bgp peer
+    description: 查看BGP对等体状态
+    source: netops_toolkit
+    example: <Huawei> display bgp peer
+  - command: display bgp routing-table
+    syntax: display bgp routing-table
+    description: 查看BGP路由表
+    source: netops_toolkit
+    example: <Huawei> display bgp routing-table
+  - command: refresh bgp all <import|export>
+    syntax: refresh bgp all <import|export>
+    description: 刷新BGP路由
+    source: netops_toolkit
+    example: <Huawei> refresh bgp all import
+- name: RIP配置
+  commands:
+  - command: rip <process-id>
+    syntax: rip <process-id>
+    description: 启动RIP进程
+    source: netops_toolkit
+    example: '[Huawei] rip 1'
+  - command: network <network>
+    syntax: network <network>
+    description: 宣告直连网络
+    source: netops_toolkit
+    example: '[Huawei-rip-1] network 192.168.0.0'
+  - command: version <1|2>
+    syntax: version <1|2>
+    description: 设置RIP版本
+    source: netops_toolkit
+    example: '[Huawei-rip-1] version 2'
+  - command: undo summary
+    syntax: undo summary
+    description: 关闭RIP自动汇总
+    source: netops_toolkit
+    example: '[Huawei-rip-1] undo summary'
+  - command: display rip <process-id> route
+    syntax: display rip <process-id> route
+    description: 查看RIP路由
+    source: netops_toolkit
+    example: <Huawei> display rip 1 route
+  - command: display rip <process-id> neighbor
+    syntax: display rip <process-id> neighbor
+    description: 查看RIP邻居
+    source: netops_toolkit
+    example: <Huawei> display rip 1 neighbor
+- name: ACL配置
+  commands:
+  - command: acl <number> [basic]
+    syntax: acl <number> [basic]
+    description: 创建基本ACL(2000-2999)
+    source: netops_toolkit
+    example: '[Huawei] acl 2000'
+  - command: acl <number> advance
+    syntax: acl <number> advance
+    description: 创建高级ACL(3000-3999)
+    source: netops_toolkit
+    example: '[Huawei] acl 3000'
+  - command: acl name <name> <basic|advance>
+    syntax: acl name <name> <basic|advance>
+    description: 创建命名ACL
+    source: netops_toolkit
+    example: '[Huawei] acl name SERVER_ACL advance'
+  - command: rule <id> <permit|deny> source <source> <wildcard>
+    syntax: rule <id> <permit|deny> source <source> <wildcard>
+    description: 配置基本ACL规则
+    source: netops_toolkit
+    example: '[Huawei-acl-basic-2000] rule 5 permit source 192.168.1.0 0.0.0.255'
+  - command: rule <id> <permit|deny> <protocol> source <src> <wildcard> destination <dst> <wildcard> [<port>]
+    syntax: rule <id> <permit|deny> <protocol> source <src> <wildcard> destination <dst> <wildcard> [<port>]
+    description: 配置高级ACL规则
+    source: netops_toolkit
+    example: '[Huawei-acl-adv-3000] rule 5 permit tcp source 192.168.1.0 0.0.0.255 destination 10.0.0.1 0.0.0.0 destination-port eq 80'
+  - command: rule <id> deny
+    syntax: rule <id> deny
+    description: 拒绝所有流量
+    source: netops_toolkit
+    example: '[Huawei-acl-adv-3000] rule 100 deny'
+  - command: rule <id> permit
+    syntax: rule <id> permit
+    description: 允许所有流量
+    source: netops_toolkit
+    example: '[Huawei-acl-adv-3000] rule 100 permit'
+  - command: destination-port eq <port>
+    syntax: 'destination-port eq <port>
+
+      destination-port range <start> <end>'
+    description: 匹配目标端口
+    source: netops_toolkit
+    example: '[Huawei-acl-adv-3000] rule 10 permit tcp source any destination any destination-port eq 80'
+  - command: time-range <name> <start> to <end>
+    syntax: time-range <name> <start> to <end>
+    description: 配置时间段
+    source: netops_toolkit
+    example: '[Huawei] time-range work-time 09:00 to 18:00 working-day
+
+      [Huawei-acl-adv-3000] rule 10 permit tcp time-range work-time'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      traffic-filter <inbound|outbound> acl <number>'
+    description: 在接口应用ACL过滤流量
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] traffic-filter inbound acl 3000'
+  - command: display acl <number>
+    syntax: display acl <number>
+    description: 查看ACL配置
+    source: netops_toolkit
+    example: <Huawei> display acl 3000
+  - command: display acl <number> hit
+    syntax: display acl <number> hit
+    description: 查看ACL匹配计数
+    source: netops_toolkit
+    example: <Huawei> display acl 3000 hit
+  - command: reset acl counter <number>
+    syntax: reset acl counter <number>
+    description: 清除ACL匹配计数
+    source: netops_toolkit
+    example: <Huawei> reset acl counter 3000
+- name: 端口安全
+  commands:
+  - command: port-security enable
+    syntax: port-security enable
+    description: 启用端口安全功能
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port-security enable'
+  - command: port-security max-mac-num <number>
+    syntax: port-security max-mac-num <number>
+    description: 设置端口最大MAC地址数
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port-security max-mac-num 1'
+  - command: port-security mac-address <mac> vlan <vlan-id>
+    syntax: port-security mac-address <mac> vlan <vlan-id>
+    description: 手动配置安全MAC地址
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port-security mac-address 0001-0002-0003 vlan 10'
+  - command: port-security mac-address sticky
+    syntax: port-security mac-address sticky
+    description: 启用粘性MAC自动学习
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port-security mac-address sticky'
+  - command: port-security protect-action <protect|restrict|shutdown>
+    syntax: port-security protect-action <protect|restrict|shutdown>
+    description: 设置违规处理方式(protect丢弃/restrict告警/shutdown关闭)
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port-security protect-action shutdown'
+  - command: port-security aging-time <minutes>
+    syntax: port-security aging-time <minutes>
+    description: 设置安全MAC老化时间
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port-security aging-time 30'
+  - command: display port-security interface <interface>
+    syntax: display port-security interface <interface>
+    description: 查看接口端口安全状态
+    source: netops_toolkit
+    example: <Huawei> display port-security interface GigabitEthernet0/0/1
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      undo shutdown'
+    description: 恢复被shutdown的违规端口
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] undo shutdown'
+- name: DHCP Snooping
+  commands:
+  - command: dhcp enable
+    syntax: 'dhcp enable
+
+      dhcp snooping enable'
+    description: 全局启用DHCP Snooping
+    source: netops_toolkit
+    example: '[Huawei] dhcp enable
+
+      [Huawei] dhcp snooping enable'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      dhcp snooping trusted'
+    description: 配置DHCP信任接口
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/24] dhcp snooping trusted'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      dhcp snooping check dhcp-chaddr enable
+
+      dhcp snooping check dhcp-giaddr enable'
+    description: 配置非信任接口检查
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] dhcp snooping check dhcp-chaddr enable'
+  - command: vlan <vlan-id>
+    syntax: 'vlan <vlan-id>
+
+      dhcp snooping enable'
+    description: 在VLAN启用DHCP Snooping
+    source: netops_toolkit
+    example: '[Huawei-vlan10] dhcp snooping enable'
+  - command: display dhcp snooping user-bind
+    syntax: display dhcp snooping user-bind
+    description: 查看DHCP Snooping绑定表
+    source: netops_toolkit
+    example: <Huawei> display dhcp snooping user-bind
+- name: ARP安全
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      arp-limit maximum <number>'
+    description: 限制接口ARP表项数量
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] arp-limit maximum 50'
+  - command: arp static <ip> <mac> <interface> <vlan-id>
+    syntax: arp static <ip> <mac> <interface> <vlan-id>
+    description: 配置静态ARP表项
+    source: netops_toolkit
+    example: '[Huawei] arp static 192.168.1.100 0001-0002-0003 GigabitEthernet0/0/1 10'
+  - command: arp detection enable
+    syntax: arp detection enable
+    description: 启用ARP检测
+    source: netops_toolkit
+    example: '[Huawei-vlan10] arp detection enable'
+  - command: arp anti-attack enable
+    syntax: arp anti-attack enable
+    description: 启用ARP防攻击功能
+    source: netops_toolkit
+    example: '[Huawei] arp anti-attack enable'
+  - command: display arp
+    syntax: display arp
+    description: 查看ARP表
+    source: netops_toolkit
+    example: <Huawei> display arp
+  - command: reset arp dynamic
+    syntax: reset arp dynamic
+    description: 清除动态ARP表项
+    source: netops_toolkit
+    example: <Huawei> reset arp dynamic
+- name: IPSG配置
+  commands:
+  - command: ip source check user-bind enable
+    syntax: ip source check user-bind enable
+    description: 启用IP源防护
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] ip source check user-bind enable'
+  - command: user-bind static ip <ip> mac <mac> interface <interface> vlan <vlan-id>
+    syntax: user-bind static ip <ip> mac <mac> interface <interface> vlan <vlan-id>
+    description: 配置静态IP/MAC绑定
+    source: netops_toolkit
+    example: '[Huawei] user-bind static ip 192.168.1.100 mac 0001-0002-0003 interface GigabitEthernet0/0/1 vlan 10'
+  - command: display dhcp snooping user-bind all
+    syntax: display dhcp snooping user-bind all
+    description: 查看IPSG绑定表
+    source: netops_toolkit
+    example: <Huawei> display dhcp snooping user-bind all
+- name: 流量监管
+  commands:
+  - command: acl <number>
+    syntax: 'acl <number>
+
+      rule <id> <permit|deny> source/destination'
+    description: 创建匹配流量的ACL
+    source: netops_toolkit
+    example: '[Huawei] acl 3000
+
+      [Huawei-acl-adv-3000] rule 5 permit ip source 192.168.1.0 0.0.0.255'
+  - command: traffic classifier <name>
+    syntax: 'traffic classifier <name>
+
+      if-match acl <number>'
+    description: 创建流分类
+    source: netops_toolkit
+    example: '[Huawei] traffic_classifier CLASS_1
+
+      [Huawei-classifier-CLASS_1] if-match acl 3000'
+  - command: traffic behavior <name>
+    syntax: 'traffic behavior <name>
+
+      car cir <kbps> [pir <kbps>] cbs <bytes> [green <action> yellow <action> red <action>]'
+    description: 创建流行为配置限速
+    source: netops_toolkit
+    example: '[Huawei] traffic behavior BEHAV_1
+
+      [Huawei-behavior-BEHAV_1] car cir 10000 pir 20000 cbs 1875000 green pass yellow pass red discard'
+  - command: traffic policy <name>
+    syntax: 'traffic policy <name>
+
+      classifier <classifier-name> behavior <behavior-name>'
+    description: 创建流策略绑定分类和行为
+    source: netops_toolkit
+    example: '[Huawei] traffic policy POLICY_1
+
+      [Huawei-trafficpolicy-POLICY_1] classifier CLASS_1 behavior BEHAV_1'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      traffic-policy <policy-name> <inbound|outbound>'
+    description: 在接口应用流策略
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] traffic-policy POLICY_1 inbound'
+  - command: display traffic policy <name>
+    syntax: display traffic policy <name>
+    description: 查看流策略配置
+    source: netops_toolkit
+    example: <Huawei> display traffic policy POLICY_1
+- name: STP基础
+  commands:
+  - command: stp enable
+    syntax: stp enable
+    description: 全局启用STP
+    source: netops_toolkit
+    example: '[Huawei] stp enable'
+  - command: stp disable
+    syntax: stp disable
+    description: 全局关闭STP
+    source: netops_toolkit
+    example: '[Huawei] stp disable'
+  - command: stp mode <stp|rstp|mstp>
+    syntax: stp mode <stp|rstp|mstp>
+    description: 设置STP模式
+    source: netops_toolkit
+    example: '[Huawei] stp mode mstp'
+  - command: stp priority <priority>
+    syntax: stp priority <priority>
+    description: 设置网桥优先级(0-61440,步长4096)
+    source: netops_toolkit
+    example: '[Huawei] stp priority 4096'
+  - command: stp root <primary|secondary>
+    syntax: stp root <primary|secondary>
+    description: 设置为主/备根桥
+    source: netops_toolkit
+    example: '[Huawei] stp root primary'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      stp priority <priority>'
+    description: 设置端口优先级
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] stp priority 128'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      stp cost <cost>'
+    description: 设置端口开销
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] stp cost 200000'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      stp edged-port enable'
+    description: 配置边缘端口(立即转发)
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] stp edged-port enable'
+  - command: stp bpdu-protection
+    syntax: stp bpdu-protection
+    description: 启用BPDU保护
+    source: netops_toolkit
+    example: '[Huawei] stp bpdu-protection'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      stp root-protection'
+    description: 配置根保护
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/24] stp root-protection'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      stp loop-protection'
+    description: 配置环路保护
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] stp loop-protection'
+  - command: display stp
+    syntax: display stp
+    description: 查看STP状态
+    source: netops_toolkit
+    example: <Huawei> display stp
+  - command: display stp interface <interface>
+    syntax: display stp interface <interface>
+    description: 查看端口STP状态
+    source: netops_toolkit
+    example: <Huawei> display stp interface GigabitEthernet0/0/1
+  - command: stp mode
+    syntax: stp mode {stp|mstp|rstp}
+    description: 设置生成树协议模式
+    example: stp mode rstp
+    source: ai_knowledge
+  - command: stp root-protection
+    syntax: stp root-protection
+    description: 启用根保护功能(防止非法Root桥)
+    source: ai_knowledge
+  - command: stp loop-protection
+    syntax: stp loop-protection
+    description: 启用环路保护(防止单向链路故障)
+    source: ai_knowledge
+  - command: stp tc-protection
+    syntax: stp tc-protection enable
+    description: 启用TC BPDU保护(防TC风暴攻击)
+    source: ai_knowledge
+  - command: stp tc-protection threshold
+    syntax: stp tc-protection threshold <threshold>
+    description: 设置TC BPDU处理阈值
+    source: ai_knowledge
+  - command: stp converge (interface)
+    syntax: stp converge {fast|normal}
+    description: 设置接口STP收敛模式(快速/正常)
+    source: ai_knowledge
+  - command: stp cost
+    syntax: stp cost <cost>
+    description: 设置接口路径开销值
+    source: ai_knowledge
+  - command: stp port priority
+    syntax: stp port priority <priority>
+    description: 设置接口端口优先级(0-240,步长16)
+    source: ai_knowledge
+  - command: stp edged-port
+    syntax: stp edged-port enable
+    description: 设置接口为边缘端口(直接连接终端)
+    source: ai_knowledge
+  - command: stp point-to-point
+    syntax: stp point-to-point {auto|force-false|force-true}
+    description: 手动设置点到点链路类型
+    source: ai_knowledge
+  - command: stp instance
+    syntax: stp instance <instance-id> cost <cost>
+    description: 设置MSTP实例的接口开销
+    source: ai_knowledge
+  - command: display stp
+    syntax: display stp [brief | instance <id> | interface <iface>]
+    description: 显示STP状态和拓扑信息
+    source: ai_knowledge
+- name: MSTP配置
+  commands:
+  - command: stp region-configuration
+    syntax: stp region-configuration
+    description: 进入MST域配置
+    source: netops_toolkit
+    example: '[Huawei] stp region-configuration'
+  - command: region-name <name>
+    syntax: region-name <name>
+    description: 设置MST域名
+    source: netops_toolkit
+    example: '[Huawei-mst-region] region-name MST_DOMAIN_1'
+  - command: instance <instance-id> vlan <vlan-id-list>
+    syntax: instance <instance-id> vlan <vlan-id-list>
+    description: 配置VLAN到实例映射
+    source: netops_toolkit
+    example: '[Huawei-mst-region] instance 1 vlan 10 20
+
+      [Huawei-mst-region] instance 2 vlan 30 40'
+  - command: revision-level <level>
+    syntax: revision-level <level>
+    description: 设置MST修订级别
+    source: netops_toolkit
+    example: '[Huawei-mst-region] revision-level 1'
+  - command: active region-configuration
+    syntax: active region-configuration
+    description: 激活MST域配置
+    source: netops_toolkit
+    example: '[Huawei-mst-region] active region-configuration'
+  - command: stp instance <instance-id> priority <priority>
+    syntax: stp instance <instance-id> priority <priority>
+    description: 设置实例网桥优先级
+    source: netops_toolkit
+    example: '[Huawei] stp instance 1 priority 4096'
+  - command: stp instance <instance-id> root <primary|secondary>
+    syntax: stp instance <instance-id> root <primary|secondary>
+    description: 设置实例根桥
+    source: netops_toolkit
+    example: '[Huawei] stp instance 1 root primary'
+  - command: display stp region-configuration
+    syntax: display stp region-configuration
+    description: 查看MST域配置
+    source: netops_toolkit
+    example: <Huawei> display stp region-configuration
+- name: VRRP配置
+  commands:
+  - command: interface vlanif <vlan-id>
+    syntax: 'interface vlanif <vlan-id>
+
+      vrrp vrid <vrid> virtual-ip <vip>'
+    description: 配置VRRP虚拟网关
+    source: netops_toolkit
+    example: '[Huawei-Vlanif10] vrrp vrid 1 virtual-ip 192.168.10.254'
+  - command: vrrp vrid <vrid> priority <priority>
+    syntax: vrrp vrid <vrid> priority <priority>
+    description: 设置VRRP优先级
+    source: netops_toolkit
+    example: '[Huawei-Vlanif10] vrrp vrid 1 priority 120'
+  - command: vrrp vrid <vrid> preempt-mode <timer|delay>
+    syntax: vrrp vrid <vrid> preempt-mode <timer|delay>
+    description: 配置抢占模式
+    source: netops_toolkit
+    example: '[Huawei-Vlanif10] vrrp vrid 1 preempt-mode timer delay 20'
+  - command: vrrp vrid <vrid> track interface <interface> reduced <value>
+    syntax: vrrp vrid <vrid> track interface <interface> reduced <value>
+    description: 跟踪接口状态降低优先级
+    source: netops_toolkit
+    example: '[Huawei-Vlanif10] vrrp vrid 1 track interface GigabitEthernet0/0/1 reduced 30'
+  - command: vrrp vrid <vrid> authentication-mode <simple|md5> <password>
+    syntax: vrrp vrid <vrid> authentication-mode <simple|md5> <password>
+    description: 配置VRRP认证
+    source: netops_toolkit
+    example: '[Huawei-Vlanif10] vrrp vrid 1 authentication-mode md5 Huawei@123'
+  - command: display vrrp
+    syntax: display vrrp
+    description: 查看VRRP状态
+    source: netops_toolkit
+    example: <Huawei> display vrrp
+  - command: display vrrp detail
+    syntax: display vrrp detail
+    description: 查看VRRP详细信息
+    source: netops_toolkit
+    example: <Huawei> display vrrp detail
+  - command: vrrp vrid virtual-ip
+    syntax: vrrp vrid <virtual-router-id> virtual-ip <virtual-ip>
+    description: 创建VRRP备份组并配置虚拟IP
+    example: vrrp vrid 1 virtual-ip 192.168.1.254
+    source: ai_knowledge
+  - command: vrrp vrid preempt-mode
+    syntax: vrrp vrid <vrid> preempt-mode {delay <seconds> | disable}
+    description: VRRP抢占模式及延迟时间
+    source: ai_knowledge
+  - command: vrrp vrid track interface
+    syntax: vrrp vrid <vrid> track interface <interface> [reduced <priority>]
+    description: VRRP跟踪上行接口(故障时降低优先级)
+    source: ai_knowledge
+  - command: vrrp vrid advertise interval
+    syntax: vrrp vrid <vrid> advertise interval <centiseconds>
+    description: VRRP通告报文间隔(默认100即1秒)
+    source: ai_knowledge
+  - command: vrrp vrid authentication-mode
+    syntax: vrrp vrid <vrid> authentication-mode {simple <pw> | md5 md5-key <pw>}
+    description: VRRP认证(简单文本或MD5)
+    source: ai_knowledge
+  - command: display vrrp
+    syntax: display vrrp [interface <iface> | verbose | statistics]
+    description: 显示VRRP备份组状态和角色
+    source: ai_knowledge
+- name: 堆叠配置
+  commands:
+  - command: stack enable
+    syntax: stack enable
+    description: 启用堆叠功能
+    source: netops_toolkit
+    example: '[Huawei] stack enable'
+  - command: stack domain <domain-id>
+    syntax: stack domain <domain-id>
+    description: 配置堆叠域ID
+    source: netops_toolkit
+    example: '[Huawei] stack domain 10'
+  - command: stack slot <slot-id> priority <priority>
+    syntax: stack slot <slot-id> priority <priority>
+    description: 设置堆叠优先级
+    source: netops_toolkit
+    example: '[Huawei] stack slot 0 priority 150'
+  - command: interface stack-port <port-id>
+    syntax: 'interface stack-port <port-id>
+
+      port member-group interface <interface>'
+    description: 配置堆叠物理端口
+    source: netops_toolkit
+    example: '[Huawei] interface stack-port 0/1
+
+      [Huawei-Stack-Port0/1] port member-group interface GigabitEthernet0/0/1'
+  - command: display stack
+    syntax: display stack
+    description: 查看堆叠状态
+    source: netops_toolkit
+    example: <Huawei> display stack
+  - command: display stack topology
+    syntax: display stack topology
+    description: 查看堆叠拓扑
+    source: netops_toolkit
+    example: <Huawei> display stack topology
+- name: BFD配置
+  commands:
+  - command: bfd
+    syntax: bfd
+    description: 全局启用BFD
+    source: netops_toolkit
+    example: '[Huawei] bfd'
+  - command: bfd <session-name> bind <peer-ip> <source-ip>
+    syntax: bfd <session-name> bind <peer-ip> <source-ip>
+    description: 创建BFD会话
+    source: netops_toolkit
+    example: '[Huawei] bfd session1 bind peer-ip 10.0.0.2 source-ip 10.0.0.1'
+  - command: discriminator local <value>
+    syntax: 'discriminator local <value>
+
+      discriminator remote <value>
+
+      min-tx-interval <ms>
+
+      min-rx-interval <ms>'
+    description: 配置BFD参数
+    source: netops_toolkit
+    example: '[Huawei-bfd-session-session1] discriminator local 1
+
+      [Huawei-bfd-session-session1] discriminator remote 2
+
+      [Huawei-bfd-session-session1] min-tx-interval 100
+
+      [Huawei-bfd-session-session1] min-rx-interval 100'
+  - command: commit
+    syntax: commit
+    description: 提交BFD会话配置
+    source: netops_toolkit
+    example: '[Huawei-bfd-session-session1] commit'
+  - command: display bfd session
+    syntax: display bfd session
+    description: 查看BFD会话
+    source: netops_toolkit
+    example: <Huawei> display bfd session
+- name: 日志配置
+  commands:
+  - command: info-center enable
+    syntax: info-center enable
+    description: 启用信息中心
+    source: netops_toolkit
+    example: '[Huawei] info-center enable'
+  - command: info-center loghost <ip> [facility <facility>]
+    syntax: info-center loghost <ip> [facility <facility>]
+    description: 配置日志服务器
+    source: netops_toolkit
+    example: '[Huawei] info-center loghost 192.168.1.100 facility local7'
+  - command: info-center source <module> level <level>
+    syntax: info-center source <module> level <level>
+    description: 配置日志级别(emergencies/alerts/critical/errors/warnings/notifications/informational/debugging)
+    source: netops_toolkit
+    example: '[Huawei] info-center source default level informational'
+  - command: info-center logbuffer size <size>
+    syntax: info-center logbuffer size <size>
+    description: 配置日志缓冲区大小
+    source: netops_toolkit
+    example: '[Huawei] info-center logbuffer size 1024'
+  - command: terminal monitor
+    syntax: 'terminal monitor
+
+      terminal logging'
+    description: 终端显示日志
+    source: netops_toolkit
+    example: '<Huawei> terminal monitor
+
+      <Huawei> terminal logging'
+  - command: display logbuffer
+    syntax: display logbuffer
+    description: 查看日志缓冲区
+    source: netops_toolkit
+    example: <Huawei> display logbuffer
+  - command: reset logbuffer
+    syntax: reset logbuffer
+    description: 清除日志缓冲区
+    source: netops_toolkit
+    example: <Huawei> reset logbuffer
+- name: SNMP配置
+  commands:
+  - command: snmp-agent
+    syntax: snmp-agent
+    description: 启用SNMP Agent
+    source: netops_toolkit
+    example: '[Huawei] snmp-agent'
+  - command: snmp-agent sys-info version <v1|v2c|v3|all>
+    syntax: snmp-agent sys-info version <v1|v2c|v3|all>
+    description: 设置SNMP版本
+    source: netops_toolkit
+    example: '[Huawei] snmp-agent sys-info version v2c v3'
+  - command: snmp-agent community read <community>
+    syntax: snmp-agent community read <community>
+    description: 配置SNMP只读共同体
+    source: netops_toolkit
+    example: '[Huawei] snmp-agent community read public'
+  - command: snmp-agent community write <community>
+    syntax: snmp-agent community write <community>
+    description: 配置SNMP读写共同体
+    source: netops_toolkit
+    example: '[Huawei] snmp-agent community write private'
+  - command: snmp-agent trap enable
+    syntax: snmp-agent trap enable
+    description: 启用Trap
+    source: netops_toolkit
+    example: '[Huawei] snmp-agent trap enable'
+  - command: snmp-agent target-host trap-paramsname <params> address <ip> params securityname <community>
+    syntax: snmp-agent target-host trap-paramsname <params> address <ip> params securityname <community>
+    description: 配置Trap目标主机
+    source: netops_toolkit
+    example: '[Huawei] snmp-agent target-host trap-paramsname NMS1 address 192.168.1.100 params securityname public'
+  - command: snmp-agent sys-info contact <contact>
+    syntax: 'snmp-agent sys-info contact <contact>
+
+      snmp-agent sys-info location <location>'
+    description: 配置系统联系人/位置
+    source: netops_toolkit
+    example: '[Huawei] snmp-agent sys-info contact admin@company.com
+
+      [Huawei] snmp-agent sys-info location ''IDC_Room_A'''
+  - command: display snmp-agent sys-info
+    syntax: display snmp-agent sys-info
+    description: 查看SNMP系统信息
+    source: netops_toolkit
+    example: <Huawei> display snmp-agent sys-info
+- name: NTP配置
+  commands:
+  - command: ntp-service enable
+    syntax: ntp-service enable
+    description: 启用NTP服务
+    source: netops_toolkit
+    example: '[Huawei] ntp-service enable'
+  - command: ntp-service unicast-server <ip> [version <v>] [preferred]
+    syntax: ntp-service unicast-server <ip> [version <v>] [preferred]
+    description: 配置NTP服务器
+    source: netops_toolkit
+    example: '[Huawei] ntp-service unicast-server 192.168.1.100 version 4 preferred'
+  - command: clock timezone <name> <add|minus> <hours> [<minutes>]
+    syntax: clock timezone <name> <add|minus> <hours> [<minutes>]
+    description: 配置时区
+    source: netops_toolkit
+    example: '[Huawei] clock timezone BJ add 08:00'
+  - command: display ntp-service status
+    syntax: display ntp-service status
+    description: 查看NTP状态
+    source: netops_toolkit
+    example: <Huawei> display ntp-service status
+  - command: display ntp-service sessions
+    syntax: display ntp-service sessions
+    description: 查看NTP会话
+    source: netops_toolkit
+    example: <Huawei> display ntp-service sessions
+- name: NetStream配置
+  commands:
+  - command: ip netstream timeout active <minutes>
+    syntax: 'ip netstream timeout active <minutes>
+
+      ip netstream timeout inactive <seconds>'
+    description: 配置NetStream超时
+    source: netops_toolkit
+    example: '[Huawei] ip netstream timeout active 10'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ip netstream <inbound|outbound>'
+    description: 接口启用NetStream
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] ip netstream inbound'
+  - command: ip netstream export host <ip> <port>
+    syntax: ip netstream export host <ip> <port>
+    description: 配置NetStream输出目标
+    source: netops_toolkit
+    example: '[Huawei] ip netstream export host 192.168.1.100 9996'
+  - command: display ip netstream cache
+    syntax: display ip netstream cache
+    description: 查看NetStream缓存
+    source: netops_toolkit
+    example: <Huawei> display ip netstream cache
+- name: 优先级映射
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      trust dscp'
+    description: 信任DSCP优先级
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] trust dscp'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      trust 8021p'
+    description: 信任802.1p优先级
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] trust 8021p'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      port priority <priority>'
+    description: 设置端口优先级
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] port priority 5'
+  - command: qos dscp <dscp> <phb> <color>
+    syntax: qos dscp <dscp> <phb> <color>
+    description: 配置DSCP到PHB映射
+    source: netops_toolkit
+    example: '[Huawei] qos dscp 46 ef green'
+- name: 流量整形
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      qos lr <inbound|outbound> cir <kbps> cbs <bytes>'
+    description: 接口限速(线路速率)
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] qos lr outbound cir 10000 cbs 1875000'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      qos queue <queue-id> shaping cir <kbps>'
+    description: 队列流量整形
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] qos queue 0 shaping cir 5000'
+  - command: qos lr inbound cir
+    syntax: qos lr inbound cir <bps>
+    description: 接口入方向限速(CIR承诺速率,bps)
+    example: qos lr inbound cir 10000000
+    source: ai_knowledge
+  - command: qos lr outbound cir
+    syntax: qos lr outbound cir <bps>
+    description: 接口出方向限速
+    source: ai_knowledge
+  - command: qos car inbound cir cbs
+    syntax: qos car inbound cir <bps> cbs <bytes>
+    description: CAR承诺访问速率入方向(速率+突发大小)
+    source: ai_knowledge
+  - command: qos car outbound cir cbs
+    syntax: qos car outbound cir <bps> cbs <bytes>
+    description: CAR承诺访问速率出方向
+    source: ai_knowledge
+  - command: qos priority
+    syntax: qos priority <0-7>
+    description: 设置接口QoS信任优先级(802.1p CoS)
+    source: ai_knowledge
+  - command: traffic-policy
+    syntax: traffic-policy {inbound|outbound} <policy-name>
+    description: 接口应用流策略(Traffic Policy)
+    source: ai_knowledge
+  - command: classifier
+    syntax: classifier <classifier-name> operator {and|or}
+    description: 创建流分类(Classifier)
+    source: ai_knowledge
+  - command: if-match
+    syntax: if-match {acl <acl-num> | vlan-id <vlan> | dot1p <pri>}
+    description: 流分类匹配规则(Classifier视图下)
+    source: ai_knowledge
+  - command: behavior
+    syntax: behavior <behavior-name>
+    description: 创建流行为(Behavior)
+    source: ai_knowledge
+  - command: car
+    syntax: car cir <bps> pir <pbs> [cbs <cbs>]
+    description: 流行为中配置CAR限速参数
+    source: ai_knowledge
+  - command: remark
+    syntax: remark {dot1p <pri> | dscp <dscp> | local-precedence <prec>}
+    description: 流行为中重标记优先级
+    source: ai_knowledge
+  - command: deny
+    syntax: deny
+    description: 流行为中丢弃匹配流量
+    source: ai_knowledge
+  - command: traffic policy
+    syntax: traffic policy <policy-name>
+    description: 创建流策略(Policy,关联Classifier+Behavior)
+    source: ai_knowledge
+  - command: classifier behavior
+    syntax: classifier <cls-name> behavior <beh-name>
+    description: 流策略中关联分类和行为
+    source: ai_knowledge
+  - command: display traffic policy
+    syntax: display traffic policy [user-defined | system-defined]
+    description: 显示QoS流策略配置和统计
+    source: ai_knowledge
+- name: 拥塞管理
+  commands:
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      qos queue <queue-id> wfq'
+    description: 配置WFQ调度
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] qos queue 0 wfq'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      qos pq <queue-id>'
+    description: 配置优先队列
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] qos pq 5 6 7'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      qos wrr queue <queue-id> weight <weight>'
+    description: 配置WRR调度权重
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] qos wrr queue 0 weight 10
+
+      [Huawei-GigabitEthernet0/0/1] qos wrr queue 1 weight 20'
+- name: 基础配置
+  commands:
+  - command: ipv6
+    syntax: ipv6
+    description: 全局启用IPv6
+    source: netops_toolkit
+    example: '[Huawei] ipv6'
+  - command: interface <interface>
+    syntax: 'interface <interface>
+
+      ipv6 enable
+
+      ipv6 address <ipv6>/<prefix>'
+    description: 配置接口IPv6地址
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] ipv6 enable
+
+      [Huawei-GigabitEthernet0/0/1] ipv6 address 2001:db8::1/64'
+  - command: ipv6 address auto link-local
+    syntax: ipv6 address auto link-local
+    description: 自动配置链路本地地址
+    source: netops_toolkit
+    example: '[Huawei-GigabitEthernet0/0/1] ipv6 address auto link-local'
+  - command: display ipv6 interface <interface>
+    syntax: display ipv6 interface <interface>
+    description: 查看接口IPv6信息
+    source: netops_toolkit
+    example: <Huawei> display ipv6 interface GigabitEthernet0/0/1
+  - command: display ipv6 routing-table
+    syntax: display ipv6 routing-table
+    description: 查看IPv6路由表
+    source: netops_toolkit
+    example: <Huawei> display ipv6 routing-table
+  - command: ping ipv6 <ipv6>
+    syntax: ping ipv6 <ipv6>
+    description: 测试IPv6连通性
+    source: netops_toolkit
+    example: <Huawei> ping ipv6 2001:db8::1
+- name: IPv6路由
+  commands:
+  - command: ipv6 route-static <dest>/<prefix> <next-hop>
+    syntax: ipv6 route-static <dest>/<prefix> <next-hop>
+    description: 配置IPv6静态路由
+    source: netops_toolkit
+    example: '[Huawei] ipv6 route-static ::/0 2001:db8::ffff'
+  - command: ospfv3 <process-id>
+    syntax: 'ospfv3 <process-id>
+
+      router-id <router-id>
+
+      area <area-id>'
+    description: 配置OSPFv3
+    source: netops_toolkit
+    example: '[Huawei] ospfv3 1
+
+      [Huawei-ospfv3-1] router-id 1.1.1.1
+
+      [Huawei-ospfv3-1] area 0'
+- name: SSH/Telnet/Console
+  commands:
+  - command: ssh server port
+    syntax: ssh server port <port>
+    description: 设置SSH服务监听端口
+    example: ssh server port 2222
+    source: ai_knowledge
+  - command: ssh server max-auth-times
+    syntax: ssh server max-auth-times <count>
+    description: 设置SSH最大认证尝试次数(默认3-6次)
+    source: ai_knowledge
+  - command: ssh server rekey-interval
+    syntax: ssh server rekey-interval <minutes>
+    description: 设置SSH密钥更新间隔(分钟)
+    source: ai_knowledge
+  - command: ssh server compatible-huawei-version enable
+    syntax: ssh server compatible-huawei-version enable
+    description: 兼容旧版本华为SSH客户端
+    source: ai_knowledge
+  - command: ssh version
+    syntax: ssh version {1|2|all}
+    description: 设置支持的SSH协议版本
+    example: ssh version 2
+    source: ai_knowledge
+  - command: ssh user
+    syntax: ssh user <username>
+    description: 创建SSH用户并进入SSH用户视图
+    source: ai_knowledge
+  - command: ssh user authentication-type
+    syntax: ssh user <username> authentication-type {password|rsa|password-rsa|all}
+    description: 设置SSH用户认证方式
+    source: ai_knowledge
+  - command: ssh user service-type
+    syntax: ssh user <username> service-type {stelnet|sftp|all|snmp}
+    description: 设置SSH用户服务类型
+    source: ai_knowledge
+  - command: user-interface vty
+    syntax: user-interface vty <start> <end>
+    description: 进入VTY虚拟终端界面(远程登录用)
+    example: user-interface vty 0 4
+    source: ai_knowledge
+  - command: user-interface console
+    syntax: user-interface console <number>
+    description: 进入Console物理控制台界面
+    example: user-interface console 0
+    source: ai_knowledge
+  - command: protocol inbound
+    syntax: protocol inbound {all|ssh|telnet}
+    description: 设置VTY允许的登录协议
+    example: protocol inbound ssh
+    source: ai_knowledge
+  - command: idle-timeout
+    syntax: idle-timeout <minutes> <seconds>
+    description: 设置空闲超时自动注销时间
+    example: idle-timeout 10 0
+    source: ai_knowledge
+  - command: screen-length
+    syntax: screen-length <lines>
+    description: 设置终端屏幕显示行数(0表示不分页)
+    source: ai_knowledge
+  - command: history-command max-size
+    syntax: history-command max-size <size>
+    description: 设置命令历史记录最大条数
+    source: ai_knowledge
+  - command: display ssh server status
+    syntax: display ssh server status
+    description: 查看SSH服务状态和配置
+    source: ai_knowledge
+  - command: display telnet server status
+    syntax: display telnet server status
+    description: 查看Telnet服务状态
+    source: ai_knowledge
+  - command: display rsa local-key-pair public
+    syntax: display rsa local-key-pair public
+    description: 显示RSA公钥信息
+    source: ai_knowledge
+- name: 路由配置
+  commands:
+  - command: ip route-static
+    syntax: ip route-static <dest-ip> {<mask>|<mask-length>} {<next-hop>|<interface>} [preference <pref>]
+    description: 配置IPv4静态路由
+    example: ip route-static 0.0.0.0 0.0.0.0 192.168.1.254
+    source: ai_knowledge
+  - command: ip route-static vpn-instance
+    syntax: ip route-static vpn-instance <vrf> <dest> <mask> <next-hop>
+    description: 配置VPN实例静态路由
+    source: ai_knowledge
+  - command: default-cost
+    syntax: default-cost <cost>
+    description: 设置OSPF Stub/NSSA区域的默认开销
+    source: ai_knowledge
+  - command: ospf enable
+    syntax: ospf enable <process-id> area <area-id>
+    description: 在接口上启用OSPF
+    example: ospf enable 1 area 0
+    source: ai_knowledge
+  - command: ospf cost
+    syntax: ospf cost <value>
+    description: 设置接口OSPF开销值(1-65535)
+    source: ai_knowledge
+  - command: ospf dr-priority
+    syntax: ospf dr-priority <priority>
+    description: 设置接口DR/BDR选举优先级(0-255)
+    source: ai_knowledge
+  - command: ospf timer hello
+    syntax: ospf timer hello <seconds>
+    description: 设置OSPF Hello报文间隔(1-65535秒)
+    source: ai_knowledge
+  - command: ospf timer dead
+    syntax: ospf timer dead <seconds>
+    description: 设置OSPF邻居死亡时间(应为hello的4倍)
+    source: ai_knowledge
+  - command: ospf network-type
+    syntax: ospf network-type {broadcast|p2p|p2mp|nbma}
+    description: 修改接口OSPF网络类型
+    source: ai_knowledge
+  - command: ospf authentication-mode
+    syntax: ospf authentication-mode {md5|simple} <key-id> <password>
+    description: 设置OSPF接口认证
+    source: ai_knowledge
+  - command: bgp
+    syntax: bgp <as-number>
+    description: 启动BGP进程并进入BGP视图
+    example: bgp 65001
+    source: ai_knowledge
+  - command: router-id (BGP)
+    syntax: router-id <router-id>
+    description: 设置BGP路由器标识符(BGP视图下)
+    source: ai_knowledge
+  - command: peer ebgp-max-hop
+    syntax: peer <peer-ip> ebgp-max-hop <hop-count>
+    description: 允许EBGP非直连多跳建立会话
+    source: ai_knowledge
+  - command: peer password
+    syntax: peer <peer-ip> cipher <password>
+    description: 设置BGP对等体MD5认证密码
+    source: ai_knowledge
+  - command: ipv4-family unicast
+    syntax: ipv4-family unicast
+    description: 进入IPv4单播地址族(BGP视图下)
+    source: ai_knowledge
+  - command: import-route
+    syntax: import-route <protocol> [process <pid>]
+    description: BGP引入其他路由协议的路由
+    example: import-route ospf process 1
+    source: ai_knowledge
+  - command: peer enable
+    syntax: peer <peer-ip> enable
+    description: 激活指定BGP对等体
+    source: ai_knowledge
+  - command: default-route-advertise
+    syntax: default-route-advertise [import-route]
+    description: BGP向邻居通告默认路由
+    source: ai_knowledge
+  - command: display ip routing-table
+    syntax: display ip routing-table [<network> [mask-length]] [verbose]
+    description: 显示IPv4路由表
+    source: ai_knowledge
+  - command: display ospf peer
+    syntax: display ospf peer [brief]
+    description: 显示OSPF邻居状态
+    source: ai_knowledge
+  - command: display bgp peer
+    syntax: display bgp peer [verbose | <ip>]
+    description: 显示BGP对等体状态
+    source: ai_knowledge
+  - command: display bgp routing-table
+    syntax: display bgp routing-table [regexp <pattern>]
+    description: 显示BGP路由表
+    source: ai_knowledge
+- name: 安全配置
+  commands:
+  - command: acl number
+    syntax: acl number <acl-number> [match-order {config|auto}]
+    description: 创建ACL(2000-2999基本,3000-3999高级,4000-4999二层)
+    example: acl number 3000
+    source: ai_knowledge
+  - command: rule (ACL)
+    syntax: rule <rule-id> {permit|deny} [{ip|tcp|udp|icmp}] source <src> [<wildcard>] [destination <dst> [<wildcard>]] [destination-port eq <port>]
+    description: 配置ACL规则
+    source: ai_knowledge
+  - command: time-range
+    syntax: time-range <name> {from <HH:MM> to <HH:MM> [days]}
+    description: 定义时间段(用于ACL规则生效时间)
+    source: ai_knowledge
+  - command: port-security protect-action
+    syntax: port-security protect-action {protect|restrict|shutdown}
+    description: MAC越界后的保护动作
+    source: ai_knowledge
+  - command: port-security mac-address sticky bind
+    syntax: port-security mac-address sticky <mac> vlan <vlan-id>
+    description: 绑定Sticky MAC到指定VLAN
+    source: ai_knowledge
+  - command: mac-address static
+    syntax: mac-address static <mac> <interface> vlan <vlan-id>
+    description: 配置静态MAC地址表项
+    source: ai_knowledge
+  - command: mac-address blackhole
+    syntax: mac-address blackhole <mac>
+    description: 配置黑洞MAC(丢弃目标为此MAC的所有帧)
+    source: ai_knowledge
+  - command: mac-address limit maximum
+    syntax: mac-address limit maximum <limit> [vlan <id>|action <action>|alarm {enable|disable}]
+    description: MAC地址学习数量限制
+    source: ai_knowledge
+  - command: dot1x enable
+    syntax: dot1x enable
+    description: 全局启用802.1X端口认证
+    source: ai_knowledge
+  - command: dot1x authentication-method
+    syntax: dot1x authentication-method {chap|pap|eap}
+    description: 802.1X认证方法(CHAP/PAP/EAP)
+    source: ai_knowledge
+  - command: dot1x reauthenticate period
+    syntax: dot1x reauthenticate period <seconds>
+    description: 802.1X重认证周期(默认3600秒)
+    source: ai_knowledge
+  - command: dot1x timer tx-period
+    syntax: dot1x timer tx-period <seconds>
+    description: 802.1X请求帧发送间隔(默认30秒)
+    source: ai_knowledge
+  - command: dot1x port-method
+    syntax: dot1x port-method {mac|port}
+    description: 802.1X端口控制方式(mac-based/port-based)
+    source: ai_knowledge
+  - command: dot1x max-user
+    syntax: dot1x max-user <count>
+    description: 单端口802.1X最大用户数
+    source: ai_knowledge
+  - command: dot1x timer quiet-period
+    syntax: dot1x timer quiet-period <seconds>
+    description: 认证失败后静默时间(默认60秒)
+    source: ai_knowledge
+  - command: arp static
+    syntax: arp static <ip> <mac> [vid <vlan-id>] [interface <interface>]
+    description: 配置静态ARP表项
+    source: ai_knowledge
+  - command: arp inspection vlan
+    syntax: arp inspection vlan <vlan-list>
+    description: 在指定VLAN启用ARP Inspection(DAI)
+    source: ai_knowledge
+  - command: arp inspection trust
+    syntax: arp inspection trust
+    description: 设置ARP Inspection信任接口(上联口)
+    source: ai_knowledge
+  - command: arp-limit maximum
+    syntax: arp-limit maximum <limit>
+    description: ARP表项数量限制(防ARP泛洪)
+    source: ai_knowledge
+  - command: arp anti-attack
+    syntax: arp anti-attack {gateway-detect|gratuitous-arp|send-ack} enable
+    description: 启用ARP攻击防护特性
+    source: ai_knowledge
+  - command: radius-server template
+    syntax: radius-server template <name>
+    description: 创建RADIUS服务器模板
+    source: ai_knowledge
+  - command: radius-server shared-key
+    syntax: radius-server shared-key cipher <key>
+    description: 设置RADIUS共享密钥
+    source: ai_knowledge
+  - command: radius-server authentication
+    syntax: radius-server authentication <ip> <port>
+    description: 配置RADIUS认证服务器地址和端口
+    source: ai_knowledge
+  - command: radius-server accounting
+    syntax: radius-server accounting <ip> <port>
+    description: 配置RADIUS计费服务器地址和端口
+    source: ai_knowledge
+  - command: radius-server retransmit
+    syntax: radius-server retransmit <count>
+    description: RADIUS请求重传次数(默认3次)
+    source: ai_knowledge
+  - command: radius-server timeout
+    syntax: radius-server timeout <seconds>
+    description: RADIUS服务器响应超时时间(默认5秒)
+    source: ai_knowledge
+  - command: dhcp snooping enable
+    syntax: dhcp snooping enable
+    description: 全局启用DHCP Snooping(防伪DHCP)
+    source: ai_knowledge
+  - command: dhcp snooping vlan
+    syntax: dhcp snooping vlan <vlan-list>
+    description: 在指定VLAN启用DHCP Snooping
+    source: ai_knowledge
+  - command: dhcp snooping trusted
+    syntax: dhcp snooping trusted
+    description: 设置DHCP Snooping信任接口(DHCP服务器侧)
+    source: ai_knowledge
+  - command: storm-control broadcast min-rate
+    syntax: storm-control broadcast min-rate <pps>
+    description: 广播风暴抑制阈值(包/秒)
+    source: ai_knowledge
+  - command: storm-control multicast min-rate
+    syntax: storm-control multicast min-rate <pps>
+    description: 组播风暴抑制阈值
+    source: ai_knowledge
+  - command: storm-control unicast min-rate
+    syntax: storm-control unicast min-rate <pps>
+    description: 未知单播风暴抑制阈值
+    source: ai_knowledge
+  - command: storm-control action
+    syntax: storm-control action {block|shutdown}
+    description: 风暴抑制触发动作(block丢弃/shutdown关端口)
+    source: ai_knowledge
+  - command: traffic-filter
+    syntax: traffic-filter {inbound|outbound} acl <acl-number>
+    description: 接口应用ACL进行流量过滤
+    example: traffic-filter inbound acl 3000
+    source: ai_knowledge
+  - command: traffic-secure
+    syntax: traffic-secure [inbound|outbound] binding <profile-name>
+    description: 应用IPSG(源IP保护)绑定模板
+    source: ai_knowledge
+  - command: user-bind static
+    syntax: user-bind static [ip <ip>] [mac <mac>] [vlan <vlan-id>]
+    description: 配置IP+MAC+VLAN静态绑定(IPSG)
+    source: ai_knowledge
+  - command: display acl
+    syntax: display acl {all | <acl-number>}
+    description: 显示ACL配置和匹配计数
+    source: ai_knowledge
+  - command: display port-security
+    syntax: display port-security [interface <iface>]
+    description: 显示端口安全状态和学习到的MAC
+    source: ai_knowledge
+- name: 接口与聚合
+  commands:
+  - command: interface Eth-Trunk
+    syntax: interface Eth-Trunk<trunk-id>
+    description: 创建Eth-Trunk链路聚合接口
+    example: interface Eth-Trunk1
+    source: ai_knowledge
+  - command: eth-trunk
+    syntax: eth-trunk <trunk-id>
+    description: 将物理接口加入Eth-Trunk组(接口视图下)
+    example: eth-trunk 1
+    source: ai_knowledge
+  - command: mode (Eth-Trunk)
+    syntax: mode {manual|lacp-static|lacp-dynamic}
+    description: 设置Eth-Trunk工作模式(Eth-Trunk视图下)
+    source: ai_knowledge
+  - command: lacp system-id
+    syntax: lacp system-id <mac-address>
+    description: LACP系统ID(默认使用STP Bridge MAC)
+    source: ai_knowledge
+  - command: lacp fast-switchover enable
+    syntax: lacp fast-switchover enable
+    description: 启用LACP快速切换(Bypass等待)
+    source: ai_knowledge
+  - command: lacp timeout
+    syntax: lacp timeout {fast|slow}
+    description: LACP报文发送周期(fast=1s/slow=30s)
+    source: ai_knowledge
+  - command: max bandwidth-affected-linknumber
+    syntax: max bandwidth-affected-linknumber <number>
+    description: 影响Eth-Trunk带宽的最小活动链路数
+    source: ai_knowledge
+  - command: lldp enable
+    syntax: lldp enable
+    description: 全局启用LLDP链路层发现协议
+    source: ai_knowledge
+  - command: lldp mode
+    syntax: lldp mode {both|tx|rx}
+    description: LLDP工作模式(收发/只发/只收)
+    source: ai_knowledge
+  - command: lldp message-fasts count
+    syntax: lldp message-fasts count <number>
+    description: LLDP快速发送报文数量(初始化时多发)
+    source: ai_knowledge
+  - command: lldp transmit interval
+    syntax: lldp transmit interval <seconds>
+    description: LLDP常规报文发送间隔(默认30秒)
+    source: ai_knowledge
+  - command: lldp transmit holdtime
+    syntax: lldp transmit holdtime <seconds>
+    description: LLDP邻居信息保持时间(默认120秒)
+    source: ai_knowledge
+  - command: lldp admin-status
+    syntax: lldp admin-status {txrx|rx|disable}
+    description: 接口LLDP管理状态
+    source: ai_knowledge
+  - command: poe enable
+    syntax: poe enable
+    description: 全局启用PoE以太网供电
+    source: ai_knowledge
+  - command: poe max-power
+    syntax: poe max-power <watts>
+    description: PoE最大供电功率(瓦特)
+    source: ai_knowledge
+  - command: poe legacy enable
+    syntax: poe legacy enable
+    description: 启用PoE Legacy兼容模式(非标准PD)
+    source: ai_knowledge
+  - command: poe mode
+    syntax: poe mode {auto|force}
+    description: PoE供电模式(auto检测/强制供电)
+    source: ai_knowledge
+  - command: poe priority
+    syntax: poe priority {critical|high|low}
+    description: PoE供电优先级(功率不足时先断低优先级)
+    source: ai_knowledge
+  - command: display lldp neighbor
+    syntax: display lldp neighbor [brief | interface <iface>]
+    description: 显示LLDP发现的邻居设备信息
+    source: ai_knowledge
+  - command: display poe power-state
+    syntax: display poe power-state [interface <iface>]
+    description: 显示PoE供电状态和功率分配
+    source: ai_knowledge
+- name: 端口隔离与环路检测
+  commands:
+  - command: port-isolate mode all
+    syntax: port-isolate mode all
+    description: 设置端口隔离模式为全隔离(同组内互隔离)
+    source: ai_knowledge
+  - command: port-isolate enable group
+    syntax: port-isolate enable group <group-id>
+    description: 启用端口隔离并加入隔离组(1-64)
+    example: port-isolate enable group 1
+    source: ai_knowledge
+  - command: loopback-detect enable
+    syntax: loopback-detect enable
+    description: 全局启用环路检测功能
+    source: ai_knowledge
+  - command: loopback-detect interval
+    syntax: loopback-detect interval <seconds>
+    description: 环路检测报文发送间隔(默认5秒)
+    source: ai_knowledge
+  - command: loopback-detect vlan
+    syntax: loopback-detect vlan <vlan-list>
+    description: 指定环路检测的VLAN范围
+    source: ai_knowledge
+  - command: loopback-detect action
+    syntax: loopback-detect action {block|shutdown|warning|no-learning}
+    description: 检测到环路后的处理动作
+    source: ai_knowledge
+  - command: loopback-detect recovery-time
+    syntax: loopback-detect recovery-time <minutes>
+    description: 端口自动恢复时间(shutdown模式下)
+    source: ai_knowledge
+- name: 服务配置(NTP/SNMP/DNS/DHCP/日志)
+  commands:
+  - command: ntp-service unicast-server
+    syntax: ntp-service unicast-server <ip> [preference] [version <num>] [authentication-keyid <id>]
+    description: 配置NTP单播服务器
+    example: ntp-service unicast-server 192.168.1.1 preference
+    source: ai_knowledge
+  - command: ntp-service broadcast-client
+    syntax: ntp-service broadcast-client
+    description: 启用NTP广播客户端模式
+    source: ai_knowledge
+  - command: ntp-service refclock-master
+    syntax: ntp-service refclock-master [<ip-stratum>]
+    description: 配置本地时钟作为NTP主时钟
+    source: ai_knowledge
+  - command: snmp-agent sys-info version
+    syntax: snmp-agent sys-info version {v1|v2c|v3|all}
+    description: 设置SNMP协议版本
+    source: ai_knowledge
+  - command: snmp-agent sys-info location
+    syntax: snmp-agent sys-info location <location-text>
+    description: 设置SNMP设备位置信息(sysLocation)
+    source: ai_knowledge
+  - command: snmp-agent sys-info contact
+    syntax: snmp-agent sys-info contact <contact-text>
+    description: 设置SNMP联系信息(sysContact)
+    source: ai_knowledge
+  - command: snmp-agent target-host trap address
+    syntax: snmp-agent target-host trap address udp-domain <ip> params securityname <name>
+    description: 配置SNMP Trap接收目标主机
+    source: ai_knowledge
+  - command: info-center timestamp log
+    syntax: info-center timestamp log {date|boot|short-date}
+    description: 日志时间戳格式(date含年月日/boot相对启动时间)
+    source: ai_knowledge
+  - command: info-center loghost
+    syntax: info-center loghost <server-ip> [facility {local7}]
+    description: 配置远程Syslog日志服务器
+    source: ai_knowledge
+  - command: info-center loghost source
+    syntax: info-center loghost source <interface>
+    description: 指定发往日志服务器的源接口
+    example: info-center loghost source Vlanif1
+    source: ai_knowledge
+  - command: info-center console channel
+    syntax: info-center console channel <channel-id>
+    description: 配置控制台日志输出通道
+    source: ai_knowledge
+  - command: info-center source
+    syntax: info-center source <module-name> channel <ch-id> log level {emergencies|alerts|...|debugging}
+    description: 设置模块日志输出级别和通道
+    source: ai_knowledge
+  - command: dhcp enable
+    syntax: dhcp enable
+    description: 全局启用DHCP服务(服务器/中继/侦听)
+    source: ai_knowledge
+  - command: dhcp server excluded-ip-address
+    syntax: dhcp server excluded-ip-address <start-ip> [end-ip]
+    description: DHCP地址池排除不分配的IP段
+    source: ai_knowledge
+  - command: dhcp server dns-list
+    syntax: dhcp server dns-list <dns-ip-list>
+    description: DHCP分配给客户端的DNS服务器列表
+    source: ai_knowledge
+  - command: ip pool
+    syntax: ip pool <pool-name>
+    description: 创建DHCP地址池并进入池视图
+    example: ip pool office_vlan10
+    source: ai_knowledge
+  - command: network (DHCP)
+    syntax: network <ip-address> [mask {<mask>|<mask-length>}]
+    description: DHCP地址池可分配网段
+    example: network 192.168.10.0 mask 255.255.255.0
+    source: ai_knowledge
+  - command: gateway-list
+    syntax: gateway-list <ip-address>
+    description: DHCP地址池网关地址
+    example: gateway-list 192.168.10.254
+    source: ai_knowledge
+  - command: lease
+    syntax: lease {day <days> [hour <hours>] [minute <minutes>] | unlimited}
+    description: DHCP租约有效期(unlimited=永久)
+    example: lease day 3 hour 0 minute 0
+    source: ai_knowledge
+  - command: dns-list (Pool)
+    syntax: dns-list <ip-address> &<1-8>
+    description: 地址池专用DNS服务器(最多8个)
+    source: ai_knowledge
+  - command: excluded-ip-address (Pool)
+    syntax: excluded-ip-address <start-ip> [end-ip]
+    description: 地址池排除特定IP不分配
+    source: ai_knowledge
+  - command: option-code sub-option
+    syntax: option-code <code> ascii/hex <value>
+    description: 自定义DHCP Option选项
+    source: ai_knowledge
+  - command: interface Vlanif dhcp select
+    syntax: interface Vlanif<n> / dhcp select global/global-pool/interface
+    description: VLANIF接口启用DHCP服务器(global=全局池/interface=接口池)
+    source: ai_knowledge
+  - command: ip dns server
+    syntax: ip dns server <dns-ip>
+    description: 配置DNS解析服务器(最多6个)
+    example: ip dns server 114.114.114.114
+    source: ai_knowledge
+  - command: ip dns domain
+    syntax: ip dns domain <domain-name>
+    description: 设置本机搜索域名后缀
+    example: ip dns domain company.local
+    source: ai_knowledge
+  - command: display snmp-agent session
+    syntax: display snmp-agent session
+    description: 显示当前SNMP连接会话
+    source: ai_knowledge
+  - command: display dhcp server pool
+    syntax: display dhcp server pool [<pool-name>]
+    description: 显示DHCP地址池配置和分配情况
+    source: ai_knowledge
+  - command: display ip pool
+    syntax: display ip pool [interface <iface> | name <name>]
+    description: 显示DHCP地址池使用统计
+    source: ai_knowledge
+  - command: display logbuffer
+    syntax: display logbuffer [size <lines> | reverse]
+    description: 显示本地日志缓冲区内容
+    source: ai_knowledge
+- name: NAT与网络地址转换
+  commands:
+  - command: nat address-group
+    syntax: nat address-group <index> <start-ip> <end-ip>
+    description: 创建NAT地址池(公网IP范围)
+    source: ai_knowledge
+  - command: nat outbound
+    syntax: nat outbound <acl-number> [address-group <index> | interface <iface>]
+    description: 配置NAT出方向地址转换(SNAT/PAT)
+    example: nat outbound 3000 address-group 1
+    source: ai_knowledge
+  - command: nat server
+    syntax: nat server protocol {tcp|udp} global <global-ip> <port> inside <inside-ip> <port>
+    description: 配置DNAT端口映射(发布内部服务器)
+    example: nat server protocol tcp global 202.100.1.1 80 inside 192.168.1.10 80
+    source: ai_knowledge
+  - command: nat alg
+    syntax: nat alg {all|ftp|dns|pptp|rtsp|sip}
+    description: 启用NAT应用层网关(ALG)感知
+    source: ai_knowledge
+  - command: display nat session
+    syntax: display nat session [protocol {tcp|udp|icmp}] [source <ip>]
+    description: 显示NAT会话表项
+    source: ai_knowledge
+  - command: display nat server
+    syntax: display server-map [global | all]
+    description: 显示NAT服务器映射表
+    source: ai_knowledge
+cases:
+- title: 接入交换机基础配置
+  description: 接入层交换机初始化配置，包括VLAN、管理IP、SSH、端口安全
+  steps:
+  - '# 1. 系统基本配置'
+  - sysname Access-SW-01
+  - ''
+  - '# 2. 创建VLAN'
+  - vlan batch 10 20 30 100
+  - vlan 10
+  - ' name Sales_Department'
+  - vlan 20
+  - ' name Engineering'
+  - vlan 30
+  - ' name Finance'
+  - vlan 100
+  - ' name Management'
+  - ''
+  - '# 3. 配置VLANIF网关(如果设备支持三层)'
+  - interface Vlanif 100
+  - ' ip address 192.168.100.1 255.255.255.0'
+  - ''
+  - '# 4. 配置管理IP'
+  - interface Vlanif 1
+  - ' ip address 192.168.1.10 255.255.255.0'
+  - ''
+  - '# 5. 配置默认网关'
+  - ip route-static 0.0.0.0 0.0.0.0 192.168.1.254
+  - ''
+  - '# 6. 配置Access端口'
+  - interface range GigabitEthernet 0/0/1 to GigabitEthernet 0/0/10
+  - ' port link-type access'
+  - ' port default vlan 10'
+  - ' description Sales_Users'
+  - ''
+  - interface range GigabitEthernet 0/0/11 to GigabitEthernet 0/0/20
+  - ' port link-type access'
+  - ' port default vlan 20'
+  - ' description Engineering_Users'
+  - ''
+  - '# 7. 配置Trunk上行口'
+  - interface GigabitEthernet 0/0/24
+  - ' port link-type trunk'
+  - ' port trunk allow-pass vlan 10 20 30 100'
+  - ' description Uplink_to_Core'
+  - ''
+  - '# 8. 配置SSH'
+  - rsa local-key-pair create
+  - stelnet server enable
+  - ssh user admin
+  - ssh user admin authentication-type password
+  - ssh user admin service-type stelnet
+  - local-user admin
+  - ' password cipher Admin@123'
+  - ' service-type ssh'
+  - ' level 15'
+  - ''
+  - user-interface vty 0 4
+  - ' authentication-mode aaa'
+  - ' protocol inbound ssh'
+  - ''
+  - '# 9. 配置端口安全'
+  - interface range GigabitEthernet 0/0/1 to GigabitEthernet 0/0/20
+  - ' port-security enable'
+  - ' port-security max-mac-num 2'
+  - ' port-security protect-action shutdown'
+  - ''
+  - '# 10. 配置STP边缘端口'
+  - interface range GigabitEthernet 0/0/1 to GigabitEthernet 0/0/20
+  - ' stp edged-port enable'
+  - ''
+  - '# 11. 保存配置'
+  - save
+- title: 核心交换机配置
+  description: 核心交换机完整配置，包括VLANIF、路由、ACL、VRRP
+  steps:
+  - '# 1. 系统配置'
+  - sysname Core-SW-01
+  - ''
+  - '# 2. 创建VLAN'
+  - vlan batch 10 20 30 100 200
+  - ''
+  - '# 3. 配置VLANIF网关'
+  - interface Vlanif 10
+  - ' ip address 192.168.10.1 255.255.255.0'
+  - ' description Gateway_VLAN10_Sales'
+  - ''
+  - interface Vlanif 20
+  - ' ip address 192.168.20.1 255.255.255.0'
+  - ' description Gateway_VLAN20_Engineering'
+  - ''
+  - interface Vlanif 30
+  - ' ip address 192.168.30.1 255.255.255.0'
+  - ' description Gateway_VLAN30_Finance'
+  - ''
+  - interface Vlanif 100
+  - ' ip address 192.168.100.1 255.255.255.0'
+  - ' description Management_Network'
+  - ''
+  - interface Vlanif 200
+  - ' ip address 10.0.0.1 255.255.255.252'
+  - ' description WAN_Uplink'
+  - ''
+  - '# 4. 配置DHCP'
+  - dhcp enable
+  - ip pool vlan10_pool
+  - ' network 192.168.10.0 mask 255.255.255.0'
+  - ' gateway-list 192.168.10.1'
+  - ' dns-list 8.8.8.8 114.114.114.114'
+  - ' lease day 3'
+  - ''
+  - interface Vlanif 10
+  - ' dhcp select global'
+  - ''
+  - '# 5. 配置静态路由'
+  - ip route-static 0.0.0.0 0.0.0.0 10.0.0.2
+  - ''
+  - '# 6. 配置OSPF'
+  - ospf 1 router-id 1.1.1.1
+  - ' area 0'
+  - '  network 192.168.0.0 0.0.255.255'
+  - '  network 10.0.0.0 0.0.0.3'
+  - ''
+  - '# 7. 配置ACL'
+  - acl 3000
+  - ' rule 5 deny ip source 192.168.20.0 0.0.0.255 destination 192.168.30.0 0.0.0.255'
+  - ' rule 10 permit ip'
+  - ''
+  - interface Vlanif 20
+  - ' traffic-filter outbound acl 3000'
+  - ''
+  - '# 8. 配置VRRP'
+  - interface Vlanif 10
+  - ' vrrp vrid 1 virtual-ip 192.168.10.254'
+  - ' vrrp vrid 1 priority 120'
+  - ' vrrp vrid 1 preempt-mode timer delay 20'
+  - ''
+  - '# 9. 配置NTP'
+  - ntp-service enable
+  - ntp-service unicast-server 192.168.100.100
+  - clock timezone BJ add 08:00
+  - ''
+  - '# 10. 配置日志'
+  - info-center enable
+  - info-center loghost 192.168.100.101
+  - ''
+  - '# 11. 配置SNMP'
+  - snmp-agent
+  - snmp-agent sys-info version v2c
+  - snmp-agent community read Public@123
+  - snmp-agent sys-info contact admin@company.com
+  - snmp-agent sys-info location 'IDC_Room_A'
+  - ''
+  - save
+- title: 链路聚合配置
+  description: Eth-Trunk链路聚合配置，LACP模式
+  steps:
+  - '# 1. 创建Eth-Trunk接口'
+  - interface Eth-Trunk 1
+  - ' description To_Core_Switch'
+  - ' port link-type trunk'
+  - ' port trunk allow-pass vlan 10 20 30'
+  - ' mode lacp-static'
+  - ' max active-linknumber 2'
+  - ' load-balance src-dst-ip'
+  - ''
+  - '# 2. 添加成员接口'
+  - interface GigabitEthernet 0/0/1
+  - ' eth-trunk 1'
+  - ''
+  - interface GigabitEthernet 0/0/2
+  - ' eth-trunk 1'
+  - ''
+  - interface GigabitEthernet 0/0/3
+  - ' eth-trunk 1'
+  - ''
+  - '# 3. 配置LACP优先级(可选)'
+  - lacp priority 100
+  - ''
+  - '# 4. 验证配置'
+  - display eth-trunk 1
+  - display lacp statistics eth-trunk 1
+- title: MSTP多生成树配置
+  description: MSTP多实例生成树配置，实现负载均衡
+  steps:
+  - '# 1. 配置MSTP域'
+  - stp region-configuration
+  - ' region-name COMPANY_MST'
+  - ' revision-level 1'
+  - ' instance 1 vlan 10 20'
+  - ' instance 2 vlan 30 40'
+  - ' active region-configuration'
+  - ''
+  - '# 2. 配置STP模式'
+  - stp mode mstp
+  - ''
+  - '# 3. 核心交换机1配置'
+  - stp instance 1 root primary
+  - stp instance 2 root secondary
+  - ''
+  - '# 4. 核心交换机2配置'
+  - stp instance 1 root secondary
+  - stp instance 2 root primary
+  - ''
+  - '# 5. 启用BPDU保护'
+  - stp bpdu-protection
+  - ''
+  - '# 6. 配置边缘端口'
+  - interface range GigabitEthernet 0/0/1 to GigabitEthernet 0/0/20
+  - ' stp edged-port enable'
+  - ''
+  - '# 7. 验证配置'
+  - display stp region-configuration
+  - display stp instance 1
+  - display stp instance 2
+- title: DHCP服务器配置
+  description: 交换机作为DHCP服务器配置
+  steps:
+  - '# 1. 启用DHCP服务'
+  - dhcp enable
+  - ''
+  - '# 2. 配置地址池'
+  - ip pool vlan10_pool
+  - ' network 192.168.10.0 mask 255.255.255.0'
+  - ' gateway-list 192.168.10.1'
+  - ' dns-list 8.8.8.8 114.114.114.114'
+  - ' excluded-ip-address 192.168.10.1 192.168.10.10'
+  - ' lease day 3'
+  - ''
+  - ip pool vlan20_pool
+  - ' network 192.168.20.0 mask 255.255.255.0'
+  - ' gateway-list 192.168.20.1'
+  - ' dns-list 8.8.8.8'
+  - ' lease day 7'
+  - ''
+  - '# 3. 在VLANIF接口启用DHCP'
+  - interface Vlanif 10
+  - ' dhcp select global'
+  - ''
+  - interface Vlanif 20
+  - ' dhcp select global'
+  - ''
+  - '# 4. 配置DHCP中继(如需要)'
+  - interface Vlanif 30
+  - ' dhcp select relay'
+  - ' dhcp relay server-ip 192.168.100.100'
+  - ''
+  - '# 5. 查看DHCP配置'
+  - display ip pool
+  - display dhcp server statistics
+- title: QoS流量限速配置
+  description: 基于ACL的流量限速配置
+  steps:
+  - '# 1. 创建ACL匹配流量'
+  - acl 3000
+  - ' rule 5 permit ip source 192.168.10.0 0.0.0.255'
+  - ''
+  - '# 2. 创建流分类'
+  - traffic classifier CLASS_LIMIT
+  - ' if-match acl 3000'
+  - ''
+  - '# 3. 创建流行为'
+  - traffic behavior BEHAV_LIMIT
+  - ' car cir 10000 pir 20000 cbs 1875000 green pass yellow pass red discard'
+  - ''
+  - '# 4. 创建流策略'
+  - traffic policy POLICY_LIMIT
+  - ' classifier CLASS_LIMIT behavior BEHAV_LIMIT'
+  - ''
+  - '# 5. 应用流策略'
+  - interface GigabitEthernet 0/0/1
+  - ' traffic-policy POLICY_LIMIT inbound'
+  - ''
+  - '# 6. 验证配置'
+  - display traffic policy POLICY_LIMIT
+- title: 端口镜像配置
+  description: 配置端口镜像用于流量监控
+  steps:
+  - '# 1. 配置观察端口'
+  - observe-port 1 interface GigabitEthernet 0/0/24
+  - ''
+  - '# 2. 配置镜像端口(镜像所有流量)'
+  - interface GigabitEthernet 0/0/1
+  - ' port-mirroring to observe-port 1 both'
+  - ''
+  - '# 3. 配置镜像端口(只镜像入方向)'
+  - interface GigabitEthernet 0/0/2
+  - ' port-mirroring to observe-port 1 inbound'
+  - ''
+  - '# 4. 配置流镜像(基于ACL)'
+  - acl 3000
+  - ' rule 5 permit tcp destination-port eq 80'
+  - ''
+  - traffic classifier CLASS_WEB
+  - ' if-match acl 3000'
+  - ''
+  - traffic behavior BEHAV_MIRROR
+  - ' mirroring to observe-port 1'
+  - ''
+  - traffic policy POLICY_MIRROR
+  - ' classifier CLASS_WEB behavior BEHAV_MIRROR'
+  - ''
+  - interface GigabitEthernet 0/0/3
+  - ' traffic-policy POLICY_MIRROR inbound'
+  - ''
+  - '# 5. 验证配置'
+  - display observe-port
+  - display port-mirroring
+- title: 堆叠配置
+  description: 华为交换机堆叠配置
+  steps:
+  - '# 交换机1配置'
+  - '# 1. 配置堆叠域'
+  - stack domain 10
+  - ''
+  - '# 2. 配置堆叠优先级'
+  - stack slot 0 priority 150
+  - ''
+  - '# 3. 配置堆叠端口'
+  - interface stack-port 0/1
+  - ' port member-group interface GigabitEthernet 0/0/47'
+  - ' port member-group interface GigabitEthernet 0/0/48'
+  - ''
+  - '# 4. 启用堆叠'
+  - stack enable
+  - ''
+  - '# 交换机2配置'
+  - stack domain 10
+  - stack slot 0 priority 100
+  - ''
+  - '# 5. 验证配置'
+  - display stack
+  - display stack configuration
+  - display stack topology

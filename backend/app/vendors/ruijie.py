@@ -60,7 +60,7 @@ class RuijieGenerator(BaseConfigGenerator):
         if user and user.get("enable", False):
             lines.append("\n#\n# 用户配置\n#\n")
             username = user.get("username", "admin")
-            enc = "0" if user.get("encrypted") else "0"
+            enc = "1" if user.get("encrypted") else "0"
             lines.append(f"username {username} privilege {user.get('level', 15)}\n")
             lines.append(f"username {username} password {enc} {user.get('password', 'admin@123')}\n")
 
@@ -178,7 +178,6 @@ class RuijieGenerator(BaseConfigGenerator):
             if ospf.get("router_id"):
                 cmd += f" router-id {ospf['router_id']}"
             lines.append(cmd + "\n")
-            lines.append(f" network {ospf.get('area_id', '0')} area {ospf.get('area_id', '0')}\n")
             for net in ospf.get("networks") or []:
                 lines.append(f" network {net['address']} {net.get('mask', '0.0.0.255')} area {net.get('area', '0')}\n")
 

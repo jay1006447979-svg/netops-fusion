@@ -15,9 +15,8 @@ build/
 *.egg-info/
 .pytest_cache/
 
-# 运行数据（备份文件、设备手册）不上传
+# 运行数据（设备备份文件）不上传；命令手册(manuals)随仓库分发保证开箱可用
 backend/data/backups/
-backend/app/data/manuals/
 
 # 日志与临时文件
 *.log
