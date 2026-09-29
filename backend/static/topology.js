@@ -1700,6 +1700,8 @@
     setVal("topo-f-clabel", cfg.custom_label || "");
     syncPropTypeUI();
     setVal("topo-f-hostname", cfg.hostname || "");
+    setVal("topo-f-portcount", ((cfg.vlan || {}).interfaces || []).length ||
+      (TYPE_META[cfg.device_type] || TYPE_META.switch).defaultPorts);
 
     /* 受管设备绑定: 连接字段只反映设备记录本身; 设备列表接口不返回凭据, 留空表示"不修改" */
     const dev = devices.find((d) => d.id === node.device_id);
@@ -1760,6 +1762,70 @@
     toast("属性已保存", "success");
   }
 
+  /* 基础信息"端口数量-应用": 按厂家命名规则把接口列表增删到目标数量。
+     追加 access(vlan 1) 端口; 缩减时只从尾部删"未接链路的 access 端口", 其余保留并提示 */
+  async function applyPortCount() {
+    if (!topoId || !selectedNodeKey) { toast("请先选中一个节点", "error"); return; }
+    const node = nodeMap[selectedNodeKey];
+    const cfg = JSON.parse(JSON.stringify(node.config || {}));
+    cfg.vlan = cfg.vlan || {};
+    cfg.vlan.interfaces = cfg.vlan.interfaces || [];
+    const list = cfg.vlan.interfaces;
+    const vendor = val("topo-f-vendor") || cfg.vendor || "huawei";
+    const rule = PORT_RULE[vendor] || PORT_RULE.huawei;
+    const target = Math.min(96, Math.max(1, parseInt(val("topo-f-portcount"), 10) || 0));
+    if (!target) { toast("请输入端口数量", "error"); return; }
+    if (list.length === target) { toast("端口数量已是 " + target + "，无需调整", "error"); return; }
+
+    let added = 0, removed = 0, blocked = 0;
+    if (list.length < target) {
+      const used = new Set(list.map((i) => (i.interface || "").toLowerCase()));
+      for (let i = 1; list.length < target && i <= 512; i++) {
+        const name = rule(i);
+        if (used.has(name.toLowerCase())) continue;
+        list.push({ interface: name, type: "access", vlan_id: 1 });
+        used.add(name.toLowerCase());
+        added++;
+      }
+    } else {
+      const linked = new Set();
+      Object.values(linkMap).forEach((l) => {
+        if (l.src_node_key === node.node_key && l.src_port) linked.add(l.src_port.toLowerCase());
+        if (l.dst_node_key === node.node_key && l.dst_port) linked.add(l.dst_port.toLowerCase());
+      });
+      while (list.length > target) {
+        let idx = -1;
+        for (let j = list.length - 1; j >= 0; j--) {
+          const it = list[j];
+          if ((it.type || "access") === "access" && !linked.has((it.interface || "").toLowerCase())) { idx = j; break; }
+        }
+        if (idx < 0) { blocked = list.length - target; break; }
+        list.splice(idx, 1);
+        removed++;
+      }
+    }
+
+    if (!added && !removed) {
+      toast(blocked ? "剩余 " + blocked + " 个端口已被链路占用，无法继续删减" : "未能调整端口数量", "error");
+      return;
+    }
+
+    const before = snapNode(node);
+    const h = beginHistory("调整端口数量 " + (node.name || ""));
+    const r = await apiPut(API_BASE + "/" + topoId + "/nodes/" + node.id, { config: cfg });
+    if (!r.success) { dropHistory(h); toast(r.message || "保存失败", "error"); return; }
+    if (sameSnap(before, snapNode(r.node))) dropHistory(h);
+    nodeMap[r.node.node_key] = r.node;
+    updateNodeVisual(r.node);
+    renderPanel();
+    setVal("topo-f-portcount", ((r.node.config || {}).vlan || {}).interfaces?.length || target);
+    const parts = [];
+    if (added) parts.push("新增 " + added + " 个");
+    if (removed) parts.push("删除 " + removed + " 个");
+    status("端口数量已调整: 现有 " + target + " 个（" + parts.join("，") + "）");
+    toast("端口已调整（" + parts.join("，") + "）" + (blocked ? "，" + blocked + " 个被链路占用未删" : ""), blocked ? "error" : "success");
+  }
+
   /* 绑定设备时, 把变化的连接信息同步到设备管理表(保证备份/下发可用)
      安全约定: 只提交"确实变化"的字段; 用户名/密码留空表示不修改, 绝不回写空值 */
   async function syncDeviceBinding(node) {
@@ -1814,6 +1880,21 @@
   }
 
   /* 功能配置弹窗: 按厂商命名规则批量生成 access 端口行, 追加到借用表单的接口 VLAN 列表 */
+  const VENDOR_NAME = { huawei: "华为", h3c: "H3C", ruijie: "锐捷", maipu: "迈普" };
+  function updatePortGenPreview() {
+    const el = document.getElementById("topo-cfg-portpreview");
+    if (!el) return;
+    const vendor = val("topo-f-vendor") || "huawei";
+    const rule = PORT_RULE[vendor] || PORT_RULE.huawei;
+    const count = Math.min(96, Math.max(1, parseInt(val("topo-cfg-portcount"), 10) || 24));
+    const start = Math.max(1, parseInt(val("topo-cfg-portstart"), 10) || 1);
+    let names = rule(start);
+    if (count > 1) names += "、" + rule(start + 1);
+    if (count > 3) names += " … " + rule(start + count - 1);
+    else if (count === 3) names += "、" + rule(start + 2);
+    el.textContent = "示例（" + (VENDOR_NAME[vendor] || vendor) + "）：" + names + "，共 " + count + " 个 access 端口";
+  }
+
   function genPortsForForm() {
     const vendor = val("topo-f-vendor") || "huawei";
     const rule = PORT_RULE[vendor] || PORT_RULE.huawei;
@@ -1877,6 +1958,7 @@
     document.getElementById("cfg-device-type").value = (val("topo-f-type") || "switch") === "custom" ? "switch" : (val("topo-f-type") || "switch");
     document.getElementById("cfg-hostname").value = val("topo-f-hostname") || val("topo-f-name") || "";
     App.switchCfgTab("basic");
+    updatePortGenPreview();
     document.getElementById("topo-nodecfg-modal").classList.add("show");
   }
 
@@ -1929,11 +2011,17 @@
   }
   function saveDevPrefs() {
     try {
+      const t = val("ta-type") || "switch";
+      /* 自定义标签只随 custom 类型记忆, 否则换个类型会把上个自定义名带出来 */
+      const p0 = loadDevPrefs();
+      const counts = p0.portcounts || {};
+      const pc = parseInt(val("ta-portcount"), 10);
+      if (pc) counts[t] = pc;
       localStorage.setItem("topo_adddev_prefs", JSON.stringify({
         vendor: val("ta-vendor") || "huawei",
-        type: val("ta-type") || "switch",
-        clabel: val("ta-clabel").trim(),
-        portcount: parseInt(val("ta-portcount"), 10) || null,
+        type: t,
+        clabel: t === "custom" ? val("ta-clabel").trim() : "",
+        portcounts: counts,
         mask: val("ta-mask") || "",
         gw: val("ta-gw") || "",
       }));
@@ -1944,11 +2032,12 @@
     if (!topoId) { toast("请先新建或选择一张拓扑图", "error"); return; }
     const p = loadDevPrefs();
     const dt = (p.type && TYPE_META[p.type]) ? p.type : "switch";
+    const counts = p.portcounts || {};
     setVal("ta-name", "");
     setVal("ta-vendor", p.vendor || "huawei");
     setVal("ta-type", dt);
-    setVal("ta-clabel", p.clabel || "");
-    setVal("ta-portcount", p.portcount || TYPE_META[dt].defaultPorts);
+    setVal("ta-clabel", dt === "custom" ? (p.clabel || "") : "");
+    setVal("ta-portcount", counts[dt] || TYPE_META[dt].defaultPorts);
     setVal("ta-batch", 1);
     setVal("ta-ip", "");
     setVal("ta-mask", p.mask || "255.255.255.0");
@@ -1979,6 +2068,21 @@
     return m[1] + last;
   }
 
+  /* 自动命名按类型递增: 厂商缩写-类型名-N, N = 同前缀(同类型/同自定义标签)已有最大序号 + 1,
+     删过设备也不会重名 */
+  function nextNameFor(vendor, dtype, clabel) {
+    const meta = TYPE_META[dtype] || TYPE_META.switch;
+    const prefix = (VENDOR_STYLE[vendor] || VENDOR_STYLE.huawei).short + "-" +
+      (dtype === "custom" ? (clabel || "自定义") : meta.name) + "-";
+    const re = new RegExp("^" + prefix.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(\\d+)$");
+    let max = 0;
+    Object.values(nodeMap).forEach((n) => {
+      const m = re.exec(n.name || "");
+      if (m) max = Math.max(max, parseInt(m[1], 10));
+    });
+    return prefix + (max + 1);
+  }
+
   async function submitAddDevice() {
     if (!topoId) return;
     const vendor = val("ta-vendor") || "huawei";
@@ -2004,10 +2108,10 @@
     let created = 0, lastNode = null;
     for (let b = 0; b < batch; b++) {
       const n = Object.keys(nodeMap).length;
-      /* 名称: 手填 + 批量时加序号; 留空则按 厂商缩写-类型-序号 自动命名 */
+      /* 名称: 手填 + 批量时加序号; 留空则按 厂商缩写-类型名-序号 自动命名(按类型各自递增) */
       const name = nameInput
         ? (batch > 1 ? nameInput + "-" + (b + 1) : nameInput)
-        : (VENDOR_STYLE[vendor].short + "-" + (clabel || meta.name) + "-" + (n + 1));
+        : nextNameFor(vendor, dtype, dtype === "custom" ? clabel : "");
       const ip = batch > 1 ? nextMgmtIp(ip0, b) : ip0;
 
       /* 位置: 网格找空位; 之后可拖动微调或自动布局 */
@@ -2911,7 +3015,10 @@
     document.getElementById("ta-type").addEventListener("change", () => {
       syncAddDevTypeUI();
       const t = val("ta-type") || "switch";
-      setVal("ta-portcount", (TYPE_META[t] || TYPE_META.switch).defaultPorts);
+      /* 切走类型时清掉自定义标签, 避免隐藏后残留值串进自动命名 */
+      if (t !== "custom") setVal("ta-clabel", "");
+      const counts = (loadDevPrefs().portcounts) || {};
+      setVal("ta-portcount", counts[t] || (TYPE_META[t] || TYPE_META.switch).defaultPorts);
     });
 
     /* 添加链路弹窗 */
@@ -2925,11 +3032,14 @@
 
     /* 属性面板 */
     document.getElementById("topo-f-type").addEventListener("change", syncPropTypeUI);
+    document.getElementById("btn-topo-apply-ports").addEventListener("click", applyPortCount);
     document.getElementById("btn-topo-cfg-edit").addEventListener("click", openNodeCfgModal);
     document.getElementById("btn-topo-cfg-save").addEventListener("click", saveNodeCfg);
     document.getElementById("btn-topo-cfg-cancel").addEventListener("click", closeNodeCfgModal);
     document.getElementById("btn-close-topo-cfg").addEventListener("click", closeNodeCfgModal);
     document.getElementById("btn-topo-cfg-genports").addEventListener("click", genPortsForForm);
+    document.getElementById("topo-cfg-portcount").addEventListener("input", updatePortGenPreview);
+    document.getElementById("topo-cfg-portstart").addEventListener("input", updatePortGenPreview);
     document.getElementById("btn-topo-save-node").addEventListener("click", saveNode);
     document.getElementById("btn-topo-gen-node").addEventListener("click", () => {
       if (!selectedNodeKey) return;

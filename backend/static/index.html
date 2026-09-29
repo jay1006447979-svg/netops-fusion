@@ -781,6 +781,13 @@
                   </div>
                   <div class="topo-field" id="topo-f-clabel-row" style="display:none"><label>自定义类型标签</label><input type="text" id="topo-f-clabel" placeholder="如 FW、服务器（≤6 字）" maxlength="6" /></div>
                   <div class="topo-field"><label>主机名</label><input type="text" id="topo-f-hostname" placeholder="留空则用节点名" /></div>
+                  <div class="topo-field"><label>端口数量</label>
+                    <div style="display:flex;gap:6px;align-items:center;">
+                      <input type="number" id="topo-f-portcount" min="1" max="96" style="flex:1;" />
+                      <button class="btn btn-sm" id="btn-topo-apply-ports">应用</button>
+                    </div>
+                    <div class="topo-tip" style="margin-top:6px;">按当前厂家端口命名规则自动增删 access 端口至该数量；已被链路占用的端口不会被删除。</div>
+                  </div>
                 </div>
 
                 <div class="topo-group">
@@ -1468,11 +1475,16 @@ stelnet server enable</textarea>
         <button class="modal-close" id="btn-close-topo-cfg">×</button>
       </div>
       <div class="modal-body" style="max-height:74vh;overflow:auto;">
-        <div class="form-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px;">
-          <div class="form-field"><label>端口数量</label><input type="number" id="topo-cfg-portcount" value="24" min="1" max="96" /></div>
-          <div class="form-field"><label>起始编号</label><input type="number" id="topo-cfg-portstart" value="1" min="1" max="96" /></div>
-          <div class="form-field"><label>默认 VLAN</label><input type="number" id="topo-cfg-portvlan" value="1" min="1" max="4094" /></div>
-          <div class="form-field"><label>&nbsp;</label><button class="btn btn-sm" id="btn-topo-cfg-genports" style="width:100%">生成端口列表（access）</button></div>
+        <div style="border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-bottom:12px;background:var(--bg);">
+          <div style="font-size:13px;font-weight:600;">⚡ 批量生成端口（access）</div>
+          <div class="topo-tip" style="margin:4px 0 8px;">按上方属性面板中当前厂家的端口命名规则，从起始编号开始批量生成 access 端口并加入指定 VLAN，追加到下方「接口 VLAN」列表；同名端口自动跳过。</div>
+          <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;">
+            <div class="form-field" style="width:96px;"><label>端口数量</label><input type="number" id="topo-cfg-portcount" value="24" min="1" max="96" /></div>
+            <div class="form-field" style="width:96px;"><label>起始编号</label><input type="number" id="topo-cfg-portstart" value="1" min="1" max="96" /></div>
+            <div class="form-field" style="width:96px;"><label>加入 VLAN</label><input type="number" id="topo-cfg-portvlan" value="1" min="1" max="4094" /></div>
+            <button class="btn btn-sm btn-primary" id="btn-topo-cfg-genports">生成并追加 ↓</button>
+          </div>
+          <div class="topo-tip" id="topo-cfg-portpreview" style="margin-top:8px;"></div>
         </div>
         <div id="topo-cfg-borrow"></div>
       </div>
