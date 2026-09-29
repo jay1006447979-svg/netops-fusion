@@ -123,10 +123,6 @@
     if (el) el.textContent = msg || "";
   }
 
-  function splitList(s) {
-    return String(s || "").split(/[,，\s]+/).map((x) => x.trim()).filter(Boolean);
-  }
-
   /* ---------- 后端接口 ---------- */
   async function apiGet(url) {
     const r = await fetch(url);
@@ -1694,27 +1690,9 @@
     renderPanel();
   }
 
-  function fmtVlans(vlans) {
-    return (vlans || []).map((v) => v.id + (v.name ? "," + v.name : "")).join("\n");
-  }
-
-  function fmtItfs(itfs) {
-    return (itfs || []).map((i) => {
-      if ((i.type || "access") === "trunk") {
-        return i.interface + ",trunk:" + (i.trunk_vlans || []).join(",");
-      }
-      return i.interface + ",access:" + (i.vlan_id == null ? "" : i.vlan_id);
-    }).join("\n");
-  }
-
   function fillNodeForm(node) {
     const cfg = node.config || {};
-    const basic = cfg.basic || {};
-    const mgmt = basic.mgmt_interface || {};
-    const vlan = cfg.vlan || {};
-    const dhcp = basic.dhcp_global || {};
-    const ntp = basic.ntp || {};
-    const snmp = basic.snmp || {};
+    const mgmt = (cfg.basic || {}).mgmt_interface || {};
 
     setVal("topo-f-name", node.name || "");
     setVal("topo-f-vendor", cfg.vendor || "huawei");
@@ -1723,68 +1701,18 @@
     syncPropTypeUI();
     setVal("topo-f-hostname", cfg.hostname || "");
 
-    setVal("topo-f-mgmt-ip", mgmt.ip_address || "");
-    setVal("topo-f-mgmt-mask", mgmt.mask || "255.255.255.0");
-    setVal("topo-f-mgmt-gw", mgmt.gateway || "");
-    setVal("topo-f-mgmt-itf", mgmt.interface || "Vlanif1");
-
+    /* 受管设备绑定: 连接字段只反映设备记录本身; 设备列表接口不返回凭据, 留空表示"不修改" */
     const dev = devices.find((d) => d.id === node.device_id);
+    setVal("topo-f-device", node.device_id || "");
+    setVal("topo-f-devhost", dev ? (dev.host || "") : (mgmt.ip_address || ""));
     setVal("topo-f-conn", dev ? (dev.connection_type || "telnet") : "telnet");
     setVal("topo-f-conn-port", dev ? (dev.port || 23) : 23);
-    /* 设备列表接口不返回凭据, 这里留空表示"不修改"(避免误清空设备账号密码) */
     setVal("topo-f-user", "");
     setVal("topo-f-pass", "");
-
-    setVal("topo-f-portcount", (vlan.interfaces || []).length || 24);
-    setVal("topo-f-portstart", 1);
-    setVal("topo-f-portvlan", ((vlan.vlans || [])[0] || {}).id || 1);
-    setVal("topo-f-vlans", fmtVlans(vlan.vlans));
-    setVal("topo-f-itfs", fmtItfs(vlan.interfaces));
-
-    setVal("topo-f-dhcp", dhcp.enable ? "true" : "false");
-    setVal("topo-f-dns", (dhcp.dns_servers || []).join(","));
-    setVal("topo-f-ntp", ntp.enable ? "true" : "false");
-    setVal("topo-f-ntp-server", ((ntp.servers || [])[0] || {}).ip || "");
-    setVal("topo-f-snmp", snmp.enable ? "true" : "false");
-    setVal("topo-f-snmp-ro", snmp.community_read || "public");
-
-    setVal("topo-f-device", node.device_id || "");
   }
 
-  function parseVlans(text) {
-    const out = [];
-    String(text || "").split(/\r?\n/).forEach((line) => {
-      const s = line.trim();
-      if (!s) return;
-      const m = s.split(/[,，\s]+/);
-      const id = parseInt(m[0], 10);
-      if (!id || id < 1 || id > 4094) return;
-      out.push({ id: id, name: m[1] || null });
-    });
-    return out;
-  }
-
-  function parseItfs(text) {
-    const out = [];
-    String(text || "").split(/\r?\n/).forEach((line) => {
-      const s = line.trim();
-      if (!s) return;
-      const parts = s.split(/,|，/);
-      const name = (parts[0] || "").trim();
-      if (!name) return;
-      const rest = parts.slice(1).join(",").trim();
-      const m = rest.match(/^(access|trunk)\s*:\s*(.*)$/i);
-      const type = m ? m[1].toLowerCase() : "access";
-      const vlist = (m ? m[2] : rest).split(/[\s,，]+/).map((x) => parseInt(x, 10)).filter((x) => !isNaN(x));
-      if (type === "trunk") {
-        out.push({ interface: name, type: "trunk", trunk_vlans: vlist });
-      } else {
-        out.push({ interface: name, type: "access", vlan_id: vlist[0] == null ? null : vlist[0] });
-      }
-    });
-    return out;
-  }
-
+  /* 属性面板只收集"身份"字段(名称/厂家/类型/主机名); 功能配置块(VLAN/路由/安全/接口等)
+     原样保留 node.config, 由功能配置弹窗(配置生成器表单)统一编辑 */
   function collectConfig() {
     const node = nodeMap[selectedNodeKey] || {};
     const cfg = JSON.parse(JSON.stringify(node.config || {}));
@@ -1799,54 +1727,6 @@
       delete cfg.custom_label;
     }
     cfg.hostname = val("topo-f-hostname") || val("topo-f-name") || "";
-
-    cfg.basic = cfg.basic || {};
-    const mgmtItf = val("topo-f-mgmt-itf") || "Vlanif1";
-    const mgmtIp = val("topo-f-mgmt-ip");
-    cfg.basic.mgmt_interface = {
-      enable: true,
-      interface: mgmtItf,
-      ip_address: mgmtIp,
-      mask: val("topo-f-mgmt-mask") || "255.255.255.0",
-      gateway: val("topo-f-mgmt-gw"),
-      description: "Management Interface",
-    };
-    cfg.basic.dhcp_global = {
-      enable: val("topo-f-dhcp") === "true",
-      dns_servers: splitList(val("topo-f-dns")),
-    };
-    const ntpServer = val("topo-f-ntp-server");
-    cfg.basic.ntp = {
-      enable: val("topo-f-ntp") === "true",
-      servers: ntpServer ? [{ ip: ntpServer, prefer: true }] : [],
-      timezone: "UTC+8",
-    };
-    cfg.basic.snmp = {
-      enable: val("topo-f-snmp") === "true",
-      version: "v2c",
-      community_read: val("topo-f-snmp-ro") || "public",
-    };
-
-    cfg.vlan = cfg.vlan || {};
-    cfg.vlan.vlans = parseVlans(val("topo-f-vlans"));
-    cfg.vlan.interfaces = parseItfs(val("topo-f-itfs"));
-
-    /* 管理接口若是 VlanifN, 自动补一条三层接口(IP 才能下发) */
-    const mm = mgmtItf.match(/^vlanif\s*(\d+)$/i);
-    const vlanifs = [];
-    if (mm && mgmtIp) {
-      vlanifs.push({
-        vlan_id: parseInt(mm[1], 10),
-        ip_address: mgmtIp,
-        mask: val("topo-f-mgmt-mask") || "255.255.255.0",
-        description: "Management Interface",
-      });
-    }
-    const vlanIds = new Set(cfg.vlan.vlans.map((v) => v.id));
-    if (mm && !vlanIds.has(parseInt(mm[1], 10))) {
-      cfg.vlan.vlans.push({ id: parseInt(mm[1], 10), name: "Mgmt" });
-    }
-    cfg.vlan.vlanifs = vlanifs.length ? vlanifs : (cfg.vlan.vlanifs || []);
 
     return cfg;
   }
@@ -1889,7 +1769,7 @@
     const cfg = node.config || {};
     const payload = {};
 
-    const wantHost = val("topo-f-mgmt-ip") || dev.host || "";
+    const wantHost = val("topo-f-devhost") || dev.host || "";
     if (wantHost && wantHost !== (dev.host || "")) payload.host = wantHost;
 
     const wantConn = val("topo-f-conn") || dev.connection_type || "telnet";
@@ -1933,21 +1813,111 @@
     toast("链路已保存", "success");
   }
 
+  /* 功能配置弹窗: 按厂商命名规则批量生成 access 端口行, 追加到借用表单的接口 VLAN 列表 */
   function genPortsForForm() {
     const vendor = val("topo-f-vendor") || "huawei";
     const rule = PORT_RULE[vendor] || PORT_RULE.huawei;
-    const count = Math.min(96, Math.max(1, parseInt(val("topo-f-portcount"), 10) || 24));
-    const start = Math.max(1, parseInt(val("topo-f-portstart"), 10) || 1);
-    const vlan = Math.max(1, parseInt(val("topo-f-portvlan"), 10) || 1);
-    const exist = parseItfs(val("topo-f-itfs"));
-    const names = new Set(exist.map((i) => (i.interface || "").toLowerCase()));
+    const count = Math.min(96, Math.max(1, parseInt(val("topo-cfg-portcount"), 10) || 24));
+    const start = Math.max(1, parseInt(val("topo-cfg-portstart"), 10) || 1);
+    const vlan = Math.max(1, parseInt(val("topo-cfg-portvlan"), 10) || 1);
+    const list = document.getElementById("cfg-ifvlan-list");
+    if (!list) return;
+    const names = new Set(
+      Array.from(list.querySelectorAll(".cfg-ifvlan-if")).map((el) => (el.value || "").toLowerCase())
+    );
+    let added = 0;
     for (let i = start; i < start + count; i++) {
       const name = rule(i);
       if (names.has(name.toLowerCase())) continue;
-      exist.push({ interface: name, type: "access", vlan_id: vlan });
+      window.App.addIfVlanRow(name, "access", vlan, "");
+      added++;
     }
-    setVal("topo-f-itfs", fmtItfs(exist));
-    toast("已生成 " + count + " 个端口（access，加入 VLAN " + vlan + "）", "success");
+    toast(added ? "已生成 " + added + " 个端口（access，加入 VLAN " + vlan + "）" : "端口均已存在，未新增", added ? "success" : "error");
+  }
+
+  /* ============================================================
+     设备功能配置弹窗: 临时把配置生成器表单 DOM 移入弹窗复用
+     ============================================================ */
+  let cfgBorrowed = false;        // 表单 DOM 当前是否被借入弹窗
+  let cfgBorrowRefs = null;       // 借用时的 {parent, header, body} 引用(借用后原位置查询不到, 必须存引用)
+
+  function cfgFormParts() {
+    const card = document.querySelector("#page-config .card");
+    return {
+      parent: card || null,
+      header: document.querySelector("#page-config .card > .card-header"),
+      body: document.querySelector("#page-config .card > .card-body"),
+    };
+  }
+
+  function openNodeCfgModal() {
+    if (!topoId || !selectedNodeKey) { toast("请先选中一个节点", "error"); return; }
+    const node = nodeMap[selectedNodeKey];
+    if (!node) return;
+    const App = window.App;
+    if (!App || !App.fillFormFromConfig || !App.collectFormConfig) { toast("配置表单未就绪", "error"); return; }
+
+    if (!cfgBorrowed) {
+      const parts = cfgFormParts();
+      if (!parts.header || !parts.body || !parts.parent) { toast("未找到配置生成器表单", "error"); return; }
+      document.getElementById("topo-cfg-borrow").appendChild(parts.header);
+      document.getElementById("topo-cfg-borrow").appendChild(parts.body);
+      cfgBorrowRefs = parts;
+      cfgBorrowed = true;
+    }
+
+    document.getElementById("topo-cfg-title").textContent = "功能配置 — " + (node.name || "");
+    /* 先彻底清空借用表单(开关/数组行/文本框), 防止上一个节点的残留值串进本次保存 */
+    App.resetConfigForm();
+    document.querySelectorAll("#topo-cfg-borrow input[type='text'], #topo-cfg-borrow input[type='number'], #topo-cfg-borrow textarea")
+      .forEach((el) => { el.value = ""; });
+    App.fillFormFromConfig(node.config || {});
+    /* 生成器表单中的厂商/类型/主机名以属性面板为准(弹窗内修改不保存) */
+    document.getElementById("cfg-vendor").value = val("topo-f-vendor") || "huawei";
+    document.getElementById("cfg-device-type").value = (val("topo-f-type") || "switch") === "custom" ? "switch" : (val("topo-f-type") || "switch");
+    document.getElementById("cfg-hostname").value = val("topo-f-hostname") || val("topo-f-name") || "";
+    App.switchCfgTab("basic");
+    document.getElementById("topo-nodecfg-modal").classList.add("show");
+  }
+
+  function closeNodeCfgModal() {
+    document.getElementById("topo-nodecfg-modal").classList.remove("show");
+    restoreCfgForm();
+  }
+
+  /* 把借用的配置生成器表单 DOM 归还原位(切回配置生成器页面前必须调用) */
+  function restoreCfgForm() {
+    if (!cfgBorrowed || !cfgBorrowRefs) return;
+    const { parent, header, body } = cfgBorrowRefs;
+    if (parent && header && body) {
+      parent.appendChild(header);
+      parent.appendChild(body);
+    }
+    cfgBorrowed = false;
+    cfgBorrowRefs = null;
+  }
+
+  async function saveNodeCfg() {
+    if (!topoId || !selectedNodeKey) return;
+    const node = nodeMap[selectedNodeKey];
+    const App = window.App;
+    const cfg = App.collectFormConfig();
+    /* 身份字段以属性面板为准, 防止借用表单里的同名输入覆盖 */
+    cfg.vendor = val("topo-f-vendor") || cfg.vendor || "huawei";
+    cfg.device_type = val("topo-f-type") || cfg.device_type || "switch";
+    cfg.hostname = val("topo-f-hostname") || val("topo-f-name") || cfg.hostname || "";
+
+    const before = snapNode(node);
+    const h = beginHistory("修改功能配置 " + (node.name || ""));
+    const r = await apiPut(API_BASE + "/" + topoId + "/nodes/" + node.id, { config: cfg });
+    if (!r.success) { dropHistory(h); toast(r.message || "保存失败", "error"); return; }
+    if (sameSnap(before, snapNode(r.node))) dropHistory(h);   /* 没改任何东西, 不占撤销步 */
+    nodeMap[r.node.node_key] = r.node;
+    updateNodeVisual(r.node);
+    renderPanel();
+    closeNodeCfgModal();
+    status("已保存功能配置: " + r.node.name);
+    toast("功能配置已保存", "success");
   }
 
   /* ============================================================
@@ -2955,7 +2925,11 @@
 
     /* 属性面板 */
     document.getElementById("topo-f-type").addEventListener("change", syncPropTypeUI);
-    document.getElementById("btn-topo-gen-ports").addEventListener("click", genPortsForForm);
+    document.getElementById("btn-topo-cfg-edit").addEventListener("click", openNodeCfgModal);
+    document.getElementById("btn-topo-cfg-save").addEventListener("click", saveNodeCfg);
+    document.getElementById("btn-topo-cfg-cancel").addEventListener("click", closeNodeCfgModal);
+    document.getElementById("btn-close-topo-cfg").addEventListener("click", closeNodeCfgModal);
+    document.getElementById("btn-topo-cfg-genports").addEventListener("click", genPortsForForm);
     document.getElementById("btn-topo-save-node").addEventListener("click", saveNode);
     document.getElementById("btn-topo-gen-node").addEventListener("click", () => {
       if (!selectedNodeKey) return;
@@ -3099,6 +3073,7 @@
     autofillPorts,
     undo,
     redo,
+    restoreCfgForm,
     /* 供自动化测试/调试查看历史栈 */
     historyInfo: () => ({
       undo: undoStack.map((e) => e.label),

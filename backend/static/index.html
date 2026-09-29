@@ -784,11 +784,18 @@
                 </div>
 
                 <div class="topo-group">
-                  <div class="topo-group-title">管理连接</div>
-                  <div class="topo-field"><label>管理 IP</label><input type="text" id="topo-f-mgmt-ip" placeholder="192.168.1.10" /></div>
-                  <div class="topo-field"><label>掩码</label><input type="text" id="topo-f-mgmt-mask" placeholder="255.255.255.0" /></div>
-                  <div class="topo-field"><label>网关</label><input type="text" id="topo-f-mgmt-gw" placeholder="192.168.1.1" /></div>
-                  <div class="topo-field"><label>管理接口</label><input type="text" id="topo-f-mgmt-itf" placeholder="Vlanif1" /></div>
+                  <div class="topo-group-title">功能配置</div>
+                  <div class="topo-tip" style="margin-bottom:8px;">SSH / Telnet / Console / 用户 / NTP / SNMP / DNS / 管理接口 / VLAN / 路由 / 安全 / Eth-Trunk 等，复用配置生成器表单编辑，保存后写入本节点。</div>
+                  <button class="btn btn-sm" id="btn-topo-cfg-edit" style="width:100%">⚙️ 编辑功能配置（配置生成器）</button>
+                </div>
+
+                <div class="topo-group">
+                  <div class="topo-group-title">受管设备绑定（备份 / 下发用）</div>
+                  <div class="topo-field topo-field-col">
+                    <label>绑定设备</label>
+                    <select id="topo-f-device"><option value="">不绑定</option></select>
+                  </div>
+                  <div class="topo-field"><label>设备地址 Host</label><input type="text" id="topo-f-devhost" placeholder="192.168.1.10" /></div>
                   <div class="topo-field"><label>连接方式</label>
                     <select id="topo-f-conn">
                       <option value="telnet">Telnet</option>
@@ -797,44 +804,8 @@
                   </div>
                   <div class="topo-field"><label>端口</label><input type="number" id="topo-f-conn-port" value="23" min="1" max="65535" /></div>
                   <div class="topo-field"><label>用户名</label><input type="text" id="topo-f-user" placeholder="admin" /></div>
-                  <div class="topo-field"><label>密码</label><input type="password" id="topo-f-pass" placeholder="留空表示免登录" /></div>
-                </div>
-
-                <div class="topo-group">
-                  <div class="topo-group-title">端口与 VLAN</div>
-                  <div class="topo-field"><label>端口数量</label><input type="number" id="topo-f-portcount" value="24" min="1" max="96" /></div>
-                  <div class="topo-field"><label>起始编号</label><input type="number" id="topo-f-portstart" value="1" min="1" max="96" /></div>
-                  <div class="topo-field"><label>默认 VLAN</label><input type="number" id="topo-f-portvlan" value="1" min="1" max="4094" /></div>
-                  <button class="btn btn-sm" id="btn-topo-gen-ports" style="width:100%">生成端口列表（access 加入默认 VLAN）</button>
-                  <div class="topo-field topo-field-col"><label>VLAN 列表（每行 <code>id,名称</code>）</label>
-                    <textarea id="topo-f-vlans" class="code-area small" spellcheck="false" placeholder="1,Default&#10;10,Mgmt&#10;20,Data"></textarea>
-                  </div>
-                  <div class="topo-field topo-field-col"><label>接口配置（每行 <code>端口,access:VLAN</code> 或 <code>端口,trunk:VLAN列表</code>）</label>
-                    <textarea id="topo-f-itfs" class="code-area small" spellcheck="false" placeholder="GigabitEthernet0/0/1,access:10&#10;GigabitEthernet0/0/24,trunk:1,10,20"></textarea>
-                  </div>
-                </div>
-
-                <div class="topo-group">
-                  <div class="topo-group-title">DHCP / DNS / 其他</div>
-                  <div class="topo-field"><label>DHCP</label>
-                    <select id="topo-f-dhcp"><option value="false">否</option><option value="true">是</option></select>
-                  </div>
-                  <div class="topo-field"><label>DNS</label><input type="text" id="topo-f-dns" placeholder="114.114.114.114,8.8.8.8" /></div>
-                  <div class="topo-field"><label>NTP</label>
-                    <select id="topo-f-ntp"><option value="false">否</option><option value="true">是</option></select>
-                  </div>
-                  <div class="topo-field"><label>NTP 服务器</label><input type="text" id="topo-f-ntp-server" placeholder="192.168.1.1" /></div>
-                  <div class="topo-field"><label>SNMP</label>
-                    <select id="topo-f-snmp"><option value="false">否</option><option value="true">是</option></select>
-                  </div>
-                  <div class="topo-field"><label>只读团体名</label><input type="text" id="topo-f-snmp-ro" placeholder="public" /></div>
-                </div>
-
-                <div class="topo-group">
-                  <div class="topo-group-title">受管设备绑定</div>
-                  <div class="topo-field topo-field-col">
-                    <label>绑定设备（备份 / 下发用）</label>
-                    <select id="topo-f-device"><option value="">不绑定</option></select>
+                  <div class="topo-field"><label>密码</label><input type="password" id="topo-f-pass" placeholder="留空表示不修改" />
+                    <div class="topo-tip" style="margin-top:6px;">此处仅同步到绑定的设备记录（用户名/密码留空表示不修改）；业务参数在「功能配置」中编辑。</div>
                   </div>
                 </div>
 
@@ -1485,6 +1456,30 @@ stelnet server enable</textarea>
       <div class="modal-footer">
         <button class="btn btn-sm" id="btn-tal-cancel">取消</button>
         <button class="btn btn-sm btn-primary" id="btn-tal-submit">确定连线</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 拓扑: 设备功能配置弹窗(临时借用配置生成器的表单 DOM, 保存写回节点 config) -->
+  <div class="modal" id="topo-nodecfg-modal">
+    <div class="modal-box modal-lg" style="width:min(1080px,94vw);">
+      <div class="modal-header">
+        <h3 id="topo-cfg-title">功能配置</h3>
+        <button class="modal-close" id="btn-close-topo-cfg">×</button>
+      </div>
+      <div class="modal-body" style="max-height:74vh;overflow:auto;">
+        <div class="form-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:12px;">
+          <div class="form-field"><label>端口数量</label><input type="number" id="topo-cfg-portcount" value="24" min="1" max="96" /></div>
+          <div class="form-field"><label>起始编号</label><input type="number" id="topo-cfg-portstart" value="1" min="1" max="96" /></div>
+          <div class="form-field"><label>默认 VLAN</label><input type="number" id="topo-cfg-portvlan" value="1" min="1" max="4094" /></div>
+          <div class="form-field"><label>&nbsp;</label><button class="btn btn-sm" id="btn-topo-cfg-genports" style="width:100%">生成端口列表（access）</button></div>
+        </div>
+        <div id="topo-cfg-borrow"></div>
+      </div>
+      <div class="modal-footer">
+        <span class="topo-tip" style="margin-right:auto;">厂家 / 设备类型 / 主机名以左侧属性面板为准，此处修改不会保存</span>
+        <button class="btn btn-sm" id="btn-topo-cfg-cancel">取消</button>
+        <button class="btn btn-sm btn-primary" id="btn-topo-cfg-save">💾 保存到节点</button>
       </div>
     </div>
   </div>

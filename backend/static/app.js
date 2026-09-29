@@ -142,6 +142,8 @@
     if (name === "notes") loadNotes();
     if (name === "devices") { loadDevices(); loadFileServerStatus(); }
     if (name === "topology" && window.TopologyPage) window.TopologyPage.onShow();
+    /* 功能配置弹窗可能借走了配置生成器表单 DOM, 切回该页前归还 */
+    if (name === "config" && window.TopologyPage && window.TopologyPage.restoreCfgForm) window.TopologyPage.restoreCfgForm();
   }
 
   /* ============================================================
@@ -2248,6 +2250,7 @@
     addPortSecRow, addStormRow, addRadiusRow,
     addEthTrunkRow, addRateLimitRow,
     switchCfgTab, generateConfig, validateConfig, exportConfig,
+    collectFormConfig, fillFormFromConfig, resetConfigForm,
     pushFromPreview, loadPushDeviceList,
     viewNote, editNote: openNoteEditor, deleteNote,
     backupAllDevices,
